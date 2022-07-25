@@ -12,10 +12,10 @@ php -r "date_default_timezone_set('${TZ}');"
 php -r "echo date_default_timezone_get();"
 
 echo "Install composer"
-composer install && composer dump-auto 
+composer install && composer dump-auto
 
 echo "Update artisan"
-php artisan key:generate && php artisan cache:clear && php artisan config:clear
+php artisan key:generate
 
 echo "Run NPM DEV"
 npm run dev
