@@ -13,39 +13,51 @@ WORKDIR /
 
 RUN apt-get -y update --fix-missing
 RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
-RUN apt-get install -y \
-        alien \
-        unzip \
-        libfreetype6-dev \
-        libjpeg62-turbo-dev \
+#php setup, install extensions, setup configs
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    libzip-dev \
+    libxml2-dev \
+    zip \
+    unzip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN pecl install zip pcov
+RUN docker-php-ext-enable zip \
+    && docker-php-ext-install bcmath \
+    && docker-php-ext-install soap \
+    && docker-php-source delete
+
+#disable exposing server information
+RUN sed -ri -e 's!expose_php = On!expose_php = Off!g' $PHP_INI_DIR/php.ini-production \
+    && sed -ri -e 's!ServerTokens OS!ServerTokens Prod!g' /etc/apache2/conf-available/security.conf \
+    && sed -ri -e 's!ServerSignature On!ServerSignature Off!g' /etc/apache2/conf-available/security.conf \
+    && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
+	
+RUN apt-get update -qq \
+    && apt-get install -yq apt-utils zlib1g-dev g++ libicu-dev unzip libzip-dev zip libpq-dev git nano netcat curl apache2 dialog locate libcurl4 libcurl3-dev psmisc \
+	libfreetype6-dev \
+    libjpeg62-turbo-dev \
         libmcrypt-dev \
         libpng-dev \
-        git nano \
-		gnupg yarn \
-		netcat curl apache2 dialog locate \
-		libcurl4 libcurl3-dev zip psmisc
+        libmcrypt-dev \
+        libpng-dev \
 
-#resolve /usr/sbin/apache2ctl: 113: www-browser: not found
-RUN apt-get install -y lynx
-
-#TO BE ABLE TO RUN DUSK FROM DOCKER SETUP AND INSTALL CHROMIUM
-RUN apt-get -y install xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable imagemagick x11-apps wget python3 libgbm1 libgl1-mesa-glx libgtk-3-0 libnss3 libsecret-1-0 libxss1 pulseaudio
-
-# Other PHP7 Extensions
-RUN apt-get -y install libmcrypt-dev libsqlite3-dev libsqlite3-0 mysql-client-* zlib1g-dev libzip-dev libicu-dev libxml2-dev
-
+    && pecl install apcu \
+    && docker-php-ext-enable apcu \
+    && docker-php-ext-install intl opcache\
+    && docker-php-ext-configure zip \
+    && docker-php-ext-install zip
+	
 # Install Postgre PDO
 RUN apt-get install -y libpq-dev libonig-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
     && docker-php-ext-install pdo pdo_pgsql pgsql
 
-
-RUN docker-php-ext-install -j$(nproc) iconv gettext
+RUN docker-php-ext-install curl
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
 RUN docker-php-ext-install -j$(nproc) gd
-RUN docker-php-ext-install opcache
-RUN docker-php-ext-install -j$(nproc) intl
-RUN docker-php-ext-install pdo_mysql pdo_sqlite mysqli curl tokenizer json mbstring zip soap
+
+RUN a2enmod rewrite
 
 
 
@@ -86,10 +98,13 @@ RUN sed -i -e 's/^ServerTokens OS$/ServerTokens Prod/g' \
 RUN a2enmod rewrite headers
 
 # Install NPM
+RUN curl --silent --location https://deb.nodesource.com/setup_18.x | bash -
+RUN apt-get install -y nodejs
+
+# Install Yarn
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
 RUN echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
-RUN curl -fsSL https://deb.nodesource.com/setup_17.x | bash -
-RUN apt-get install -y nodejs
+
 
 RUN npm config list
 RUN npm config ls -l
@@ -105,10 +120,9 @@ RUN echo ${TEST_ARG}
 # System - Set default timezone
 ENV TZ=${TZ}
 
-#RUN mkdir -p /etc/php/7.4/cli/conf.d
+
 RUN mkdir -p /var/log/php
 RUN printf 'error_log=/var/log/php/error.log\nlog_errors=1\nerror_reporting=E_ALL\n' > /usr/local/etc/php/conf.d/custom.ini
-#RUN printf "date.timezone = \"${TZ}\"\n" > /usr/local/etc/php/conf.d/tzone.ini
 
 # Composer
 RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
@@ -166,12 +180,11 @@ RUN cd /var/www && chown -R ${USER_ID}:root html && chmod -R ug+rw html
 
 RUN cd ~ && chown -R ${USER_ID}:root .npm && chmod -R 766 .npm
 
-#RUN npm config list
-#RUN npm config ls -l
-
 
 RUN npm cache clean --force
 RUN npm cache verify
+
+RUN chmod 764 /var/www/html/artisan
 
 #now install npm
 RUN cd /var/www/html && npm install
@@ -179,7 +192,6 @@ RUN cd /var/www/html && chmod -R a+w node_modules
 
 #Error: EACCES: permission denied, open '/var/www/html/public/mix-manifest.json'
 RUN cd /var/www/html/public && chmod 766 mix-manifest.json
-RUN cd /var/www/html && npm run dev
 
 #Writing to directory /.config/psysh is not allowed.
 RUN mkdir -p /.config/psysh

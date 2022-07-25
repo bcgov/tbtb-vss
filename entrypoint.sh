@@ -1,4 +1,5 @@
 #!/bin/bash
+'set -e'
 
 echo "Start entrypoint file"
 
@@ -10,32 +11,13 @@ echo "Setup TZ"
 php -r "date_default_timezone_set('${TZ}');"
 php -r "echo date_default_timezone_get();"
 
-echo "symlink to screenshots"
-ln -snf "/var/www/html/tests/Browser/screenshots" "/var/www/html/public/screenshots"
-
-
 echo "Install composer"
-composer install && composer dump-auto && php artisan key:generate && php artisan cache:clear && php artisan config:clear
-chmod 764 artisan
+composer install && composer dump-auto 
 
-echo "Starting queue 1:"
-php /var/www/html/artisan queue:listen --memory=1028 --sleep=5 --timeout=400 --tries=3 &
+echo "Update artisan"
+php artisan key:generate && php artisan cache:clear && php artisan config:clear
 
-echo "Starting schedule list 1:"
-php /var/www/html/artisan schedule:list &
+echo "Run NPM DEV"
+npm run dev
 
-echo "Starting schedule 2:"
-php /var/www/html/artisan schedule:work &
-echo "End schedule 2:"
-
-chmod 766 /var/www/html/probe-check.sh
-
-echo "Starting apache:"
-/usr/sbin/apache2ctl start
-
-echo "ReStarting apache:"
-/usr/sbin/apache2ctl restart
-
-while true; do
-    sleep 1;
-done
+exec "$@"
