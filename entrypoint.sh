@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 echo "Start entrypoint file"
 
@@ -17,7 +16,14 @@ composer install && composer dump-auto
 echo "Update artisan"
 php artisan key:generate
 
-echo "Run NPM DEV"
-npm run dev
+
+chmod 766 /var/www/html/probe-check.sh
+
+echo "Starting apache:"
+/usr/sbin/apache2ctl start
+
+echo "ReStarting apache:"
+/usr/sbin/apache2ctl restart
+
 
 echo "End entrypoint"

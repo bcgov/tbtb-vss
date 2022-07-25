@@ -192,21 +192,17 @@ RUN cd /var/www/html && chmod -R a+w node_modules
 
 #Error: EACCES: permission denied, open '/var/www/html/public/mix-manifest.json'
 RUN cd /var/www/html/public && chmod 766 mix-manifest.json
+RUN cd /var/www/html && npm run dev
 
 #Writing to directory /.config/psysh is not allowed.
 RUN mkdir -p /.config/psysh
 RUN chown -R ${USER_ID}:root /.config && chmod -R 755 /.config
+RUN chown -R ${USER_ID}:root /.composer && chmod -R 755 /.composer
 RUN echo "<?php return ['runtimeDir' => '/tmp'];" >> /.config/psysh/config.php
 
 #openshift will complaine about permission
-#RUN chmod +x /sbin/entrypoint.sh
-RUN ["chmod", "+x", "/sbin/entrypoint.sh"]
+RUN chmod +x /sbin/entrypoint.sh
 USER ${USER_ID}
 
-#ENTRYPOINT ["/sbin/entrypoint.sh"]
-#CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart && /sbin/entrypoint.sh
-
-# Apply necessary permissions
 ENTRYPOINT ["/sbin/entrypoint.sh"]
-
-CMD ["apache2-foreground"]
+CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart && /sbin/entrypoint.sh
