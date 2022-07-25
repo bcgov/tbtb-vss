@@ -47,7 +47,10 @@ print-status:
 	@echo " +---------------------------------------------------------+ "
 	@echo " | BUILD_ID: 	$(BUILD_ID) "
 	@echo " | BUILD_TAG: 	$(BUILD_TAG) "
-	@echo " | HOST NAME: 	$(HOST) "
+	@echo " | HOST: 	$(HOST) "
+	@echo " | NAME: 	$(HOST_PREFIX) "
+	@echo " | REPO_NAME: 	$(SOURCE_REPOSITORY_REF) "
+	@echo " | REPO_BRANCH: 	$(SOURCE_REPOSITORY_BRANCH) "
 #	"$(HOST_PREFIX)-$(BUILD_NAMESPACE).apps.silver.devops.gov.bc.ca.$(DOMAIN)"
 	@echo " +---------------------------------------------------------+ "
 
