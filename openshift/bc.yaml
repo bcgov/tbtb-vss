@@ -1,6 +1,6 @@
 #run oc process -f bc.yaml -p NAME=tbtb-vss IMAGE_TAG=latest OC_REPO_SECRET_USER=user-at-github | oc apply -f -
 kind: Template
-apiVersion: "template.openshift.io/v1"
+apiVersion: v1
 metadata:
   name: ${NAME}
   labels:
