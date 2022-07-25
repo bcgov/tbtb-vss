@@ -200,7 +200,7 @@ RUN echo "<?php return ['runtimeDir' => '/tmp'];" >> /.config/psysh/config.php
 
 #openshift will complaine about permission
 #RUN chmod +x /sbin/entrypoint.sh
-RUN ["chmod", "+x", "/entrypoint.sh"]
+RUN ["chmod", "+x", "/sbin/entrypoint.sh"]
 USER ${USER_ID}
 
 #ENTRYPOINT ["/sbin/entrypoint.sh"]
