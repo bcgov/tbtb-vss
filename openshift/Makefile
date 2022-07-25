@@ -21,7 +21,7 @@ define HOST
 endef
 
 define SOURCE_REPOSITORY_REF
-"https://github.com/bcgov/tbtb-health-vss"
+"https://github.com/bcgov/tbtb-vss"
 endef
 
 define SOURCE_REPOSITORY_BRANCH
@@ -49,16 +49,6 @@ print-status:
 	@echo " | BUILD_TAG: 	$(BUILD_TAG) "
 	@echo " | HOST NAME: 	$(HOST) "
 	@echo " +---------------------------------------------------------+ "
-
-# init-artifactory-secret-credential:
-# 	test -n $(NAMESPACE)
-# 	@oc create secret docker-registry artifactory-secret-credential -n $(NAMESPACE) \
-#	 	--docker-server=artifacts.developer.gov.bc.ca \
-#	 	--docker-username=$(USERNAME) \
-#	 	--docker-password=$(PASSWORD) \
-#	 	--docker-email=$(USERNAME)@$(NAMESPACE).local
-# 	@oc secrets link default artifactory-secret-credential
-# 	@oc secrets link builder artifactory-secret-credential
 
 build-web:
 	test -n "$(BUILD_REF)"
