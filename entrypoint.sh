@@ -1,5 +1,5 @@
 #!/bin/bash
-'set -e'
+set -e
 
 echo "Start entrypoint file"
 
@@ -20,4 +20,11 @@ php artisan key:generate
 echo "Run NPM DEV"
 npm run dev
 
-exec "$@"
+exit 0
+
+# wait until all processes end (wait returns 0 retcode)
+while :; do
+    if wait; then
+        break
+    fi
+done

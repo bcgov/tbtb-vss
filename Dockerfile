@@ -32,7 +32,7 @@ RUN sed -ri -e 's!expose_php = On!expose_php = Off!g' $PHP_INI_DIR/php.ini-produ
     && sed -ri -e 's!ServerTokens OS!ServerTokens Prod!g' /etc/apache2/conf-available/security.conf \
     && sed -ri -e 's!ServerSignature On!ServerSignature Off!g' /etc/apache2/conf-available/security.conf \
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
-	
+
 RUN apt-get update -qq \
     && apt-get install -yq apt-utils zlib1g-dev g++ libicu-dev unzip libzip-dev zip libpq-dev git nano netcat curl apache2 dialog locate libcurl4 libcurl3-dev psmisc \
 	libfreetype6-dev \
@@ -47,7 +47,7 @@ RUN apt-get update -qq \
     && docker-php-ext-install intl opcache\
     && docker-php-ext-configure zip \
     && docker-php-ext-install zip
-	
+
 # Install Postgre PDO
 RUN apt-get install -y libpq-dev libonig-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
@@ -199,8 +199,14 @@ RUN chown -R ${USER_ID}:root /.config && chmod -R 755 /.config
 RUN echo "<?php return ['runtimeDir' => '/tmp'];" >> /.config/psysh/config.php
 
 #openshift will complaine about permission
-RUN chmod +x /sbin/entrypoint.sh
+#RUN chmod +x /sbin/entrypoint.sh
+RUN ["chmod", "+x", "/entrypoint.sh"]
 USER ${USER_ID}
 
+#ENTRYPOINT ["/sbin/entrypoint.sh"]
+#CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart && /sbin/entrypoint.sh
+
+# Apply necessary permissions
 ENTRYPOINT ["/sbin/entrypoint.sh"]
-CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart && /sbin/entrypoint.sh
+
+CMD ["apache2-foreground"]
