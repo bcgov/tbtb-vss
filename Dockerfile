@@ -19,10 +19,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
     libxml2-dev \
     zip \
     unzip \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
-
-RUN pecl install zip pcov
-RUN docker-php-ext-enable zip \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* && pecl install zip pcov && docker-php-ext-enable zip \
     && docker-php-ext-install bcmath \
     && docker-php-ext-install soap \
     && docker-php-source delete
@@ -49,15 +46,9 @@ RUN apt-get update -qq \
     && docker-php-ext-install zip
 
 # Install Postgre PDO
-RUN apt-get install -y libpq-dev libonig-dev \
+RUN apt-get install -y libonig-dev \
     && docker-php-ext-configure pgsql -with-pgsql=/usr/local/pgsql \
-    && docker-php-ext-install pdo pdo_pgsql pgsql
-
-RUN docker-php-ext-install curl
-RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
-RUN docker-php-ext-install -j$(nproc) gd
-
-RUN a2enmod rewrite
+    && docker-php-ext-install pdo pdo_pgsql pgsql && docker-php-ext-install curl && docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ && docker-php-ext-install -j$(nproc) gd && a2enmod rewrite
 
 
 
@@ -98,35 +89,30 @@ RUN sed -i -e 's/^ServerTokens OS$/ServerTokens Prod/g' \
 RUN a2enmod rewrite headers
 
 # Install NPM
-RUN curl --silent --location https://deb.nodesource.com/setup_18.x | bash -
-RUN apt-get install -y nodejs
+RUN curl --location https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
 
 # Install Yarn
-RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null
-RUN echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
+RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null && echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
 
 
-RUN npm config list
-RUN npm config ls -l
+#RUN npm config list
+#RUN npm config ls -l
 
-RUN apt-get autoclean
-RUN apt-get autoremove
+RUN apt-get autoclean && apt-get autoremove
 
 #fix Action '-D FOREGROUND' failed.
 RUN a2enmod lbmethod_byrequests
 
-RUN echo ${TEST_ARG}
+#RUN echo ${TEST_ARG}
 
 # System - Set default timezone
 ENV TZ=${TZ}
 
 
-RUN mkdir -p /var/log/php
-RUN printf 'error_log=/var/log/php/error.log\nlog_errors=1\nerror_reporting=E_ALL\n' > /usr/local/etc/php/conf.d/custom.ini
+RUN mkdir -p /var/log/php && printf 'error_log=/var/log/php/error.log\nlog_errors=1\nerror_reporting=E_ALL\n' > /usr/local/etc/php/conf.d/custom.ini
 
 # Composer
-RUN curl -sS https://getcomposer.org/installer -o composer-setup.php
-RUN php composer-setup.php --install-dir=/usr/local/bin --filename=composer
+RUN curl -sS https://getcomposer.org/installer -o composer-setup.php && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 WORKDIR /
 COPY openshift/apache-oc/image-files/ /
@@ -158,9 +144,7 @@ RUN sed -i -e 's/80/8080/g' -e 's/443/8443/g' -e 's/25/2525/g' /etc/apache2/port
     && a2query -M \
     && a2query -m \
     && chmod a+rx /docker-bin/*.sh \
-    && /docker-bin/docker-build.sh
-
-RUN export COMPOSER_HOME="$HOME/.config/composer";
+    && /docker-bin/docker-build.sh && export COMPOSER_HOME="$HOME/.config/composer";
 
 COPY entrypoint.sh /sbin/entrypoint.sh
 
@@ -187,17 +171,14 @@ RUN npm cache verify
 RUN chmod 764 /var/www/html/artisan
 
 #now install npm
-RUN cd /var/www/html && npm install
-RUN cd /var/www/html && chmod -R a+w node_modules
+RUN cd /var/www/html && npm install && chmod -R a+w node_modules
 
 #Error: EACCES: permission denied, open '/var/www/html/public/mix-manifest.json'
-RUN cd /var/www/html/public && chmod 766 mix-manifest.json
-RUN cd /var/www/html && npm run dev
+RUN cd /var/www/html/public && chmod 766 mix-manifest.json && cd /var/www/html && npm run dev
 
 #Writing to directory /.config/psysh is not allowed.
-RUN mkdir -p /.config/psysh
-RUN chown -R ${USER_ID}:root /.config && chmod -R 755 /.config
-RUN chown -R ${USER_ID}:root /.composer && chmod -R 755 /.composer
+RUN mkdir -p /.config/psysh && chown -R ${USER_ID}:root /.config && chmod -R 755 /.config
+RUN mkdir -p /.composer && chown -R ${USER_ID}:root /.composer && chmod -R 755 /.composer
 RUN echo "<?php return ['runtimeDir' => '/tmp'];" >> /.config/psysh/config.php
 
 #openshift will complaine about permission
