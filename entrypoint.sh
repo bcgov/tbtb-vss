@@ -20,11 +20,4 @@ php artisan key:generate
 echo "Run NPM DEV"
 npm run dev
 
-exit 0
-
-# wait until all processes end (wait returns 0 retcode)
-while :; do
-    if wait; then
-        break
-    fi
-done
+echo "End entrypoint"
