@@ -90,6 +90,7 @@ RUN a2enmod rewrite headers
 
 # Install NPM
 RUN curl --location https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
+RUN chown -R ${USER_ID}:root /root/.npm && chmod -R 766 /root/.npm
 
 # Install Yarn
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null && echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
@@ -162,11 +163,10 @@ RUN touch .env && echo ${ENV_ARG} >> /var/www/html/.env
 RUN mkdir -p storage && mkdir -p bootstrap/cache &&chmod -R ug+rwx storage bootstrap/cache
 RUN cd /var/www && chown -R ${USER_ID}:root html && chmod -R ug+rw html
 
-#RUN cd ~ && ls && chown -R ${USER_ID}:root .npm && chmod -R 766 .npm
 
 
-RUN npm cache clean --force
-RUN npm cache verify
+#RUN npm cache clean --force
+#RUN npm cache verify
 
 RUN chmod 764 /var/www/html/artisan
 
@@ -174,7 +174,8 @@ RUN chmod 764 /var/www/html/artisan
 RUN cd /var/www/html && npm install && chmod -R a+w node_modules
 
 #Error: EACCES: permission denied, open '/var/www/html/public/mix-manifest.json'
-RUN cd /var/www/html/public && chmod 766 mix-manifest.json && cd /var/www/html && npm run dev
+RUN cd /var/www/html/public && chmod 766 mix-manifest.json
+#RUN cd /var/www/html && npm run dev
 
 #Writing to directory /.config/psysh is not allowed.
 RUN mkdir -p /.config/psysh && chown -R ${USER_ID}:root /.config && chmod -R 755 /.config
@@ -186,4 +187,4 @@ RUN chmod +x /sbin/entrypoint.sh
 USER ${USER_ID}
 
 ENTRYPOINT ["/sbin/entrypoint.sh"]
-CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart && /sbin/entrypoint.sh
+#CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart && /sbin/entrypoint.sh
