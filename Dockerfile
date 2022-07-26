@@ -90,7 +90,7 @@ RUN a2enmod rewrite headers
 
 # Install NPM
 RUN curl --location https://deb.nodesource.com/setup_18.x | bash - && apt-get install -y nodejs
-RUN chown -R ${USER_ID}:root /root/.npm && chmod -R 766 /root/.npm
+#RUN chown -R ${USER_ID}:root /root/.npm && chmod -R 766 /root/.npm
 
 # Install Yarn
 RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | tee /usr/share/keyrings/yarnkey.gpg >/dev/null && echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | tee /etc/apt/sources.list.d/yarn.list
