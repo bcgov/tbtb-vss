@@ -162,7 +162,7 @@ RUN touch .env && echo ${ENV_ARG} >> /var/www/html/.env
 RUN mkdir -p storage && mkdir -p bootstrap/cache &&chmod -R ug+rwx storage bootstrap/cache
 RUN cd /var/www && chown -R ${USER_ID}:root html && chmod -R ug+rw html
 
-RUN cd ~ && chown -R ${USER_ID}:root .npm && chmod -R 766 .npm
+#RUN cd ~ && ls && chown -R ${USER_ID}:root .npm && chmod -R 766 .npm
 
 
 RUN npm cache clean --force
