@@ -1,5 +1,6 @@
 <?php
 
+use Auth;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,6 +20,7 @@ Route::get('/logout', [App\Http\Controllers\UserController::class, 'logout'])->n
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
+        'authorised' => Auth::check(),
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,

@@ -34,6 +34,8 @@ endef
 
 oc-build-web: | print-status build-web
 oc-deploy-web: | print-status deploy-web
+oc-build-patroni: | print-status build-patroni
+oc-deploy-patroni: | print-status deploy-patroni
 
 print-status:
 	@echo " +---------------------------------------------------------+ "
@@ -76,3 +78,10 @@ deploy-web:
 	@oc -n $(NAMESPACE) process -f dc_latest.yaml -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) | oc -n $(NAMESPACE) apply -f -
 	$(call rollout_and_wait,dc/$(HOST_PREFIX))
 	@echo "+\n++ FINISHED Deploying Web\n+"
+
+build-patroni:
+	@oc -n $(BUILD_NAMESPACE) process -f patroni-build.yaml  -p NAME=tbtb-vss-patroni -p TAG="12-latest" -p BASE_IMAGE_NAME=postgres -p BASE_IMAGE_TAG="12" -p SOURCE_REPOSITORY_URL="https://github.com/BCDevOps/platform-services.git" -p SOURCE_REPOSITORY_REF="master" -p SOURCE_CONTEXT_DIR="apps/pgsql/patroni/docker" | oc -n $(BUILD_NAMESPACE) apply -f -
+	@oc -n $(BUILD_NAMESPACE) start-build bc/tbtb-vss-patroni --wait
+
+deploy-patroni:
+	@oc -n $(NAMESPACE) process -f patroni-deploy.yaml -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p IMAGE_STREAM_TAG=patroni:12-latest | oc -n $(NAMESPACE) apply -f -
