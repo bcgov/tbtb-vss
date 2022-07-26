@@ -182,9 +182,11 @@ RUN mkdir -p /.config/psysh && chown -R ${USER_ID}:root /.config && chmod -R 755
 RUN mkdir -p /.composer && chown -R ${USER_ID}:root /.composer && chmod -R 755 /.composer
 RUN echo "<?php return ['runtimeDir' => '/tmp'];" >> /.config/psysh/config.php
 
+RUN composer install && composer dump-auto && php artisan key:generate
+
 #openshift will complaine about permission
 RUN chmod +x /sbin/entrypoint.sh
 USER ${USER_ID}
 
-ENTRYPOINT ["/sbin/entrypoint.sh"]
-#CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart && /sbin/entrypoint.sh
+#ENTRYPOINT ["/sbin/entrypoint.sh"]
+CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart
