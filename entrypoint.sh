@@ -20,4 +20,6 @@ php artisan key:generate
 chmod 766 /var/www/html/probe-check.sh
 
 echo "End entrypoint"
-exit 0
+while :; do
+sleep 300
+done
