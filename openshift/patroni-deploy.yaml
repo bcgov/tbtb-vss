@@ -144,6 +144,7 @@ objects:
               volumeMounts:
                 - mountPath: /home/postgres/pgdata
                   name: ${NAME}
+          serviceAccountName: ${NAME}
       updateStrategy:
         type: RollingUpdate
       volumeClaimTemplates:
