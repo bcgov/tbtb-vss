@@ -46,7 +46,7 @@ objects:
                   name: ${NAME}
                   key: "database-connection"
             - name: ENV_DB_HOST
-              value: ${NAME}"-patroni-master"
+              value: ${NAME}-patroni-master
             - name: ENV_DB_PORT
               valueFrom:
                 secretKeyRef:
