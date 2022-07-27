@@ -19,11 +19,4 @@ php artisan key:generate
 
 chmod 766 /var/www/html/probe-check.sh
 
-echo "Starting apache:"
-/usr/sbin/apache2ctl start
-
-echo "ReStarting apache:"
-/usr/sbin/apache2ctl restart
-
-
 echo "End entrypoint"
