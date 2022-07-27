@@ -144,7 +144,6 @@ objects:
               volumeMounts:
                 - mountPath: /home/postgres/pgdata
                   name: ${NAME}
-          serviceAccountName: ${NAME}
       updateStrategy:
         type: RollingUpdate
       volumeClaimTemplates:
@@ -195,7 +194,7 @@ parameters:
   - name: IMAGE_STREAM_TAG
     description: |
       Patroni ImageTag
-    value: patroni:12-latest
+    value: tbtb-vss-patroni:12-latest
   - name: PVC_SIZE
     description:
       The size of the persistent volume to create.

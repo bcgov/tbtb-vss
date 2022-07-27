@@ -52,7 +52,6 @@ objects:
           name: "${NAME}:${TAG}"
       runPolicy: SerialLatestOnly
       source:
-        contextDir: "${SOURCE_CONTEXT_DIR}"
         git:
           uri: "${SOURCE_REPOSITORY_URL}"
           ref: "${SOURCE_REPOSITORY_REF}"
@@ -60,7 +59,7 @@ objects:
       strategy:
         dockerStrategy:
           pullSecret:
-            name: artifactory-secret-credential
+            name: artifacts-pull-default-hkucak
           from:
             kind: ImageStreamTag
             name: ${BASE_IMAGE_NAME}:${BASE_IMAGE_TAG}
@@ -78,11 +77,9 @@ parameters:
   - name: NAME
     required: true
   - name: SUFFIX
-  - name: SOURCE_CONTEXT_DIR
-    required: true
   - name: SOURCE_REPOSITORY_URL
     required: true
-    value: https://github.com/bcgov/tbtb-vss.git
+    value: https://github.com/bcgov/patroni-postgres-container.git
   - name: SOURCE_REPOSITORY_REF
     required: true
   - name: TAG
@@ -95,7 +92,7 @@ parameters:
   - name: CPU_LIMIT
     value: "2"
   - name: MEMORY_LIMIT
-    value: "8Gi"
+    value: "4Gi"
   - name: CPU_REQUEST
     value: "1"
   - name: MEMORY_REQUEST
