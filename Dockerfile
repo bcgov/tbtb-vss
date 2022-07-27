@@ -7,6 +7,14 @@ ARG CA_HOSTS_LIST
 ARG TEST_ARG
 ARG ENV_ARG
 
+ARG ENV_DB_CONNECTION
+ARG ENV_DB_HOST
+ARG ENV_DB_PORT
+ARG ENV_DB_DATABASE
+ARG ENV_DB_USERNAME
+ARG ENV_DB_PASSWORD
+ARG ENV_DB_PREFIX
+
 ARG DEBIAN_FRONTEND=noninteractive
 
 WORKDIR /
@@ -159,6 +167,14 @@ COPY / /var/www/html/
 WORKDIR /var/www/html/
 
 RUN touch .env && echo ${ENV_ARG} >> /var/www/html/.env
+RUN echo "\n\
+DB_CONNECTION=${ENV_DB_CONNECTION}\n\
+DB_HOST=${ENV_DB_HOST}\n\
+DB_PORT=${ENV_DB_PORT}\n\
+DB_DATABASE=${ENV_DB_DATABASE}\n\
+DB_USERNAME=${ENV_DB_USERNAME}\n\
+DB_PASSWORD=${ENV_DB_PASSWORD}\n\
+DB_PREFIX=${ENV_DB_PREFIX}\n" >> /var/www/html/.env
 
 RUN mkdir -p storage && mkdir -p bootstrap/cache &&chmod -R ug+rwx storage bootstrap/cache
 RUN cd /var/www && chown -R ${USER_ID}:root html && chmod -R ug+rw html

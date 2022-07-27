@@ -38,8 +38,40 @@ objects:
             - name: ENV_ARG
               valueFrom:
                 secretKeyRef:
-                  name: tbtb-vss
+                  name: ${NAME}
                   key: ".env"
+            - name: ENV_DB_CONNECTION
+              valueFrom:
+                secretKeyRef:
+                  name: ${NAME}
+                  key: "database-connection"
+            - name: ENV_DB_HOST
+              value: ${NAME}-patroni-master
+            - name: ENV_DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: ${NAME}
+                  key: "database-port"
+            - name: ENV_DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: ${NAME}
+                  key: "database-name"
+            - name: ENV_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: ${NAME}
+                  key: "database-username"
+            - name: ENV_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: ${NAME}
+                  key: "database-password"
+            - name: ENV_DB_PREFIX
+              valueFrom:
+                secretKeyRef:
+                  name: ${NAME}
+                  key: "database-prefix"
         type: Docker
       successfulBuildsHistoryLimit: 5
     metadata:
