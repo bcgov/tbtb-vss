@@ -72,6 +72,11 @@ objects:
                 secretKeyRef:
                   name: ${NAME}
                   key: "database-prefix"
+            - name: ENV_DEFAULT_CONF
+              valueFrom:
+                secretKeyRef:
+                  name: ${NAME}
+                  key: "000-default-conf"
         type: Docker
       successfulBuildsHistoryLimit: 5
     metadata:
