@@ -26,7 +26,7 @@ class IsAdmin
         }
 
         $user = Auth::user();
-        if(!$user->isAdmin()){
+        if($user->access_type != 'A' && $user->access_type != 'S'){
             return redirect(RouteServiceProvider::HOME);
         }
 

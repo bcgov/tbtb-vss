@@ -27,14 +27,6 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/fetch-cancelled-users', [App\Http\Controllers\UserController::class, 'cancelledUsers'])->name('fetch-cancelled-users');
 
     Route::get('/dashboard', [App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');
-    Route::get('/reports', [App\Http\Controllers\UserController::class, 'reports'])->name('reports');
-    Route::get('/reports/download/{case}', [App\Http\Controllers\ReportController::class, 'downloadSingleStudentReport'])->name('download-single-student-report');
-    Route::get('/reports/over_award', [App\Http\Controllers\ReportController::class, 'showOverAward'])->name('show-overaward-report');
-
-    Route::get('/maintenance/{page?}', [App\Http\Controllers\MaintenanceController::class, 'goToPage'])->name('maintenance');
-
-    Route::get('/archive', [App\Http\Controllers\UserController::class, 'reports'])->name('archive');
-    Route::get('/archive/cases', [App\Http\Controllers\IncidentController::class, 'archived'])->name('archive.cases.list');
 
     Route::resource('cases', App\Http\Controllers\IncidentController::class);
 
@@ -60,6 +52,14 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     //authenticated admin routes
     Route::group(['middleware' => ['admin']], function () {
+        Route::get('/reports', [App\Http\Controllers\UserController::class, 'reports'])->name('reports');
+        Route::get('/reports/download/{case}', [App\Http\Controllers\ReportController::class, 'downloadSingleStudentReport'])->name('download-single-student-report');
+        Route::get('/reports/over_award', [App\Http\Controllers\ReportController::class, 'showOverAward'])->name('show-overaward-report');
+
+        Route::get('/maintenance/{page?}', [App\Http\Controllers\MaintenanceController::class, 'goToPage'])->name('maintenance');
+
+        Route::get('/archive', [App\Http\Controllers\UserController::class, 'reports'])->name('archive');
+        Route::get('/archive/cases', [App\Http\Controllers\IncidentController::class, 'archived'])->name('archive.cases.list');
 
     });
 });
