@@ -54,7 +54,9 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::group(['middleware' => ['admin']], function () {
         Route::get('/reports', [App\Http\Controllers\UserController::class, 'reports'])->name('reports');
         Route::get('/reports/download/{case}', [App\Http\Controllers\ReportController::class, 'downloadSingleStudentReport'])->name('download-single-student-report');
-        Route::get('/reports/over_award', [App\Http\Controllers\ReportController::class, 'showOverAward'])->name('show-overaward-report');
+//        Route::get('/reports/over_award', [App\Http\Controllers\ReportController::class, 'showOverAward'])->name('show-overaward-report');
+
+        Route::post('/reports', [App\Http\Controllers\ReportController::class, 'searchReports'])->name('reports-search');
 
         Route::get('/maintenance/{page?}', [App\Http\Controllers\MaintenanceController::class, 'goToPage'])->name('maintenance');
 

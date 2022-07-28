@@ -24,7 +24,13 @@ class ReportController extends Controller
         return $pdf->download(mt_rand() . '-' . $case->incident_id . '-student_report.pdf');
     }
 
-    public function showOverAward(Request $request)
+    public function searchReports(Request $request)
+    {
+        list($results['pre'], $results['post'], $results['total']) = $this->fetchReport($request);
+        return Inertia::render('Reports', ['results' => $results]);
+    }
+
+    private function fetchReport(Request $request)
     {
         $table = [];
         $funding_types = FundingType::orderBy('funding_type')->get();
@@ -40,9 +46,24 @@ class ReportController extends Controller
         $post_audit_table = $table;
         $total_audit_table = $table;
 
-        $funds = CaseFunding::with('incident.primaryAudit')
-            ->where('over_award', '>', 0)
-            ->limit(1000)->get();
+        $start_date_range = date('Y-m-d', strtotime('6 months ago'));
+        $end_date_range = date('Y-m-d');
+        if($request->inputStartDate){
+            $start_date_range = date('Y-m-d', strtotime($request->inputStartDate));
+        }
+        if($request->inputEndDate){
+            $end_date_range = date('Y-m-d', strtotime($request->inputEndDate));
+        }
+
+        $funds = CaseFunding::with('incident.primaryAudit');
+        if($request->type == 'overaward')
+            $funds = $funds->where('over_award', '>', 0);
+        else
+            $funds = $funds->where('prevented_funding', '>', 0);
+
+        $funds = $funds->where('fund_entry_date', '>=', $start_date_range)
+            ->where('fund_entry_date', '<=', $end_date_range)
+            ->get();
 
 
         foreach ($funds as $fund){
@@ -59,14 +80,16 @@ class ReportController extends Controller
 
         }
 
-echo "<table><tr><td>PRE AUDIT<br/><pre>";
-        print_r($pre_audit_table);
-        echo "</pre></td><td>POST AUDIT<br/><pre>";
-
-        print_r($post_audit_table);
-        echo "</pre></td><td>TOTAL AUDIT<br/><pre>";
-        print_r($total_audit_table);
-        echo "</pre></td></tr></table>";
+        return [$pre_audit_table, $post_audit_table, $total_audit_table];
+//
+//echo "<table><tr><td>PRE AUDIT<br/><pre>";
+//        print_r($pre_audit_table);
+//        echo "</pre></td><td>POST AUDIT<br/><pre>";
+//
+//        print_r($post_audit_table);
+//        echo "</pre></td><td>TOTAL AUDIT<br/><pre>";
+//        print_r($total_audit_table);
+//        echo "</pre></td></tr></table>";
    }
 
     /**

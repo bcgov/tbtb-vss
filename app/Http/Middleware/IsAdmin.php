@@ -22,10 +22,11 @@ class IsAdmin
         $roles = empty($roles) ? [null] : $roles;
 
         if (!Auth::check()) {
-            return redirect(RouteServiceProvider::HOME);
+            return redirect()->route('login');
         }
 
         $user = Auth::user();
+        //redirect non admin users to the dashboard page
         if($user->access_type != 'A' && $user->access_type != 'S'){
             return redirect(RouteServiceProvider::HOME);
         }

@@ -47,7 +47,7 @@ class UserController extends Controller
      * Display first page after login (dashboard page)
      */
     public function reports(Request $request){
-        return Inertia::render('Reports');
+        return Inertia::render('Reports', ['results' => null]);
     }
 
     /**
