@@ -50,7 +50,8 @@ class RegisteredUserController extends Controller
             'first_name' => Str::title($request->first_name),
             'last_name' => Str::title($request->last_name),
             'start_date' => $request->start_date,
-            'access_type' => $request->access_type,
+            'access_type' => 'U', //force all new users to not be Admin users
+            'disabled' => true, //force all new users to disabled until the admin enable them
             'email' => Str::lower($request->email),
             'password' => Hash::make($request->password),
         ]);

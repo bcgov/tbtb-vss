@@ -16,18 +16,10 @@ use Inertia\Inertia;
 |
 */
 Route::get('/logout', [App\Http\Controllers\UserController::class, 'logout'])->name('manual-logout');
-//Route::get('/', [App\Http\Controllers\UserController::class, 'index'])->name('index');
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'authorised' => Auth::check(),
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
+    return redirect('/login');
 });
-
 
 Route::middleware(['auth'])->group(function () {
 
@@ -57,10 +49,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/case-search/{x?}', function () {
         return Redirect::route('dashboard');
     })->name('case-sin-search-dashboard-redirect');
-//    Route::inertia('/cases/case-funding/{incident}', 'CaseFunding')->name('pages.case-funding');
 
-//    Route::get('/cases/case-funding/{incident}', [App\Http\Controllers\IncidentController::class, 'show'])->name('incidents.case-funding');
-//    Route::post('/cases/case-funding/new', [App\Http\Controllers\IncidentController::class, 'store'])->name('incidents.case-funding.store');
     Route::resource('case-funding', App\Http\Controllers\CaseFundingController::class);
 
     Route::post('/cases/{case}/delete-sanction', [App\Http\Controllers\CaseSanctionTypeController::class, 'deleteSanction'])->name('case-funding-delete-sanction');
@@ -68,10 +57,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/cases/{case}/delete-area-of-audit', [App\Http\Controllers\CaseAuditTypeController::class, 'deleteAuditType'])->name('case-funding-delete-audit-type');
 
     Route::resource('case-comment', App\Http\Controllers\CaseCommentController::class);
-
-    //    Route::get('/dashboard', function () {
-//        return Inertia::render('Dashboard');
-//    })->name('dashboard');
 
     //authenticated admin routes
     Route::group(['middleware' => ['admin']], function () {
