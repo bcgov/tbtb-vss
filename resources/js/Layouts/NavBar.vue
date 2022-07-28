@@ -173,9 +173,11 @@ nav.navbar{
                             <li><hr class="dropdown-divider"></li>
 
                                 <li class="dropdown-item mt-3 space-y-1">
-                                    <BreezeResponsiveNavLink :href="route('logout')" method="post" as="button">
+                                    <div class="d-grid gap-2">
+                                    <BreezeResponsiveNavLink class="text-left" :href="route('logout')" method="post" as="button">
                                         Log Out
                                     </BreezeResponsiveNavLink>
+                                    </div>
                                 </li>
                         </ul>
                     </li>

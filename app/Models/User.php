@@ -59,4 +59,16 @@ class User extends Authenticatable
     {
         return $query->where('access_type', '=', 'A');
     }
+
+
+    /**
+     * Scope a query to only include admin users.
+     *
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeIsActive($query)
+    {
+        return $query->where('disabled', '=', false);
+    }
 }

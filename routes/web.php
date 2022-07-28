@@ -21,7 +21,7 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'active'])->group(function () {
 
     Route::get('/fetch-active-users', [App\Http\Controllers\UserController::class, 'activeUsers'])->name('fetch-active-users');
     Route::get('/fetch-cancelled-users', [App\Http\Controllers\UserController::class, 'cancelledUsers'])->name('fetch-cancelled-users');
