@@ -32,6 +32,21 @@ class IncidentController extends Controller
      *
      * @return \Inertia\Response::render
      */
+    public function dashboard()
+    {
+        $cases = Incident::isActive()->with('institution')
+            ->where('bring_forward', true)
+            ->where('auditor_user_id', Auth::user()->user_id)
+            ->orderBy('created_at', 'desc')->paginate(25);
+
+        return Inertia::render('Dashboard', ['status' => true, 'results' => $cases]);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Inertia\Response::render
+     */
     public function index()
     {
         $cases = Incident::isActive()->with('institution')->orderBy('created_at', 'desc')->paginate(25);

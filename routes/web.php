@@ -26,7 +26,7 @@ Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/fetch-active-users', [App\Http\Controllers\UserController::class, 'activeUsers'])->name('fetch-active-users');
     Route::get('/fetch-cancelled-users', [App\Http\Controllers\UserController::class, 'cancelledUsers'])->name('fetch-cancelled-users');
 
-    Route::get('/dashboard', [App\Http\Controllers\UserController::class, 'dashboard'])->name('dashboard');
+    Route::get('/dashboard', [App\Http\Controllers\IncidentController::class, 'dashboard'])->name('dashboard');
 
     Route::resource('cases', App\Http\Controllers\IncidentController::class);
 

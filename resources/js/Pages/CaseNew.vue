@@ -44,7 +44,7 @@ tr {
                                                     <tr>
                                                         <th scope="row">SIN:</th>
                                                         <td class="ps-1">
-                                                            <BreezeInput class="form-control" type="number" maxlength="9" v-model="editForm.sin" aria-required="true" />
+                                                            <BreezeInput class="form-control" type="number" oninput="javascript: if (this.value.length > this.maxLength) editForm.sin = this.value.slice(0, this.maxLength);" maxlength="9" v-model="editForm.sin" aria-required="true" />
                                                         </td>
                                                     </tr>
 
