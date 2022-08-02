@@ -16,3 +16,7 @@ nav ul.navbar-nav a:hover{
 .navlink-active{
     color: white !important;
 }
+
+.btn{
+    box-shadow: none !important;
+}
