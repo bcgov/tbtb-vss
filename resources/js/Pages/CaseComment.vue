@@ -104,7 +104,7 @@
 
                                                 </tbody>
                                             </table>
-                                            <h1 v-else class="alert alert-warning text-center">No Comments</h1>
+                                            <h1 v-else class="alert alert-warning text-center mt-4">No Comments</h1>
 
                                         </div>
                                         <div class="card-footer">

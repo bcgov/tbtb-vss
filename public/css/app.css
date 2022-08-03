@@ -796,11 +796,11 @@ select {
 .m-3 {
   margin: 0.75rem;
 }
-.m-1 {
-  margin: 0.25rem;
-}
 .m-auto {
   margin: auto;
+}
+.m-1 {
+  margin: 0.25rem;
 }
 .mx-auto {
   margin-left: auto;
@@ -857,6 +857,9 @@ select {
 .-mt-px {
   margin-top: -1px;
 }
+.mt-1 {
+  margin-top: 0.25rem;
+}
 .-mb-1 {
   margin-bottom: -0.25rem;
 }
@@ -877,9 +880,6 @@ select {
 }
 .mb-4 {
   margin-bottom: 1rem;
-}
-.mt-1 {
-  margin-top: 0.25rem;
 }
 .block {
   display: block;
@@ -1120,11 +1120,11 @@ select {
 .p-6 {
   padding: 1.5rem;
 }
-.p-2 {
-  padding: 0.5rem;
-}
 .p-3 {
   padding: 0.75rem;
+}
+.p-2 {
+  padding: 0.5rem;
 }
 .px-4 {
   padding-left: 1rem;
@@ -1176,11 +1176,11 @@ select {
 .pt-8 {
   padding-top: 2rem;
 }
-.pt-1 {
-  padding-top: 0.25rem;
-}
 .pb-3 {
   padding-bottom: 0.75rem;
+}
+.pt-1 {
+  padding-top: 0.25rem;
 }
 .pl-3 {
   padding-left: 0.75rem;
@@ -1330,6 +1330,9 @@ select {
 }
 .opacity-100 {
   opacity: 1;
+}
+.opacity-50 {
+  opacity: 0.5;
 }
 .shadow-sm {
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);

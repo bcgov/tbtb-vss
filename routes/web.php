@@ -58,7 +58,10 @@ Route::middleware(['auth', 'active'])->group(function () {
 
         Route::post('/reports', [App\Http\Controllers\ReportController::class, 'searchReports'])->name('reports-search');
 
-        Route::get('/maintenance/{page?}', [App\Http\Controllers\MaintenanceController::class, 'goToPage'])->name('maintenance');
+        Route::get('/maintenance', [App\Http\Controllers\MaintenanceController::class, 'goToPage'])->name('maintenance');
+        Route::get('/maintenance/staff', [App\Http\Controllers\MaintenanceController::class, 'staffList'])->name('maintenance.staff.list');
+        Route::get('/maintenance/staff/{user}', [App\Http\Controllers\MaintenanceController::class, 'staffShow'])->name('maintenance.staff.show');
+        Route::post('/maintenance/staff/{user}', [App\Http\Controllers\MaintenanceController::class, 'staffEdit'])->name('maintenance.staff.edit');
 
         Route::get('/archive', [App\Http\Controllers\UserController::class, 'reports'])->name('archive');
         Route::get('/archive/cases', [App\Http\Controllers\IncidentController::class, 'archived'])->name('archive.cases.list');

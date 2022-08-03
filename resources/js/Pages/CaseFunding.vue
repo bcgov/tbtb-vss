@@ -147,7 +147,7 @@
                                                 </tr>
                                             </tfoot>
                                         </table>
-                                        <h1 v-else class="alert alert-warning text-center">No funds</h1>
+                                        <h1 v-else class="alert alert-warning text-center mt-4">No funds</h1>
 
                                     </div>
                                     <div class="card-footer">

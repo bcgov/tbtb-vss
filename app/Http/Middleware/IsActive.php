@@ -26,7 +26,7 @@ class IsActive
         }
 
         $user = Auth::user();
-        if($user->disabled){
+        if($user->disabled || !is_null($user->end_date)){
             Auth::logout();;
             return redirect()->route('login');
         }

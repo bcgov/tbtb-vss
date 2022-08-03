@@ -29,6 +29,9 @@
                     <div class="col-md-8 mt-3">
                         <MaintenanceAreas v-if="page === 'areas-of-audit'"></MaintenanceAreas>
                         <MaintenanceSchools v-if="page === 'schools'"></MaintenanceSchools>
+
+                        <MaintenanceStaff v-if="page === 'staff'" :results="results"></MaintenanceStaff>
+                        <MaintenanceStaffEdit v-if="page === 'staff-edit'" :results="results"></MaintenanceStaffEdit>
                     </div>
                 </div>
             </div>
@@ -42,12 +45,14 @@ import { Head, Link } from '@inertiajs/inertia-vue3';
 import MaintenanceMenu from "@/Components/MaintenanceMenu";
 import MaintenanceAreas from "@/Components/MaintenanceAreas";
 import MaintenanceSchools from "@/Components/MaintenanceSchools";
+import MaintenanceStaff from "@/Components/MaintenanceStaff";
+import MaintenanceStaffEdit from "@/Components/MaintenanceStaffEdit";
 
 export default {
     name: 'Maintenance',
     components: {
         MaintenanceMenu,
-        BreezeAuthenticatedLayout, Head, Link, MaintenanceAreas, MaintenanceSchools
+        BreezeAuthenticatedLayout, Head, Link, MaintenanceAreas, MaintenanceSchools, MaintenanceStaff, MaintenanceStaffEdit
     },
     props: {
         results: Object,

@@ -8,7 +8,7 @@
         <a href="/maintenance/schools" class="list-group-item list-group-item-action" :class="page === 'nature-of-offence' ? 'active' : ''">Nature of Offence</a>
         <a href="/maintenance/schools" class="list-group-item list-group-item-action" :class="page === 'referral-sources' ? 'active' : ''">Referral Sources</a>
         <a href="/maintenance/schools" class="list-group-item list-group-item-action" :class="page === 'sanction-types' ? 'active' : ''">Sanction Types</a>
-        <a href="/maintenance/schools" class="list-group-item list-group-item-action" :class="page === 'staff' ? 'active' : ''">Staff</a>
+        <a href="/maintenance/staff" class="list-group-item list-group-item-action" :class="(page === 'staff' || page === 'staff-edit') ? 'active' : ''">Staff</a>
     </div>
 </template>
 <script setup>
