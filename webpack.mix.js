@@ -12,14 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    // .js('resources/js/admin-app.js', 'public/js')
     .copyDirectory('resources/images', 'public/images')
-    //admin directories
-    .copyDirectory('resources/js/admin', 'public/js/admin')
-    .copyDirectory('resources/css/admin', 'public/css/admin')
-    .copyDirectory('resources/plugins/admin', 'public/plugins/admin')
-    .copyDirectory('resources/images/admin', 'public/images/admin')
-    .copyDirectory('resources/fonts/admin', 'public/fonts/admin')
 
     .vue()
     .postCss('resources/css/app.css', 'public/css', [require('tailwindcss'), require('autoprefixer')])
