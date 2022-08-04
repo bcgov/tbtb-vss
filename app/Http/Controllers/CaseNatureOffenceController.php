@@ -12,7 +12,7 @@ class CaseNatureOffenceController extends Controller
     public function deleteOffence(Request $request, Incident $case)
     {
         CaseNatureOffence::where('incident_id', $case->incident_id)->where('nature_code', $request->nature_code)->delete();
-        return Redirect::route('cases.edit', [$case->id]);
 
+        return Redirect::route('cases.edit', [$case->id]);
     }
 }

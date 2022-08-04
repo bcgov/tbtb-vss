@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,7 +21,6 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth', 'active'])->group(function () {
-
     Route::get('/fetch-active-users', [App\Http\Controllers\UserController::class, 'activeUsers'])->name('fetch-active-users');
     Route::get('/fetch-cancelled-users', [App\Http\Controllers\UserController::class, 'cancelledUsers'])->name('fetch-cancelled-users');
 
@@ -65,7 +63,6 @@ Route::middleware(['auth', 'active'])->group(function () {
 
         Route::get('/archive', [App\Http\Controllers\UserController::class, 'reports'])->name('archive');
         Route::get('/archive/cases', [App\Http\Controllers\IncidentController::class, 'archived'])->name('archive.cases.list');
-
     });
 });
 require __DIR__.'/auth.php';

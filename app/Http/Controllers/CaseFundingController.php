@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CaseComment;
 use App\Models\CaseFunding;
 use App\Models\FundingType;
 use App\Models\Incident;
 use App\Models\Institution;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
-use Inertia\Inertia;
 
 class CaseFundingController extends Controller
 {
@@ -81,25 +78,25 @@ class CaseFundingController extends Controller
      */
     public function update(Request $request, Incident $caseFunding)
     {
-        foreach ($request->old_rows as $row){
+        foreach ($request->old_rows as $row) {
             CaseFunding::where('id', $row['id'])
                 ->update([
                     'application_number' => $row['application_number'],
                     'funding_type' => $row['funding_type']['funding_type'],
                     'fund_entry_date' => $row['fund_entry_date'],
                     'over_award' => $row['over_award'],
-                    'prevented_funding' => $row['prevented_funding']
+                    'prevented_funding' => $row['prevented_funding'],
                 ]);
         }
 
-        foreach ($request->new_rows as $row){
+        foreach ($request->new_rows as $row) {
             CaseFunding::create([
                 'incident_id' => $caseFunding->incident_id,
                 'application_number' => $row['application_number'],
                 'funding_type' => $row['funding_type'],
                 'fund_entry_date' => $row['fund_entry_date'],
                 'over_award' => $row['over_award'],
-                'prevented_funding' => $row['prevented_funding']
+                'prevented_funding' => $row['prevented_funding'],
             ]);
         }
 
@@ -125,6 +122,7 @@ class CaseFundingController extends Controller
         $caseFunding->delete();
 
         $case = Incident::where('incident_id', $incident_id)->first();
+
         return Redirect::route('case-funding.show', [$case->id]);
     }
 }

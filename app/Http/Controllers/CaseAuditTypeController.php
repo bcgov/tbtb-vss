@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CaseAuditType;
-use App\Models\CaseNatureOffence;
 use App\Models\Incident;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -16,7 +15,7 @@ class CaseAuditTypeController extends Controller
             ->where('area_of_audit_code', $request->area_of_audit_code)
             ->where('audit_type', $request->audit_type)
             ->delete();
-        return Redirect::route('cases.edit', [$case->id]);
 
+        return Redirect::route('cases.edit', [$case->id]);
     }
 }

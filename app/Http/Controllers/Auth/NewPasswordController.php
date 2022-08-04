@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\PasswordReset as PassReset;
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\Request;
@@ -12,7 +13,6 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
-use \App\Models\PasswordReset as PassReset;
 
 class NewPasswordController extends Controller
 {
@@ -47,14 +47,15 @@ class NewPasswordController extends Controller
         ]);
 
         $reset = PassReset::where('token', $request->token)->first();
-        if(!is_null($reset)){
+        if (! is_null($reset)) {
             $user = User::where('email', $request->email)->first();
             $user->forceFill([
                 'password' => Hash::make($request->password),
                 'remember_token' => Str::random(60),
             ])->save();
         }
-        return redirect()->route('login')->with('status', "Password reset was successful.");
+
+        return redirect()->route('login')->with('status', 'Password reset was successful.');
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the

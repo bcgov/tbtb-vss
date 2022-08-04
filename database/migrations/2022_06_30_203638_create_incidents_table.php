@@ -69,7 +69,6 @@ class CreateIncidentsTable extends Migration
 
             $table->boolean('archived')->default('false');
 
-
             $table->timestamps();
             $table->softDeletes();
         });

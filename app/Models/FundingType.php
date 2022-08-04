@@ -9,9 +9,8 @@ class FundingType extends Model
 {
     use HasFactory;
 
-
     public function caseFundings()
     {
-        return $this->hasMany('App\Models\CaseFunding','funding_type', 'funding_type');
+        return $this->hasMany('App\Models\CaseFunding', 'funding_type', 'funding_type');
     }
 }

@@ -14,13 +14,11 @@ class CreateCaseNatureOffencesTable extends Migration
     public function up()
     {
         Schema::create('case_nature_offences', function (Blueprint $table) {
-
             $table->bigInteger('incident_id')->default(1);
             $table->foreign('incident_id')->references('incident_id')->on('incidents')->onDelete('cascade');
 
             $table->string('nature_code');
             $table->foreign('nature_code')->references('nature_code')->on('nature_offences')->onDelete('cascade');
-
         });
     }
 

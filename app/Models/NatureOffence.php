@@ -11,6 +11,6 @@ class NatureOffence extends Model
 
     public function offences()
     {
-        return $this->hasMany('App\Models\CaseNatureOffence','nature_code', 'nature_code');
+        return $this->hasMany('App\Models\CaseNatureOffence', 'nature_code', 'nature_code');
     }
 }

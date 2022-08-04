@@ -9,9 +9,10 @@ class CaseSanctionType extends Model
 {
     use HasFactory;
 
-
     protected $primaryKey = null;
+
     public $incrementing = false;
+
     public $timestamps = false;
 
     /**
@@ -25,7 +26,6 @@ class CaseSanctionType extends Model
     {
         return $this->belongsTo('App\Models\Incident', 'incident_id', 'incident_id');
     }
-
 
     public function sanction()
     {

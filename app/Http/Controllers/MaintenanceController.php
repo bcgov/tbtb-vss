@@ -12,7 +12,6 @@ use Inertia\Inertia;
 
 class MaintenanceController extends Controller
 {
-
     /**
      * Display a listing of the resource.
      *
@@ -22,9 +21,9 @@ class MaintenanceController extends Controller
     public function staffList(Request $request): \Inertia\Response
     {
         $staff = User::orderBy('created_at', 'desc')->get();
+
         return Inertia::render('Maintenance', ['status' => true, 'results' => $staff, 'page' => 'staff']);
     }
-
 
     /**
      * Display a listing of the resource.
@@ -38,7 +37,6 @@ class MaintenanceController extends Controller
         return Inertia::render('Maintenance', ['status' => true, 'results' => $user, 'page' => 'staff-edit']);
     }
 
-
     /**
      * Display a listing of the resource.
      *
@@ -48,8 +46,7 @@ class MaintenanceController extends Controller
      */
     public function staffEdit(StaffEditRequest $request, User $user): \Illuminate\Http\RedirectResponse
     {
-        if(Auth::user()->access_type !== 'U'){
-
+        if (Auth::user()->access_type !== 'U') {
             $user->user_id = $request->user_id;
             $user->first_name = $request->first_name;
             $user->last_name = $request->last_name;
@@ -59,14 +56,13 @@ class MaintenanceController extends Controller
             $user->disabled = $request->disabled;
             $user->email = $request->email;
 
-            if(!is_null($request->password)){
+            if (! is_null($request->password)) {
                 $user->password = Hash::make($request->password);
             }
             $user->save();
         }
 
         return Redirect::route('maintenance.staff.list');
-
     }
 
     /**
@@ -88,5 +84,4 @@ class MaintenanceController extends Controller
     {
         return Inertia::render('Maintenance', ['page' => $page]);
     }
-
 }

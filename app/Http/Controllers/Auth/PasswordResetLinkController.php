@@ -41,9 +41,10 @@ class PasswordResetLinkController extends Controller
         $token = mb_strtolower(Str::random(64));
         PasswordReset::create([
             'email' => Str::lower($request->email),
-            'token' => $token
+            'token' => $token,
         ]);
-        return redirect()->route('password.reset', [$token])->with('status', "Password reset was successful.");
+
+        return redirect()->route('password.reset', [$token])->with('status', 'Password reset was successful.');
 
         // We will send the password reset link to this user. Once we have attempted
         // to send the link, we will examine the response then see the message we

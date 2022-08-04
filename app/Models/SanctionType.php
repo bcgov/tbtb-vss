@@ -9,9 +9,8 @@ class SanctionType extends Model
 {
     use HasFactory;
 
-
     public function sanctions()
     {
-        return $this->hasMany('App\Models\CaseSanctionType','incident_id', 'incident_id');
+        return $this->hasMany('App\Models\CaseSanctionType', 'incident_id', 'incident_id');
     }
 }

@@ -27,5 +27,4 @@ class CaseFunding extends Model
     {
         return $this->belongsTo('App\Models\FundingType', 'funding_type', 'funding_type');
     }
-
 }

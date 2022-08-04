@@ -10,7 +10,9 @@ class CaseNatureOffence extends Model
     use HasFactory;
 
     protected $primaryKey = null;
+
     public $incrementing = false;
+
     public $timestamps = false;
 
     /**

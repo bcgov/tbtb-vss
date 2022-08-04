@@ -9,9 +9,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Inertia\Inertia;
-use Illuminate\Support\Str;
 
 class RegisteredUserController extends Controller
 {

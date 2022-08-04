@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use App\Models\Incident;
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CaseStoreRequest extends FormRequest
@@ -25,7 +24,6 @@ class CaseStoreRequest extends FormRequest
      */
     public function messages()
     {
-
         return [
             'institution_code.required' => 'School field is required.',
             'institution_code.size' => 'School field is invalid',
@@ -91,7 +89,6 @@ class CaseStoreRequest extends FormRequest
         ];
     }
 
-
     /**
      * Prepare the data for validation.
      *
@@ -99,32 +96,30 @@ class CaseStoreRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if(isset($this->open_date)){
-            $this->merge(['open_date' =>  date('Y-m-d', strtotime($this->open_date))]);
+        if (isset($this->open_date)) {
+            $this->merge(['open_date' => date('Y-m-d', strtotime($this->open_date))]);
         }
 
-        if(isset($this->first_name)){
-            $this->merge(['first_name' =>  mb_strtoupper($this->first_name)]);
+        if (isset($this->first_name)) {
+            $this->merge(['first_name' => mb_strtoupper($this->first_name)]);
         }
-        if(isset($this->last_name)){
-            $this->merge(['last_name' =>  mb_strtoupper($this->last_name)]);
+        if (isset($this->last_name)) {
+            $this->merge(['last_name' => mb_strtoupper($this->last_name)]);
         }
 
-        if(isset($this->year_of_audit)){
-            if(strpos($this->year_of_audit, '/') == 2){
+        if (isset($this->year_of_audit)) {
+            if (strpos($this->year_of_audit, '/') == 2) {
                 $this->merge([
-                    'year_of_audit' =>  $this->year_of_audit
+                    'year_of_audit' => $this->year_of_audit,
                 ]);
-            }else{
+            } else {
                 $this->merge([
-                    'year_of_audit' =>  ''
+                    'year_of_audit' => '',
                 ]);
             }
         }
 
         $last_incident = Incident::select('incident_id')->orderBy('incident_id', 'desc')->withTrashed()->first();
-        $this->merge(['incident_id' => intval($last_incident->incident_id)+1]);
-
-
+        $this->merge(['incident_id' => intval($last_incident->incident_id) + 1]);
     }
 }

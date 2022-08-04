@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Incident extends Model
 {
-
     use SoftDeletes;
+
     protected $appends = ['total_award', 'total_prevented_funding', 'total_over_award'];
 
     /**
@@ -21,57 +21,53 @@ class Incident extends Model
         'auditor_user_id', 'audit_date', 'investigator_user_id', 'investigation_date', 'bring_forward', 'bring_forward_date',
         'appeal_flag', 'appeal_outcome', 'case_close', 'close_date', 'reason_for_closing', 'case_outcome',
         'rcmp_referral_flag', 'rcmp_referral_date', 'rcmp_closure_date', 'charges_laid_flag',
-        'conviction_flag', 'sentence_comment'
+        'conviction_flag', 'sentence_comment',
     ];
 
     public function funds()
     {
-        return $this->hasMany('App\Models\CaseFunding','incident_id', 'incident_id');
+        return $this->hasMany('App\Models\CaseFunding', 'incident_id', 'incident_id');
     }
-
 
     public function comments()
     {
-        return $this->hasMany('App\Models\CaseComment','incident_id', 'incident_id')->orderByDesc('comment_date');
+        return $this->hasMany('App\Models\CaseComment', 'incident_id', 'incident_id')->orderByDesc('comment_date');
     }
 
     public function audits()
     {
-        return $this->hasMany('App\Models\CaseAuditType','incident_id', 'incident_id');
+        return $this->hasMany('App\Models\CaseAuditType', 'incident_id', 'incident_id');
     }
-
 
     public function offences()
     {
-        return $this->hasMany('App\Models\CaseNatureOffence','incident_id', 'incident_id');
+        return $this->hasMany('App\Models\CaseNatureOffence', 'incident_id', 'incident_id');
     }
 
     public function sanctions()
     {
-        return $this->hasMany('App\Models\CaseSanctionType','incident_id', 'incident_id');
+        return $this->hasMany('App\Models\CaseSanctionType', 'incident_id', 'incident_id');
     }
 
     public function institution()
     {
-        return $this->hasOne('App\Models\Institution','institution_code', 'institution_code');
+        return $this->hasOne('App\Models\Institution', 'institution_code', 'institution_code');
     }
 
     public function primaryAudit()
     {
-        return $this->hasOne('App\Models\AreaOfAudit','area_of_audit_code', 'area_of_audit_code');
+        return $this->hasOne('App\Models\AreaOfAudit', 'area_of_audit_code', 'area_of_audit_code');
     }
 
     public function referral()
     {
-        return $this->hasOne('App\Models\ReferralSource','id', 'referral_source_id');
+        return $this->hasOne('App\Models\ReferralSource', 'id', 'referral_source_id');
     }
-
 
     public function getTotalOverAwardAttribute()
     {
         $total = 0;
-        foreach($this->funds as $fund)
-        {
+        foreach ($this->funds as $fund) {
             $total += $fund->over_award;
         }
 
@@ -81,8 +77,7 @@ class Incident extends Model
     public function getTotalPreventedFundingAttribute()
     {
         $total = 0;
-        foreach($this->funds as $fund)
-        {
+        foreach ($this->funds as $fund) {
             $total += $fund->prevented_funding;
         }
 
@@ -105,12 +100,13 @@ class Incident extends Model
         return $query->where('archived', false);
     }
 
-    public function scopeIsActive($query){
+    public function scopeIsActive($query)
+    {
         return $query->where('archived', false);
     }
 
-    public function scopeArchived($query){
+    public function scopeArchived($query)
+    {
         return $query->where('archived', true);
     }
-
 }

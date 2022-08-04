@@ -23,7 +23,6 @@ class CreateCaseAuditTypesTable extends Migration
             $table->foreign('incident_id')->references('incident_id')->on('incidents')->onDelete('cascade');
 
             $table->char('audit_type')->default('P');
-
         });
     }
 

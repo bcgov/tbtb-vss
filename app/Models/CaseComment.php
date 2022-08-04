@@ -22,5 +22,4 @@ class CaseComment extends Model
     {
         return $this->belongsTo('App\Models\Incident', 'incident_id', 'incident_id');
     }
-
 }

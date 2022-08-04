@@ -18,7 +18,6 @@ class CaseAuditType extends Model
      */
     protected $fillable = ['incident_id', 'area_of_audit_code', 'audit_type'];
 
-
     public function incident()
     {
         return $this->belongsTo('App\Models\Incident', 'incident_id', 'incident_id');

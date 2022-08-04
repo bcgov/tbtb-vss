@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Support\Str;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CaseEditRequest extends FormRequest
@@ -24,7 +23,6 @@ class CaseEditRequest extends FormRequest
      */
     public function messages()
     {
-
         return [
             'institution_code.required' => 'School field is required.',
             'institution_code.size' => 'School field is invalid',
@@ -35,7 +33,7 @@ class CaseEditRequest extends FormRequest
             'referral_source_id.required' => 'Referral field is required.',
 
             'open_date.required' => 'Date Opened field is required.',
-            'open_date.date_format' => 'Date Opened field is invalid. ' . $this->date_opened,
+            'open_date.date_format' => 'Date Opened field is invalid. '.$this->date_opened,
 
             'year_of_audit.*' => 'Year of Audit is required in the format 20/21.',
 
@@ -89,7 +87,6 @@ class CaseEditRequest extends FormRequest
         ];
     }
 
-
     /**
      * Prepare the data for validation.
      *
@@ -97,28 +94,27 @@ class CaseEditRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-        if(isset($this->open_date)){
-            $this->merge(['open_date' =>  date('Y-m-d', strtotime($this->open_date))]);
+        if (isset($this->open_date)) {
+            $this->merge(['open_date' => date('Y-m-d', strtotime($this->open_date))]);
         }
 
-        if(isset($this->first_name)){
-            $this->merge(['first_name' =>  mb_strtoupper($this->first_name)]);
+        if (isset($this->first_name)) {
+            $this->merge(['first_name' => mb_strtoupper($this->first_name)]);
         }
-        if(isset($this->last_name)){
-            $this->merge(['last_name' =>  mb_strtoupper($this->last_name)]);
+        if (isset($this->last_name)) {
+            $this->merge(['last_name' => mb_strtoupper($this->last_name)]);
         }
 
-        if(isset($this->year_of_audit)){
-            if(strpos($this->year_of_audit, '/') == 2){
+        if (isset($this->year_of_audit)) {
+            if (strpos($this->year_of_audit, '/') == 2) {
                 $this->merge([
-                    'year_of_audit' =>  $this->year_of_audit
+                    'year_of_audit' => $this->year_of_audit,
                 ]);
-            }else{
+            } else {
                 $this->merge([
-                    'year_of_audit' =>  ''
+                    'year_of_audit' => '',
                 ]);
             }
         }
-
     }
 }

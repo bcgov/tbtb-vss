@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\CaseComment;
-use App\Models\FundingType;
 use App\Models\Incident;
-use App\Models\Institution;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -44,7 +42,6 @@ class CaseCommentController extends Controller
         //
     }
 
-
     /**
      * Display the specified resource.
      *
@@ -74,7 +71,7 @@ class CaseCommentController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Incident $caseComment
+     * @param  \App\Models\Incident  $caseComment
      * @return \Inertia\ResponseFactory|\Inertia\Response
      */
     public function update(Request $request, Incident $caseComment)
@@ -83,19 +80,19 @@ class CaseCommentController extends Controller
         $staff = User::where('disabled', false)->where('end_date', null)->get();
 
         $current_user_id = Auth::user()->user_id;
-        foreach ($request->old_rows as $row){
-            if($row['staff_user_id'] == $current_user_id){
+        foreach ($request->old_rows as $row) {
+            if ($row['staff_user_id'] == $current_user_id) {
                 CaseComment::where('id', $row['id'])
                     ->update(['comment_text' => $row['comment_text']]);
             }
         }
 
-        foreach ($request->new_rows as $row){
+        foreach ($request->new_rows as $row) {
             CaseComment::create([
                 'incident_id' => $caseComment->incident_id,
                 'staff_user_id' => $current_user_id,
                 'comment_date' => date('Y-m-d'),
-                'comment_text' => trim($row['comment_text'])
+                'comment_text' => trim($row['comment_text']),
             ]);
         }
 
@@ -117,7 +114,7 @@ class CaseCommentController extends Controller
         $caseComment->delete();
 
         $case = Incident::where('incident_id', $incident_id)->first();
-        return Redirect::route('case-comment.show', [$case->id]);
 
+        return Redirect::route('case-comment.show', [$case->id]);
     }
 }

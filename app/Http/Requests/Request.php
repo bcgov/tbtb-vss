@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Session;
 
 abstract class Request extends FormRequest
 {
@@ -12,5 +11,4 @@ abstract class Request extends FormRequest
      *
      * @return bool
      */
-
 }

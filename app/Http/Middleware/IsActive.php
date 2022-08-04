@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Providers\RouteServiceProvider;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -21,13 +20,14 @@ class IsActive
     {
         $roles = empty($roles) ? [null] : $roles;
 
-        if (!Auth::check()) {
+        if (! Auth::check()) {
             return redirect()->route('login');
         }
 
         $user = Auth::user();
-        if($user->disabled || !is_null($user->end_date)){
+        if ($user->disabled || ! is_null($user->end_date)) {
             Auth::logout();
+
             return redirect()->route('login');
         }
 
