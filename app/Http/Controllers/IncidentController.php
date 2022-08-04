@@ -93,12 +93,18 @@ class IncidentController extends Controller
      */
     public function store(CaseStoreRequest $request)
     {
-
         $last_incident = Incident::select('incident_id')->orderBy('incident_id', 'desc')->withTrashed()->first();
         $request->merge(['incident_id' => intval($last_incident->incident_id) + 1]);
 
         $case = Incident::create($request->validated());
 
+        $this->addAttachedRecords($request, $case);
+
+        return Redirect::route('cases.index');
+    }
+
+    private function addAttachedRecords($request, $case)
+    {
         foreach ($request->new_sanction_codes as $key => $value) {
             $sanction = SanctionType::where('sanction_code', $value)->first();
             CaseSanctionType::firstOrCreate([
@@ -123,8 +129,6 @@ class IncidentController extends Controller
                 'audit_type' => $row['audit_type'],
             ]);
         }
-
-        return Redirect::route('cases.index');
     }
 
     /**
@@ -174,30 +178,7 @@ class IncidentController extends Controller
     {
         $case->update($request->validated());
 
-        foreach ($request->new_sanction_codes as $key => $value) {
-            $sanction = SanctionType::where('sanction_code', $value)->first();
-            CaseSanctionType::firstOrCreate([
-                'incident_id' => $case->incident_id,
-                'sanction_code' => $sanction->sanction_code,
-            ]);
-        }
-
-        foreach ($request->new_offence_codes as $key => $value) {
-            $nature = NatureOffence::where('nature_code', $value)->first();
-            CaseNatureOffence::firstOrCreate([
-                'incident_id' => $case->incident_id,
-                'nature_code' => $nature->nature_code,
-            ]);
-        }
-
-        foreach ($request->new_audit_codes as $row) {
-            $audit = AreaOfAudit::where('area_of_audit_code', $row['area_of_audit_code'])->first();
-            CaseAuditType::firstOrCreate([
-                'incident_id' => $case->incident_id,
-                'area_of_audit_code' => $audit->area_of_audit_code,
-                'audit_type' => $row['audit_type'],
-            ]);
-        }
+        $this->addAttachedRecords($request, $case);
 
         return Redirect::route('cases.edit', [$case->id]);
     }
