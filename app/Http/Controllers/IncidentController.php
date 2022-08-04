@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AjaxRequest;
-use App\Http\Requests\CaseEditRequest;
 use App\Http\Requests\CaseStoreRequest;
 use App\Models\AreaOfAudit;
 use App\Models\CaseAuditType;
@@ -94,6 +93,10 @@ class IncidentController extends Controller
      */
     public function store(CaseStoreRequest $request)
     {
+
+        $last_incident = Incident::select('incident_id')->orderBy('incident_id', 'desc')->withTrashed()->first();
+        $request->merge(['incident_id' => intval($last_incident->incident_id) + 1]);
+
         $case = Incident::create($request->validated());
 
         foreach ($request->new_sanction_codes as $key => $value) {
@@ -163,11 +166,11 @@ class IncidentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\CaseEditRequest  $request
+     * @param  \App\Http\Requests\CaseStoreRequest  $request
      * @param  \App\Models\Incident  $incident
      * @return \Illuminate\Http\Response
      */
-    public function update(CaseEditRequest $request, Incident $case)
+    public function update(CaseStoreRequest $request, Incident $case)
     {
         $case->update($request->validated());
 

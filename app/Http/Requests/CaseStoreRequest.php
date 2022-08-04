@@ -118,8 +118,5 @@ class CaseStoreRequest extends FormRequest
                 ]);
             }
         }
-
-        $last_incident = Incident::select('incident_id')->orderBy('incident_id', 'desc')->withTrashed()->first();
-        $this->merge(['incident_id' => intval($last_incident->incident_id) + 1]);
     }
 }
