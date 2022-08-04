@@ -123,7 +123,6 @@
             </td>
         </tr>
     </table>
-
     <table style="page-break-after: auto;">
         <tr>
             <td><strong>RCMP:</strong></td>
@@ -155,7 +154,6 @@
             </td>
         </tr>
     </table>
-
     <table style="page-break-after: always;">
         <tr>
             <td style="width: 20%;"><strong>Funding:</strong></td>
