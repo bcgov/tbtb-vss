@@ -126,7 +126,6 @@ class IncidentController extends Controller
             ]);
         }
 
-//        return Redirect::route('cases.edit', [$case->id]);
         return Redirect::route('cases.index');
     }
 
@@ -215,10 +214,8 @@ class IncidentController extends Controller
      */
     public function destroy(CaseFunding $case_funding)
     {
+
     }
-
-
-
 
 
     public function sinSearch(AjaxRequest $request)

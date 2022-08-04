@@ -3,14 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StaffEditRequest;
-use App\Models\AreaOfAudit;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
 class MaintenanceController extends Controller
@@ -38,7 +35,6 @@ class MaintenanceController extends Controller
      */
     public function staffShow(Request $request, User $user): \Inertia\Response
     {
-        //$staff = User::orderBy('created_at', 'desc')->get();
         return Inertia::render('Maintenance', ['status' => true, 'results' => $user, 'page' => 'staff-edit']);
     }
 
@@ -68,8 +64,6 @@ class MaintenanceController extends Controller
             }
             $user->save();
         }
-
-        $user = User::find($user->id);
 
         return Redirect::route('maintenance.staff.list');
 

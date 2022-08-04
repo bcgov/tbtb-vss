@@ -57,10 +57,12 @@ class ReportController extends Controller
         }
 
         $funds = CaseFunding::with('incident.primaryAudit');
-        if($request->type == 'overaward')
+        if($request->type == 'overaward') {
             $funds = $funds->where('over_award', '>', 0);
-        else
+        }
+        else {
             $funds = $funds->where('prevented_funding', '>', 0);
+        }
 
         $funds = $funds->where('fund_entry_date', '>=', $start_date_range)
             ->where('fund_entry_date', '<=', $end_date_range)
@@ -82,15 +84,7 @@ class ReportController extends Controller
         }
 
         return [$pre_audit_table, $post_audit_table, $total_audit_table];
-//
-//echo "<table><tr><td>PRE AUDIT<br/><pre>";
-//        print_r($pre_audit_table);
-//        echo "</pre></td><td>POST AUDIT<br/><pre>";
-//
-//        print_r($post_audit_table);
-//        echo "</pre></td><td>TOTAL AUDIT<br/><pre>";
-//        print_r($total_audit_table);
-//        echo "</pre></td></tr></table>";
+
    }
 
 }

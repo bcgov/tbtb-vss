@@ -13,7 +13,7 @@ class CaseSanctionTypeController extends Controller
 
     public function deleteSanction(Request $request, Incident $case)
     {
-        $sanction = CaseSanctionType::where('incident_id', $case->incident_id)->where('sanction_code', $request->sanction_code)->delete();
+        CaseSanctionType::where('incident_id', $case->incident_id)->where('sanction_code', $request->sanction_code)->delete();
         return Redirect::route('cases.edit', [$case->id]);
 
     }

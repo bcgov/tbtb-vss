@@ -22,9 +22,7 @@ class CaseFundingController extends Controller
      */
     public function index()
     {
-//        $cases = Incident::where('archived', false)->with('institution')->orderBy('created_at', 'desc')->get();
-//
-//        return Inertia::render('Cases', ['status' => true, 'results' => $cases]);
+        //
     }
 
     /**
