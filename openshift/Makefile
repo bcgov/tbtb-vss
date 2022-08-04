@@ -12,6 +12,10 @@ export HOST_PREFIX := $(or $(HOST_PREFIX), tbtb-vss)
 
 #define general variables
 
+define LABEL_NAME
+"TBTB-VSS"
+endef
+
 define BUILD_TAG
 "latest"
 endef
@@ -75,7 +79,7 @@ deploy-web:
 	test -n "$(NAMESPACE)"
 	test -n "$(BUILD_NAMESPACE)"
 	@echo "+\n++ Deploying Web with\n+"
-	@oc -n $(NAMESPACE) process -f dc_latest.yaml -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) | oc -n $(NAMESPACE) apply -f -
+	@oc -n $(NAMESPACE) process -f dc_latest.yaml -p LABEL_NAME=$(LABEL_NAME) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) | oc -n $(NAMESPACE) apply -f -
 	$(call rollout_and_wait,dc/$(HOST_PREFIX))
 	@echo "+\n++ FINISHED Deploying Web\n+"
 
@@ -84,4 +88,4 @@ build-patroni:
 	@oc -n $(BUILD_NAMESPACE) start-build bc/tbtb-vss-patroni --wait
 
 deploy-patroni:
-	@oc -n $(NAMESPACE) process -f patroni-deploy.yaml -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p IMAGE_STREAM_TAG=patroni:12-latest | oc -n $(NAMESPACE) apply -f -
+	@oc -n $(NAMESPACE) process -f patroni-deploy.yaml -p LABEL_NAME=$(LABEL_NAME) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p IMAGE_STREAM_TAG=patroni:12-latest | oc -n $(NAMESPACE) apply -f -

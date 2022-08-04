@@ -29,6 +29,7 @@ objects:
       name: ${NAME}
       labels:
         cluster-name: ${NAME}
+        app.kubernetes.io/part-of: ${LABEL_NAME}
     spec:
       replicas: ${{REPLICAS}}
       revisionHistoryLimit: 10
@@ -160,6 +161,9 @@ objects:
 parameters:
   - name: NAME
     value: tbtb-vss-patroni
+  - name: LABEL_NAME
+    required: true
+    description: some desc for this component
   - name: PROJECT
     value: tbtb-vss
   - name: REPLICAS

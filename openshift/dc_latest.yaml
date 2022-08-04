@@ -26,6 +26,7 @@ objects:
       name: ${NAME}
       labels:
         deploymentconfig: ${NAME}
+        app.kubernetes.io/part-of: ${LABEL_NAME}
     spec:
       triggers:
         - type: "ConfigChange"
@@ -101,6 +102,9 @@ objects:
         deploymentconfig: ${NAME}
 parameters:
   - name: NAME
+    required: true
+    description: some desc for this component
+  - name: LABEL_NAME
     required: true
     description: some desc for this component
   - name: IMAGE_TAG
