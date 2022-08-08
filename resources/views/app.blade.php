@@ -10,14 +10,14 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
 
         <!-- Styles -->
-        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+        <link rel="stylesheet" href="{{ asset(mix('css/app.css')) }}">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
-        <link rel="icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
-        <link rel="icon" type="image/x-icon" href="/images/favicon.ico">
+        <link rel="icon" href="{{ asset('/images/favicon.ico') }}" type="image/vnd.microsoft.icon">
+        <link rel="icon" type="image/x-icon" href="{{ asset('/images/favicon.ico') }}">
 
         <!-- Scripts -->
         @routes
-        <script src="{{ mix('js/app.js') }}" defer></script>
+        <script src="{{ asset(mix('js/app.js')) }}" defer></script>
         @inertiaHead
     </head>
     <body class="font-sans antialiased">
