@@ -41,6 +41,7 @@ class RegisteredUserController extends Controller
             'last_name' => 'required|string|max:255',
             'start_date' => 'required|string|max:255',
             'access_type' => 'required|string|max:1|in:A,U',
+            'access_code' => 'required|string|in:' . ENV('REGISTRATION_ACCESS_CODE'),
             'email' => 'required|string|email|max:255|unique:users',
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);

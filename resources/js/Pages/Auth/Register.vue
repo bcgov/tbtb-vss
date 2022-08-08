@@ -17,6 +17,7 @@ const form = useForm({
     email: '',
     password: '',
     password_confirmation: '',
+    access_code: '',
     terms: false,
 });
 
@@ -65,6 +66,11 @@ const submit = () => {
                     <option value="A">Admin</option>
                     <option value="U">User</option>
                 </BreezeSelect>
+            </div>
+
+            <div class="mt-4">
+                <BreezeLabel for="access_code" value="Access Code" />
+                <BreezeInput id="access_code" type="text" class="mt-1 block w-full" v-model="form.access_code" required />
             </div>
 
             <div class="mt-4">
