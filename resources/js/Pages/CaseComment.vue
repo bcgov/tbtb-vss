@@ -80,7 +80,7 @@
                                                     <tr v-for="(row, i) in result.comments">
                                                         <th scope="row">{{ row.comment_date }}</th>
                                                         <td>{{ row.staff_user_id }}</td>
-                                                        <template v-if="$attrs['auth'].user.user_id === row.staff_user_id">
+                                                        <template v-if="$attrs['auth'].user.access_type === 'A' || $attrs['auth'].user.user_id === row.staff_user_id">
                                                             <td>
                                                                 <textarea @change="updateComments(i)" rows="9" v-model="row.comment_text" class="form-control"></textarea>
                                                             </td>
