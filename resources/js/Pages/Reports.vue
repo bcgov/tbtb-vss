@@ -61,7 +61,12 @@
                     <div class="col-md-8 mt-3">
                         <div class="card mb-3">
                             <div class="card-header">
-                                VSS Report <template v-if="results != null"><small class="text-muted">from {{start}} to {{end}}</small></template>
+                                <span v-if="results === null">VSS Report</span>
+                                <template v-else>
+                                    <span v-if="reportForm.type === 'prevented'">VSS Prevented Report</span>
+                                    <span v-else>VSS Over Award Report</span>
+                                    <small class="text-muted"> from {{start}} to {{end}}</small>
+                                </template>
 
                                 <div v-if="results != null" class="btn-group float-end" role="group" aria-label="Reports view">
                                     <button @click="switchView('chart')" type="button" class="btn btn-sm btn-outline-primary">
@@ -92,11 +97,11 @@
                                         <ReportChart :results="results.total" title="Totals Report" bg="#0dcaf0" />
                                     </template>
                                     <template v-else>
-                                        <ReportGrid :results="results.pre" title="Pre Report" bg="#0dcaf0" tableId="reports_pre" />
+                                        <ReportGrid :tableHeader="gridReportTitle('Pre')" :results="results.pre" title="Pre Report" bg="#0dcaf0" tableId="reports_pre" />
                                         <hr/>
-                                        <ReportGrid :results="results.post" title="Post Report" bg="#0dcaf0" tableId="reports_post" />
+                                        <ReportGrid :tableHeader="gridReportTitle('Post')" :results="results.post" title="Post Report" bg="#0dcaf0" tableId="reports_post" />
                                         <hr/>
-                                        <ReportGrid :results="results.total" title="Totals Report" bg="#0dcaf0" tableId="reports_total" />
+                                        <ReportGrid :tableHeader="gridReportTitle('Totals')" :results="results.total" title="Totals Report" bg="#0dcaf0" tableId="reports_total" />
                                         <hr/>
                                     </template>
                                 </div>
@@ -176,14 +181,14 @@ export default {
         // Quick and simple export target #table_id into a csv
         downloadTableAsCsv: function(table_id, separator = ',') {
             // Select rows from table_id
-            var rows = document.querySelectorAll('table#' + table_id + ' tr');
+            let rows = document.querySelectorAll('table#' + table_id + ' tr');
             // Construct csv
-            var csv = [];
-            for (var i = 0; i < rows.length; i++) {
-                var row = [], cols = rows[i].querySelectorAll('td, th');
-                for (var j = 0; j < cols.length; j++) {
+            let csv = [];
+            for (let i = 0; i < rows.length; i++) {
+                let row = [], cols = rows[i].querySelectorAll('td, th');
+                for (let j = 0; j < cols.length; j++) {
                     // Clean innertext to remove multiple spaces and jumpline (break csv)
-                    var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+                    let data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
                     // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
                     data = data.replace(/"/g, '""');
                     // Push escaped string
@@ -191,10 +196,10 @@ export default {
                 }
                 csv.push(row.join(separator));
             }
-            var csv_string = csv.join('\n');
+            let csv_string = csv.join('\n');
             // Download it
-            var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
-            var link = document.createElement('a');
+            let filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+            let link = document.createElement('a');
             link.style.display = 'none';
             link.setAttribute('target', '_blank');
             link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
@@ -202,11 +207,19 @@ export default {
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        },
+        gridReportTitle: function (type){
+            if (this.reportForm.type === 'prevented'){
+                return 'VSS ' + type + ' Report for Prevented Awards from ' + this.start + ' to ' + this.end;
+            }
+            return 'VSS ' + type + ' Report for Over Award from ' + this.start + ' to ' + this.end;
         }
+
     },
     watch: {
     },
     computed: {
+
     },
     mounted() {
         if(this.start !== undefined){

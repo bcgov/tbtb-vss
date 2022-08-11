@@ -5,6 +5,7 @@
             <div v-if="results != null" class="table-responsive pb-3">
                 <table :id="tableId" class="table table-striped">
                     <thead>
+                    <tr class="d-none"><th colspan="14">{{tableHeader}}</th></tr>
                     <tr>
                         <th></th>
                         <template v-for="k in Object.keys(results['Age and Eligibility'])">
@@ -49,6 +50,7 @@ export default {
         results: Object,
         title: String,
         tableId: String,
+        tableHeader: String,
     },
     data() {
         return {
