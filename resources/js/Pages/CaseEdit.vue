@@ -567,7 +567,7 @@ tr {
                                             <button type="submit" class="btn mr-2 btn-outline-success" :disabled="editForm.processing">Update Case</button>
                                             <Link @click="back" class="btn btn-outline-primary float-right" href="#">Back</Link>
                                             <Link :href="route('case-funding.show', [result.id])" class="btn btn-outline-warning float-right mr-2">Funds</Link>
-                                            <Link :href="route('case-comment.show', [editForm.id])" class="btn btn-outline-dark float-right mr-2">Comments</Link>
+                                            <Link :href="route('case-comment.show', [result.id])" class="btn btn-outline-dark float-right mr-2">Comments</Link>
                                         </div>
                                     </form>
                                 </template>
@@ -717,6 +717,7 @@ export default {
 
             this.editForm = useForm({
 
+                incident_id: this.editForm.incident_id,
                 sin: this.editForm.sin,
                 institution_code: this.editForm.institution_code,
                 last_name: this.editForm.last_name,

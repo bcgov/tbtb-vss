@@ -25,7 +25,7 @@
                         <BreezeLabel for="inputSin" value="SIN" />
                     </div>
                     <div class="col-auto">
-                        <BreezeInput type="number" id="inputSin" class="form-control" maxlength="9" v-model="sinForm.inputSin" required />
+                        <BreezeInput type="number" id="inputSin" class="form-control" maxlength="9" v-model="sinForm.filter_sin" required />
                     </div>
                     <div class="col-auto">
                         <BreezeButton class="btn btn-primary" :class="{ 'opacity-25': sinForm.processing }" :disabled="sinForm.processing">
@@ -40,13 +40,13 @@
                 <div class="row mb-3">
                     <BreezeLabel class="col-auto col-form-label" for="inputLastName" value="Last Name" />
                     <div class="col-auto">
-                        <BreezeInput type="text" id="inputLastName" class="form-control" v-model="nameForm.inputLastName" />
+                        <BreezeInput type="text" id="inputLastName" class="form-control" v-model="nameForm.filter_lname" />
                     </div>
                 </div>
                 <div class="row mb-3">
                     <BreezeLabel class="col-auto col-form-label" for="inputFirstName" value="First Name" />
                     <div class="col-auto">
-                        <BreezeInput type="text" id="inputFirstName" class="form-control" v-model="nameForm.inputFirstName" />
+                        <BreezeInput type="text" id="inputFirstName" class="form-control" v-model="nameForm.filter_fname" />
                     </div>
                 </div>
                 <div class="row mb-3">
@@ -63,7 +63,7 @@
                 <div class="row mb-3">
                     <BreezeLabel class="col-auto col-form-label" for="selectActiveUser" value="User" />
                     <div class="col-auto">
-                        <BreezeSelect id="selectActiveUser" class="form-control" v-model="activeUsersForm.selectActiveUser">
+                        <BreezeSelect id="selectActiveUser" class="form-control" v-model="activeUsersForm.filter_user">
                             <template v-for="(u, i) in activeUsers">
                                 <option :value="u.user_id">{{ u.user_id }} | {{ u.first_name }} {{ u.last_name}}</option>
                             </template>
@@ -84,7 +84,7 @@
                 <div class="row mb-3">
                     <BreezeLabel class="col-auto col-form-label" for="selectCancelledUser" value="User" />
                     <div class="col-auto">
-                        <BreezeSelect id="selectCancelledUser" class="form-control" v-model="cancelledUsersForm.selectCancelledUser">
+                        <BreezeSelect id="selectCancelledUser" class="form-control" v-model="cancelledUsersForm.filter_user">
                             <template v-for="(u, i) in cancelledUsers">
                                 <option :value="u.user_id">{{ u.user_id }} | {{ u.first_name }} {{ u.last_name}}</option>
                             </template>
@@ -136,42 +136,42 @@ const switchSearchTerm = function (type){
 }
 
 const sinFormTemplate = {
-    inputSin: '',
+    filter_sin: '',
 };
 const sinForm = useForm(sinFormTemplate);
 const sinFormSubmit = () => {
-    sinForm.post(route('case-sin-search'), {
+    sinForm.get(route('cases.index'), {
         onFinish: () => sinForm.reset('inputSin'),
     });
 };
 
 const nameFormTemplate = {
-    inputLastName: '',
-    inputFirstName: '',
+    filter_fname: '',
+    filter_lname: '',
 };
 const nameForm = useForm(nameFormTemplate);
 const nameFormSubmit = () => {
-    nameForm.post(route('case-name-search'), {
+    nameForm.get(route('cases.index'), {
         onFinish: () => nameForm.reset('inputLastName', 'inputFirstName'),
     });
 };
 
 const activeUsersFormTemplate = {
-    selectActiveUser: activeUsers.value,
+    filter_user: activeUsers.value,
 };
 const activeUsersForm = useForm(activeUsersFormTemplate);
 const activeUsersFormSubmit = () => {
-    activeUsersForm.post(route('case-active-user-search'), {
+    activeUsersForm.get(route('cases.index'), {
         onFinish: () => activeUsersForm.reset('selectActiveUser'),
     });
 };
 
 const cancelledUsersFormTemplate = {
-    selectCancelledUser: activeUsers.value,
+    filter_user: activeUsers.value,
 };
 const cancelledUsersForm = useForm(cancelledUsersFormTemplate);
 const cancelledUsersFormSubmit = () => {
-    cancelledUsersForm.post(route('case-cancelled-user-search'), {
+    cancelledUsersForm.get(route('cases.index'), {
         onFinish: () => cancelledUsersForm.reset('selectCancelledUser'),
     });
 };

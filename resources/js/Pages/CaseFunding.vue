@@ -321,16 +321,4 @@ export default {
 
     }
 }
-//
-// defineProps({
-//     : Object,
-// });
-// let totalOverAward = computed( () => {
-//     let total = 0;
-//     for(let i=0; i<result.funds.length; i++){
-//         total += result.funds[i].over_award;
-//     }
-//     return total;
-// }
-// );
 </script>

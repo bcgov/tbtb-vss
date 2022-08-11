@@ -37,25 +37,16 @@
                                 <div v-if="results != null && results.data.length > 0" class="table-responsive pb-3">
                                     <table class="table table-striped">
                                         <thead>
-                                        <tr>
-                                            <th scope="col">SIN</th>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Institution</th>
-                                            <th scope="col">Date Open/Reactivated</th>
-                                            <th scope="col">Status</th>
-                                            <th scope="col">Severity</th>
-                                            <th scope="col">Auditor</th>
-                                            <th></th>
-                                        </tr>
+                                            <CasesHeader></CasesHeader>
                                         </thead>
                                         <tbody>
                                         <tr v-for="(row, i) in results.data">
                                             <th scope="row"><Link :href="route('case-funding.show', [row.id])">{{ row.sin }}</Link></th>
                                             <td>{{ row.first_name }} {{ row.last_name}}</td>
-                                            <td><span v-if="row.institution != null">{{ row.institution.institution_name }}</span></td>
+                                            <td>{{ row.institution_code }}<br/><small v-if="row.institution != null">{{ row.institution.institution_name }}</small></td>
                                             <td>{{ row.open_date }}</td>
+                                            <td>{{ row.reactivate_date }}</td>
                                             <td>{{ row.incident_status }}</td>
-                                            <td>{{ row.severity }}</td>
                                             <td>{{ row.auditor_user_id }}</td>
                                             <td><a :href="'/reports/download/' + row.id" class="btn btn-sm btn-outline-secondary">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-box-arrow-down" viewBox="0 0 16 16">
@@ -66,7 +57,7 @@
                                         </tr>
                                         </tbody>
                                     </table>
-                                    <BreezePagination :links="results.links" />
+                                    <BreezePagination :links="results.links" :active-page="results.current_page" />
                                 </div>
                                 <h1 v-else class="lead">No results</h1>
                             </div>
@@ -81,6 +72,7 @@
 <script>
 import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
 import CaseSearchBox from '@/Components/CaseSearch.vue';
+import CasesHeader from '@/Components/CasesHeader.vue';
 import { Head, Link } from '@inertiajs/inertia-vue3';
 import BreezeInput from "@/Components/Input";
 import BreezeSelect from "@/Components/Select";
@@ -90,7 +82,7 @@ import BreezePagination from "@/Components/Pagination";
 export default {
     name: 'Dashboard',
     components: {
-        BreezeAuthenticatedLayout, CaseSearchBox, Head, Link, BreezeInput, BreezeSelect, BreezeLabel, BreezePagination
+        BreezeAuthenticatedLayout, CaseSearchBox, CasesHeader, Head, Link, BreezeInput, BreezeSelect, BreezeLabel, BreezePagination
     },
     props: {
         results: Object,

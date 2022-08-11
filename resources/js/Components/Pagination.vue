@@ -3,14 +3,14 @@
         <div class="d-flex flex-row justify-content-center -mb-1">
             <template v-for="(link, key) in links">
                 <div v-if="link.url === null" :key="key" class="btn btn-light border m-1" v-html="link.label" />
-                <Link v-else :key="`link-${key}`" class="btn btn-light btn-link border m-1" :class="{ 'bg-white': link.active }" :href="link.url" v-html="link.label" />
+                <Link v-else :key="`link-${key}`" class="btn btn-light btn-link border m-1" :class="{ 'disabled': (link.label == activePage) }" :href="link.url" v-html="link.label" />
             </template>
         </div>
     </div>
 </template>
 
 <script>
-import { Link } from '@inertiajs/inertia-vue3'
+import { Link } from '@inertiajs/inertia-vue3';
 
 export default {
     components: {
@@ -18,6 +18,7 @@ export default {
     },
     props: {
         links: Array,
+        activePage: Number,
     },
 }
 </script>

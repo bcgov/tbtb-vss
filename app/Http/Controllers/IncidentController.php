@@ -22,6 +22,32 @@ use Inertia\Inertia;
 
 class IncidentController extends Controller
 {
+    private function paginateCases($cases)
+    {
+        if(request()->filter_sin !== null){
+            $cases = $cases->where('sin', request()->filter_sin);
+        }
+
+        if(request()->filter_user !== null){
+            $cases = $cases->where('auditor_user_id', request()->filter_user)
+                ->orWhere('investigator_user_id', request()->filter_user);
+        }
+
+        if(request()->filter_fname !== null){
+            $cases = $cases->where('first_name', 'ILIKE', request()->filter_fname);
+        }
+        if(request()->filter_lname !== null){
+            $cases = $cases->where('last_name', 'ILIKE', request()->filter_lname);
+        }
+
+        if (request()->sort !== null){
+            $cases = $cases->orderBy(request()->sort, request()->direction);
+        }else{
+            $cases = $cases->orderBy('created_at', 'desc');
+        }
+        return $cases->isActive()->with('institution')->paginate(25)->onEachSide(1)->appends(request()->query());
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -29,10 +55,8 @@ class IncidentController extends Controller
      */
     public function dashboard()
     {
-        $cases = Incident::isActive()->with('institution')
-            ->where('bring_forward', true)
-            ->where('auditor_user_id', Auth::user()->user_id)
-            ->orderBy('created_at', 'desc')->paginate(25);
+        $cases = Incident::where('bring_forward', true)->where('auditor_user_id', Auth::user()->user_id);
+        $cases = $this->paginateCases($cases);
 
         return Inertia::render('Dashboard', ['status' => true, 'results' => $cases]);
     }
@@ -44,7 +68,8 @@ class IncidentController extends Controller
      */
     public function index()
     {
-        $cases = Incident::isActive()->with('institution')->orderBy('created_at', 'desc')->paginate(25);
+        $cases = new Incident();
+        $cases = $this->paginateCases($cases);
 
         return Inertia::render('Cases', ['status' => true, 'results' => $cases]);
     }
@@ -149,7 +174,7 @@ class IncidentController extends Controller
      */
     public function edit(Incident $case)
     {
-        $case = Incident::where('id', $case->id)->with('audits', 'offences.offence', 'sanctions.sanction', 'institution')->first();
+        $case = Incident::where('id', $case->id)->with('audits', 'offences.offence', 'sanctions.sanction', 'institution')->withTrashed()->first();
         $areaOfAudits = AreaOfAudit::get();
         $natureOffences = NatureOffence::get();
         $referrals = ReferralSource::get();
@@ -181,64 +206,5 @@ class IncidentController extends Controller
         $this->addAttachedRecords($request, $case);
 
         return Redirect::route('cases.edit', [$case->id]);
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\CaseFunding  $case_funding
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(CaseFunding $case_funding)
-    {
-    }
-
-    public function sinSearch(AjaxRequest $request)
-    {
-        $cases = Incident::where('sin', $request->input('inputSin'))->with('institution')->get();
-
-        return inertia('SearchResults', ['status' => true, 'results' => $cases, 'sin' => $request->input('inputSin')]);
-    }
-
-    public function nameSearch(AjaxRequest $request)
-    {
-        $valid = false;
-        $cases = Incident::with('institution');
-        if (! is_null($request->inputFirstName)) {
-            $cases = $cases->where('first_name', $request->inputFirstName);
-            $valid = true;
-        }
-        if (! is_null($request->inputLastName)) {
-            $cases = $cases->where('last_name', $request->inputLastName);
-            $valid = true;
-        }
-
-        if ($valid) {
-            $cases = $cases->get();
-        } else {
-            $cases = null;
-        }
-
-        return inertia('SearchResults', ['status' => true, 'results' => $cases]);
-    }
-
-    public function activeUserSearch(AjaxRequest $request)
-    {
-        $cases = Incident::where('auditor_user_id', $request->selectActiveUser)
-            ->orWhere('investigator_user_id', $request->selectActiveUser)
-            ->with('institution')
-            ->get();
-
-        return inertia('SearchResults', ['status' => true, 'results' => $cases]);
-    }
-
-    public function cancelledUserSearch(AjaxRequest $request)
-    {
-        $cases = Incident::where('auditor_user_id', $request->selectCancelledUser)
-            ->orWhere('investigator_user_id', $request->selectCancelledUser)
-            ->with('institution')
-            ->get();
-
-        return inertia('SearchResults', ['status' => true, 'results' => $cases]);
     }
 }
