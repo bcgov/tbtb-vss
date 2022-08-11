@@ -3,53 +3,53 @@
         <th scope="col">
             <a href="#" @click="switchSort('sin')">
                 <span>SIN</span>
-                <i v-if="sortClmn === 'sin' && sortType === 'desc'" class="bi bi-sort-numeric-up"></i>
-                <i v-else class="bi bi-sort-numeric-down"></i>
+                <em v-if="sortClmn === 'sin' && sortType === 'desc'" class="bi bi-sort-numeric-up"></em>
+                <em v-else class="bi bi-sort-numeric-down"></em>
             </a>
         </th>
         <th scope="col">
             <a href="#" @click="switchSort('first_name')">
                 <span>Name</span>
-                <i v-if="sortClmn === 'first_name' && sortType === 'desc'" class="bi bi-sort-alpha-up"></i>
-                <i v-else class="bi bi-sort-alpha-down"></i>
+                <em v-if="sortClmn === 'first_name' && sortType === 'desc'" class="bi bi-sort-alpha-up"></em>
+                <em v-else class="bi bi-sort-alpha-down"></em>
             </a>
         </th>
         <th scope="col">
             <a href="#" @click="switchSort('institution_code')">
                 <span>Inst. Code</span>
-                <i v-if="sortClmn === 'institution_code' && sortType === 'desc'" class="bi bi-sort-alpha-up"></i>
-                <i v-else class="bi bi-sort-alpha-down"></i>
+                <em v-if="sortClmn === 'institution_code' && sortType === 'desc'" class="bi bi-sort-alpha-up"></em>
+                <em v-else class="bi bi-sort-alpha-down"></em>
             </a>
         </th>
         <th scope="col" style="min-width: 120px;">
             <a href="#" @click="switchSort('open_date')">
                 <span>Date Open</span>
-                <i v-if="sortClmn === 'open_date' && sortType === 'desc'" class="bi bi-sort-numeric-up"></i>
-                <i v-else class="bi bi-sort-numeric-down"></i>
+                <em v-if="sortClmn === 'open_date' && sortType === 'desc'" class="bi bi-sort-numeric-up"></em>
+                <em v-else class="bi bi-sort-numeric-down"></em>
             </a>
         </th>
         <th scope="col" style="min-width: 130px;">
             <a href="#" @click="switchSort('reactivate_date')">
                 <span>Date Reactiv.</span>
-                <i v-if="sortClmn === 'reactivate_date' && sortType === 'desc'" class="bi bi-sort-numeric-up"></i>
-                <i v-else class="bi bi-sort-numeric-down"></i>
+                <em v-if="sortClmn === 'reactivate_date' && sortType === 'desc'" class="bi bi-sort-numeric-up"></em>
+                <em v-else class="bi bi-sort-numeric-down"></em>
             </a>
         </th>
         <th scope="col" style="min-width: 100px;">
             <a href="#" @click="switchSort('incident_status')">
                 <span>Status</span>
-                <i v-if="sortClmn === 'incident_status' && sortType === 'desc'" class="bi bi-sort-alpha-up"></i>
-                <i v-else class="bi bi-sort-alpha-down"></i>
+                <em v-if="sortClmn === 'incident_status' && sortType === 'desc'" class="bi bi-sort-alpha-up"></em>
+                <em v-else class="bi bi-sort-alpha-down"></em>
             </a>
         </th>
         <th scope="col" style="min-width: 100px;">
             <a href="#" @click="switchSort('auditor_user_id')">
                 <span>Auditor</span>
-                <i v-if="sortClmn === 'auditor_user_id' && sortType === 'desc'" class="bi bi-sort-alpha-up"></i>
-                <i v-else class="bi bi-sort-alpha-down"></i>
+                <em v-if="sortClmn === 'auditor_user_id' && sortType === 'desc'" class="bi bi-sort-alpha-up"></em>
+                <em v-else class="bi bi-sort-alpha-down"></em>
             </a>
         </th>
-        <th></th>
+        <th scope="col"></th>
     </tr>
 </template>
 <script>
@@ -70,10 +70,8 @@ export default {
     },
     mounted() {
         this.url = new URL(document.location);
-        // if (this.url.searchParams.get("sort") != null) {
-            this.sortClmn = this.url.searchParams.get("sort");
-            this.sortType = this.url.searchParams.get("direction");
-        // }
+        this.sortClmn = this.url.searchParams.get("sort");
+        this.sortType = this.url.searchParams.get("direction");
 
         if (this.url.pathname === '/dashboard') {
             this.path = 'dashboard';

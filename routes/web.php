@@ -27,14 +27,6 @@ Route::middleware(['auth', 'active'])->group(function () {
 
     Route::get('/dashboard', [App\Http\Controllers\IncidentController::class, 'dashboard'])->name('dashboard');
     Route::resource('cases', App\Http\Controllers\IncidentController::class);
-//
-//    Route::get('/cases-search', function () {
-//        return Inertia::render('@/Pages/CasesSearch');
-//    })->name('cases-search');
-//    Route::post('/case-search/case-sin-search', [App\Http\Controllers\IncidentController::class, 'sinSearch'])->name('case-sin-search');
-//    Route::post('/case-search/case-name-search', [App\Http\Controllers\IncidentController::class, 'nameSearch'])->name('case-name-search');
-//    Route::post('/case-search/case-active-user-search', [App\Http\Controllers\IncidentController::class, 'activeUserSearch'])->name('case-active-user-search');
-//    Route::post('/case-search/case-cancelled-user-search', [App\Http\Controllers\IncidentController::class, 'cancelledUserSearch'])->name('case-cancelled-user-search');
 
     Route::get('/case-search/{x?}', function () {
         return Redirect::route('dashboard');
