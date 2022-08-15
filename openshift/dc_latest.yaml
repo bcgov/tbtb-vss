@@ -48,7 +48,7 @@ objects:
                 name: subpath-env
           containers:
             - image: >-
-                image-registry.openshift-image-registry.svc:5000/${BUILD_NAMESPACE}/${NAME}-${REPO_BRANCH}
+                image-registry.openshift-image-registry.svc:5000/${BUILD_NAMESPACE}/${NAME}
               volumeMounts:
                 - name: site-data-volume
                   mountPath: /var/site_data

@@ -14,7 +14,7 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: ${NAME}-${REPO_BRANCH}:${IMAGE_TAG}
+          name: ${NAME}:${IMAGE_TAG}
       postCommit: {}
       resources:
         requests:
@@ -99,7 +99,7 @@ objects:
         build: ${NAME}
         buildconfig: ${NAME}
         build-branch: ${REPO_BRANCH}
-      name: ${NAME}-${REPO_BRANCH}
+      name: ${NAME}
 parameters:
   - name: NAME
     required: true
