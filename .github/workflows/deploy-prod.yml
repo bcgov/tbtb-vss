@@ -2,9 +2,9 @@ name: Build and Deploy in OpenShift
 
 on:
   push:
-    branches: [ dev ]
+    branches: [ master ]
   pull_request:
-    branches: [ dev ]
+    branches: [ master ]
 
 jobs:
   # Print variables for logging and debugging purposes
@@ -19,58 +19,20 @@ jobs:
         echo Git Pull Request Ref: ${{ github.event.pull_request.head.sha }}
         echo OC CLI Version: $(oc version)
 
-  # Build the API
-  build:
-    name: Build project
-    runs-on: ubuntu-latest
-    env:
-      BUILD_ID: ${{ github.event.number }}
-      NAMESPACE: 06cb9b-dev
-      BUILD_NAMESPACE: 06cb9b-tools
-      BUILD_REF: ${{ github.base_ref }}
-      HOST_PREFIX: tbtb-vss
-      SOURCE_REPOSITORY_BRANCH: dev
-    steps:
-      # Checkout the PR branch
-      - name: Print env
-        run: |
-          echo BUILD ID: $BUILD_ID
-          echo BUILD NAMESPACE: $BUILD_NAMESPACE
-          echo BRANCH: $BUILD_REF
-      - name: Checkout Target Branch
-        uses: actions/checkout@v2
-
-      # Log in to OpenShift.
-      # Note: The secrets needed to log in are NOT available if the PR comes from a FORK.
-      # PR's must originate from a branch off the original repo or else all openshift `oc` commands will fail.
-      - name: Log in to OpenShift
-#        working-directory: "/var/www/html"
-        run: |
-          oc login --token=${{ secrets.SA_TOKEN }} --server=https://api.silver.devops.gov.bc.ca:6443
-      - name: OC Build from yaml
-        working-directory: "./openshift"
-        run: |
-          make oc-build-web
-      - name: Finished OC Build from yaml
-        run: |
-          echo "FINISHED OC BUILD WEB"
-          echo ++++++++++
-
+  # FOR PROD WE DEPLOY FROM AN ALREADY BUILT IMAGE THAT WE PREVIOUSLY PUSHED TO TOOLS AND TESTED ON DEV.
 
   # Deploy project
-  deployDev:
-    name: Deploy project
+  deployProd:
+    name: Deploy Project to PROD
     runs-on: ubuntu-latest
     #if: ${{ github.event.pull_request.merged == true && github.base_ref != 'prod' && github.base_ref != 'test'}}
     env:
       BUILD_ID: ${{ github.event.number }}
-      NAMESPACE: 06cb9b-dev
+      NAMESPACE: 06cb9b-prod
       BUILD_NAMESPACE: 06cb9b-tools
       BUILD_REF: ${{ github.base_ref }}
       HOST_PREFIX: tbtb-vss
-      SOURCE_REPOSITORY_BRANCH: dev
-    needs:
-      - build
+      SOURCE_REPOSITORY_BRANCH: master
     steps:
       - name: Print env
         run: |
@@ -90,11 +52,11 @@ jobs:
         run: |
           oc login --token=${{ secrets.SA_TOKEN }} --server=https://api.silver.devops.gov.bc.ca:6443
       # Deploy the VSS.
-      - name: Deploy VSS dev
+      - name: Deploy VSS Prod
         working-directory: "./openshift"
         run: |
           make oc-deploy-web
       - name: Finished OC Deploy from yaml
         run: |
-          echo "FINISHED OC Deploy WEB"
+          echo "FINISHED OC Deploy WEB PROD"
           echo ++++++++++

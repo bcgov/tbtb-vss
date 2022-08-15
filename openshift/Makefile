@@ -9,6 +9,7 @@ export BUILD_REF := $(or $(BUILD_REF), $(GIT_LOCAL_BRANCH))
 export BUILD_NAMESPACE := $(or $(BUILD_NAMESPACE), 06cb9b-tools)
 export DOMAIN := $(or $(DOMAIN), apps.silver.devops.gov.bc.ca)
 export HOST_PREFIX := $(or $(HOST_PREFIX), tbtb-vss)
+export SOURCE_REPOSITORY_BRANCH := $(or $(SOURCE_REPOSITORY_BRANCH), dev)
 
 #define general variables
 
@@ -28,9 +29,6 @@ define SOURCE_REPOSITORY_REF
 "https://github.com/bcgov/tbtb-vss"
 endef
 
-define SOURCE_REPOSITORY_BRANCH
-"master"
-endef
 
 define rollout_and_wait
 @oc -n $(NAMESPACE) rollout status $1
