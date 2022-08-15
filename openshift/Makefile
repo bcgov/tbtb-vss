@@ -11,8 +11,19 @@ export DOMAIN := $(or $(DOMAIN), apps.silver.devops.gov.bc.ca)
 export HOST_PREFIX := $(or $(HOST_PREFIX), tbtb-vss)
 export SOURCE_REPOSITORY_BRANCH := $(or $(SOURCE_REPOSITORY_BRANCH), dev)
 
-#define general variables
+#if
+ifeq $(SOURCE_REPOSITORY_BRANCH) 'dev'
+define OC_USER_ID
+"1009370000"
+endef
+else
+define OC_USER_ID
+"1009380000"
+endef
+endif
 
+
+#define general variables
 define LABEL_NAME
 "TBTB-VSS"
 endef
@@ -55,6 +66,8 @@ print-status:
 	@echo " | NAME: 	$(HOST_PREFIX) "
 	@echo " | REPO_NAME: 	$(SOURCE_REPOSITORY_REF) "
 	@echo " | REPO_BRANCH: 	$(SOURCE_REPOSITORY_BRANCH) "
+	@echo " | OC_USER_ID: 	$(OC_USER_ID) "
+
 #	"$(HOST_PREFIX)-$(BUILD_NAMESPACE).apps.silver.devops.gov.bc.ca.$(DOMAIN)"
 	@echo " +---------------------------------------------------------+ "
 
@@ -67,7 +80,7 @@ build-web:
 # 	@oc apply -f bc.yaml
 # 	@oc -n $(BUILD_NAMESPACE) set build-secret --pull bc/$(Web) $(GIT_SECRET_KEY)
 	@echo "+\n++ PROCESSING Web\n+"
-	@oc -n $(BUILD_NAMESPACE) process -f bc.yaml -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p REPO_NAME=$(SOURCE_REPOSITORY_REF) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(BUILD_NAMESPACE) apply -f -
+	@oc -n $(BUILD_NAMESPACE) process -f bc.yaml -p OC_USER_ID=$(OC_USER_ID) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p REPO_NAME=$(SOURCE_REPOSITORY_REF) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(BUILD_NAMESPACE) apply -f -
 	@echo "+\n++ BUILDING Web\n+"
 	@oc -n $(BUILD_NAMESPACE) start-build bc/$(HOST_PREFIX) --wait
 	@echo "+\n++ FINISHED BUILDING Web\n+"
@@ -77,7 +90,7 @@ deploy-web:
 	test -n "$(NAMESPACE)"
 	test -n "$(BUILD_NAMESPACE)"
 	@echo "+\n++ Deploying Web with\n+"
-	@oc -n $(NAMESPACE) process -f dc_latest.yaml -p LABEL_NAME=$(LABEL_NAME) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) | oc -n $(NAMESPACE) apply -f -
+	@oc -n $(NAMESPACE) process -f dc_latest.yaml -p LABEL_NAME=$(LABEL_NAME) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(NAMESPACE) apply -f -
 	$(call rollout_and_wait,dc/$(HOST_PREFIX))
 	@echo "+\n++ FINISHED Deploying Web\n+"
 
