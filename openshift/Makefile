@@ -80,7 +80,7 @@ build-web:
 # 	@oc apply -f bc.yaml
 # 	@oc -n $(BUILD_NAMESPACE) set build-secret --pull bc/$(Web) $(GIT_SECRET_KEY)
 	@echo "+\n++ PROCESSING Web\n+"
-	@oc -n $(BUILD_NAMESPACE) process -f bc.yaml -p OC_USER_ID=$(OC_USER_ID) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p REPO_NAME=$(SOURCE_REPOSITORY_REF) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(BUILD_NAMESPACE) apply -f -
+	@oc -n $(BUILD_NAMESPACE) process -f bc.yaml -p OC_USER_ID=$(OC_USER_ID) -p NAME=$(HOST_PREFIX) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p IMAGE_TAG=$(BUILD_TAG) -p REPO_NAME=$(SOURCE_REPOSITORY_REF) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(BUILD_NAMESPACE) apply -f -
 	@echo "+\n++ BUILDING Web\n+"
 	@oc -n $(BUILD_NAMESPACE) start-build bc/$(HOST_PREFIX) --wait
 	@echo "+\n++ FINISHED BUILDING Web\n+"

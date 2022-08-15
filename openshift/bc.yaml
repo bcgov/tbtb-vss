@@ -88,6 +88,7 @@ objects:
         buildconfig: ${NAME}
         build-branch: ${REPO_BRANCH}
       name: ${NAME}
+      namespace: ${BUILD_NAMESPACE}
   - apiVersion: v1
     kind: ImageStream
     spec:
@@ -102,6 +103,9 @@ objects:
       name: ${NAME}
 parameters:
   - name: NAME
+    required: true
+    description: some desc for this component
+  - name: BUILD_NAMESPACE
     required: true
     description: some desc for this component
   - name: IMAGE_TAG
