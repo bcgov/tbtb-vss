@@ -1,12 +1,12 @@
 FROM php:8.1-apache
 ARG DEBIAN_VERSION=20.04
 ARG APACHE_OPENIDC_VERSION=2.4.10
-ARG USER_ID=1009370000
 ARG TZ=America/Vancouver
 ARG CA_HOSTS_LIST
 ARG TEST_ARG
 ARG ENV_ARG
 
+ARG USER_ID
 ARG ENV_DB_CONNECTION
 ARG ENV_DB_HOST
 ARG ENV_DB_PORT
@@ -17,6 +17,8 @@ ARG ENV_DB_PREFIX
 ARG ENV_DEFAULT_CONF
 
 ARG DEBIAN_FRONTEND=noninteractive
+
+RUN echo ${USER_ID}
 
 WORKDIR /
 
@@ -113,7 +115,6 @@ RUN apt-get autoclean && apt-get autoremove
 #fix Action '-D FOREGROUND' failed.
 RUN a2enmod lbmethod_byrequests
 
-#RUN echo ${TEST_ARG}
 
 # System - Set default timezone
 ENV TZ=${TZ}

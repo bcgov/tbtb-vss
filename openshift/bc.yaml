@@ -1,6 +1,6 @@
 #run oc process -f bc.yaml -p NAME=tbtb-vss IMAGE_TAG=latest OC_REPO_SECRET_USER=user-at-github | oc apply -f -
 kind: Template
-apiVersion: v1
+apiVersion: template.openshift.io/v1
 metadata:
   name: ${NAME}
   labels:
@@ -35,6 +35,8 @@ objects:
           env:
             - name: "TEST_ARG"
               value: "hi there"
+            - name: USER_ID
+              value: ${OC_USER_ID}
             - name: ENV_ARG
               valueFrom:
                 secretKeyRef:
@@ -84,7 +86,9 @@ objects:
       labels:
         build: ${NAME}
         buildconfig: ${NAME}
+        build-branch: ${REPO_BRANCH}
       name: ${NAME}
+      namespace: ${BUILD_NAMESPACE}
   - apiVersion: v1
     kind: ImageStream
     spec:
@@ -95,9 +99,13 @@ objects:
       labels:
         build: ${NAME}
         buildconfig: ${NAME}
+        build-branch: ${REPO_BRANCH}
       name: ${NAME}
 parameters:
   - name: NAME
+    required: true
+    description: some desc for this component
+  - name: BUILD_NAMESPACE
     required: true
     description: some desc for this component
   - name: IMAGE_TAG
@@ -109,3 +117,6 @@ parameters:
   - name: REPO_BRANCH
     required: true
     description: some line to describe the image_tag_x parameter
+  - name: OC_USER_ID
+    required: true
+    description: openshift env default user_id

@@ -12,36 +12,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class CaseFundingController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -56,17 +26,6 @@ class CaseFundingController extends Controller
         $schools = Institution::get();
 
         return inertia('CaseFunding', ['status' => true, 'result' => $case, 'funds' => $funds, 'schools' => $schools, 'now' => date('Y-m-d')]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CaseFunding  $caseFunding
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CaseFunding $caseFunding)
-    {
-        //
     }
 
     /**
