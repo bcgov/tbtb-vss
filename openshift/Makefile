@@ -12,7 +12,7 @@ export HOST_PREFIX := $(or $(HOST_PREFIX), tbtb-vss)
 export SOURCE_REPOSITORY_BRANCH := $(or $(SOURCE_REPOSITORY_BRANCH), dev)
 
 #if
-ifeq SOURCE_REPOSITORY_BRANCH 'dev'
+ifeq ($(SOURCE_REPOSITORY_BRANCH),'dev')
 define OC_USER_ID
 "1009370000"
 endef
