@@ -3,8 +3,6 @@ name: Build and Deploy in OpenShift
 on:
   push:
     branches: [ dev ]
-  pull_request:
-    branches: [ dev ]
 
 jobs:
   # Print variables for logging and debugging purposes
