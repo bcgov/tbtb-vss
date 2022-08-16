@@ -90,7 +90,7 @@ deploy-web:
 	test -n "$(NAMESPACE)"
 	test -n "$(BUILD_NAMESPACE)"
 	@echo "+\n++ Deploying Web with\n+"
-	@oc --namespace=$(NAMESPACE) process -f dc_latest.yaml -p LABEL_NAME=$(LABEL_NAME) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(NAMESPACE) apply -f -
+	@oc --namespace=$(NAMESPACE) process -f dc_latest.yaml -p LABEL_NAME=$(LABEL_NAME) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc --namespace=$(NAMESPACE) apply -f -
 	$(call rollout_and_wait,dc/$(HOST_PREFIX))
 	@echo "+\n++ FINISHED Deploying Web\n+"
 
