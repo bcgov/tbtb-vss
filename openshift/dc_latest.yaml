@@ -2,6 +2,7 @@ kind: Template
 apiVersion: v1
 metadata:
   name: ${NAME}
+  namespace: ${NAMESPACE}
   labels:
     buildconfig: ${NAME}
 objects:
