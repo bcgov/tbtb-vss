@@ -1,5 +1,9 @@
 kind: Template
 apiVersion: v1
+metadata:
+  name: ${NAME}
+  labels:
+    buildconfig: ${NAME}
 objects:
   - apiVersion: v1
     kind: Service
