@@ -54,16 +54,16 @@ print-status:
 	@echo " +---------------------------------------------------------+ "
 	@echo " | Current Settings										| "
 	@echo " +---------------------------------------------------------+ "
-	@echo " | PROJECT:	  					$(APP_NAME)"
-	@echo " | BRANCH:	   					$(BUILD_REF)"
+	@echo " | PROJECT:	  			$(APP_NAME)"
+	@echo " | BRANCH:	   			$(BUILD_REF)"
 	@echo " | NAMESPACE:					$(NAMESPACE)"
 	@echo " | BUILD_NAMESPACE:				$(BUILD_NAMESPACE)"
 	@echo " | GIT_LOCAL_BRANCH:				$(GIT_LOCAL_BRANCH)"
 	@echo " +---------------------------------------------------------+ "
-	@echo " | BUILD_ID:						$(BUILD_ID) |"
+	@echo " | BUILD_ID:					$(BUILD_ID) |"
 	@echo " | BUILD_TAG:					$(BUILD_TAG) |"
 	@echo " | HOST: 	$(HOST) |"
-	@echo " | NAME:							$(HOST_PREFIX) |"
+	@echo " | NAME:				$(HOST_PREFIX) |"
 	@echo " | REPO_NAME: 	$(SOURCE_REPOSITORY_REF) |"
 	@echo " | REPO_BRANCH:					$(SOURCE_REPOSITORY_BRANCH) |"
 	@echo " | OC_USER_ID: 					$(OC_USER_ID) |"
@@ -90,7 +90,7 @@ deploy-web:
 	test -n "$(NAMESPACE)"
 	test -n "$(BUILD_NAMESPACE)"
 	@echo "+\n++ Deploying Web into $(NAMESPACE)\n+"
-	@oc -n $(NAMESPACE) process -f dc_latest.yaml -p LABEL_NAME=$(LABEL_NAME) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(NAMESPACE) apply -f -
+	@oc process -f dc_latest.yaml -p LABEL_NAME=$(LABEL_NAME) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(NAMESPACE) apply -f -
 	$(call rollout_and_wait,dc/$(HOST_PREFIX))
 	@echo "+\n++ FINISHED Deploying Web\n+"
 
