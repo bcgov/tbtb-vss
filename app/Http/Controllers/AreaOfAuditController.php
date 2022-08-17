@@ -83,5 +83,4 @@ class AreaOfAuditController extends Controller
 
         return Redirect::route('maintenance.area-of-audit.index');
     }
-
 }

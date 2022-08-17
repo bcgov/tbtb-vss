@@ -30,6 +30,15 @@ objects:
     spec:
       triggers:
         - type: "ConfigChange"
+        - type: "ImageChange"
+          imageChangeParams:
+            automatic: true
+            from:
+              kind: "ImageStreamTag"
+              name: ${NAME}:${IMAGE_TAG}
+              namespace: ${BUILD_NAMESPACE}
+            containerNames:
+              - ${NAME}
       replicas: 2
       revisionHistoryLimit: 5
       selector:
