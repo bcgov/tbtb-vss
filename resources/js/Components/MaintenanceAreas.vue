@@ -173,7 +173,7 @@ export default {
         },
         editArea: function ()
         {
-            this.editForm.put(route('maintenance.areas-of-audit.edit', [this.editForm.id]), {
+            this.editForm.put(route('maintenance.area-of-audit.update', [this.editForm.id]), {
                 onSuccess: () => {
                     this.showSuccessAlert();
                     this.editForm.reset('area_of_audit_code', 'description');
@@ -186,12 +186,13 @@ export default {
                 onError: () => {
                     this.showFailAlert();
                 },
+                preserveState: false
             });
         },
         newArea: function ()
         {
 
-            this.newForm.post(route('maintenance.areas-of-audit.store'), {
+            this.newForm.post(route('maintenance.area-of-audit.store'), {
                 onSuccess: () => {
                     this.showSuccessAlert();
                     this.newForm.reset('area_of_audit_code', 'description');
@@ -206,6 +207,8 @@ export default {
                 onError: () => {
                     this.showFailAlert();
                 },
+                preserveState: false
+
             });
         },
         showSuccessAlert: function ()

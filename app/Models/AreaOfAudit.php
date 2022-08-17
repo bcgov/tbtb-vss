@@ -25,6 +25,4 @@ class AreaOfAudit extends Model
     {
         return $this->hasMany('App\Models\CaseAuditType', 'area_of_audit_code', 'area_of_audit_code');
     }
-
-
 }

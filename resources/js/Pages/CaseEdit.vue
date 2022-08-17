@@ -321,7 +321,7 @@ tr {
                                                         <div class="col-auto">
                                                             <table>
                                                                 <tr v-for="(row, i) in editForm.offences">
-                                                                    <th scope="row">Offense:</th>
+                                                                    <th scope="row">Nature of Offense:</th>
                                                                     <td class="ps-1">
                                                                         <BreezeSelect class="form-select" v-model="row.nature_code">
                                                                             <option v-for="offence in natureOffences" :value="offence.nature_code">{{ offence.description }}</option>

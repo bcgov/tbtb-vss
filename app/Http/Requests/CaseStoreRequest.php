@@ -117,7 +117,5 @@ class CaseStoreRequest extends FormRequest
                 ]);
             }
         }
-
-
     }
 }

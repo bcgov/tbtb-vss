@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AjaxRequest;
 use App\Http\Requests\CaseStoreRequest;
 use App\Models\AreaOfAudit;
 use App\Models\CaseAuditType;
-use App\Models\CaseFunding;
 use App\Models\CaseNatureOffence;
 use App\Models\CaseSanctionType;
 use App\Models\Incident;
@@ -24,27 +22,28 @@ class IncidentController extends Controller
 {
     private function paginateCases($cases)
     {
-        if(request()->filter_sin !== null){
+        if (request()->filter_sin !== null) {
             $cases = $cases->where('sin', request()->filter_sin);
         }
 
-        if(request()->filter_user !== null){
+        if (request()->filter_user !== null) {
             $cases = $cases->where('auditor_user_id', request()->filter_user)
                 ->orWhere('investigator_user_id', request()->filter_user);
         }
 
-        if(request()->filter_fname !== null){
+        if (request()->filter_fname !== null) {
             $cases = $cases->where('first_name', 'ILIKE', request()->filter_fname);
         }
-        if(request()->filter_lname !== null){
+        if (request()->filter_lname !== null) {
             $cases = $cases->where('last_name', 'ILIKE', request()->filter_lname);
         }
 
-        if (request()->sort !== null){
+        if (request()->sort !== null) {
             $cases = $cases->orderBy(request()->sort, request()->direction);
-        }else{
+        } else {
             $cases = $cases->orderBy('created_at', 'desc');
         }
+
         return $cases->isActive()->with('institution')->paginate(25)->onEachSide(1)->appends(request()->query());
     }
 
@@ -128,44 +127,6 @@ class IncidentController extends Controller
         return Redirect::route('cases.index');
     }
 
-    private function addAttachedRecords($request, $case)
-    {
-        foreach ($request->new_sanction_codes as $key => $value) {
-            $sanction = SanctionType::where('sanction_code', $value)->first();
-            CaseSanctionType::firstOrCreate([
-                'incident_id' => $case->incident_id,
-                'sanction_code' => $sanction->sanction_code,
-            ]);
-        }
-
-        foreach ($request->new_offence_codes as $key => $value) {
-            $nature = NatureOffence::where('nature_code', $value)->first();
-            CaseNatureOffence::firstOrCreate([
-                'incident_id' => $case->incident_id,
-                'nature_code' => $nature->nature_code,
-            ]);
-        }
-
-        foreach ($request->new_audit_codes as $row) {
-            $audit = AreaOfAudit::where('area_of_audit_code', $row['area_of_audit_code'])->first();
-            CaseAuditType::firstOrCreate([
-                'incident_id' => $case->incident_id,
-                'area_of_audit_code' => $audit->area_of_audit_code,
-                'audit_type' => $row['audit_type'],
-            ]);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Incident  $case_funding
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Incident $case_funding)
-    {
-    }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -206,5 +167,61 @@ class IncidentController extends Controller
         $this->addAttachedRecords($request, $case);
 
         return Redirect::route('cases.edit', [$case->id]);
+    }
+
+    private function addAttachedRecords($request, $case)
+    {
+        $case->audits()->delete();
+        foreach ($request->old_audit_codes as $row) {
+            $audit = AreaOfAudit::where('area_of_audit_code', $row['area_of_audit_code'])->first();
+            CaseAuditType::firstOrCreate([
+                'incident_id' => $case->incident_id,
+                'area_of_audit_code' => $audit->area_of_audit_code,
+                'audit_type' => $row['audit_type'],
+            ]);
+        }
+
+        $case->offences()->delete();
+        foreach ($request->old_offence_codes as $key => $value) {
+            $nature = NatureOffence::where('nature_code', $value)->first();
+            CaseNatureOffence::firstOrCreate([
+                'incident_id' => $case->incident_id,
+                'nature_code' => $nature->nature_code,
+            ]);
+        }
+
+        $case->sanctions->delete();
+        foreach ($request->old_sanction_codes as $key => $value) {
+            $sanction = SanctionType::where('sanction_code', $value)->first();
+            CaseSanctionType::firstOrCreate([
+                'incident_id' => $case->incident_id,
+                'sanction_code' => $sanction->sanction_code,
+            ]);
+        }
+
+        foreach ($request->new_sanction_codes as $key => $value) {
+            $sanction = SanctionType::where('sanction_code', $value)->first();
+            CaseSanctionType::firstOrCreate([
+                'incident_id' => $case->incident_id,
+                'sanction_code' => $sanction->sanction_code,
+            ]);
+        }
+
+        foreach ($request->new_offence_codes as $key => $value) {
+            $nature = NatureOffence::where('nature_code', $value)->first();
+            CaseNatureOffence::firstOrCreate([
+                'incident_id' => $case->incident_id,
+                'nature_code' => $nature->nature_code,
+            ]);
+        }
+
+        foreach ($request->new_audit_codes as $row) {
+            $audit = AreaOfAudit::where('area_of_audit_code', $row['area_of_audit_code'])->first();
+            CaseAuditType::firstOrCreate([
+                'incident_id' => $case->incident_id,
+                'area_of_audit_code' => $audit->area_of_audit_code,
+                'audit_type' => $row['audit_type'],
+            ]);
+        }
     }
 }
