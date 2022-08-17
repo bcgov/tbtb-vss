@@ -27,8 +27,8 @@
                         </div>
                     </div>
                     <div class="col-md-8 mt-3">
-                        <MaintenanceAreas v-if="page === 'areas-of-audit'"></MaintenanceAreas>
-                        <MaintenanceSchools v-if="page === 'schools'"></MaintenanceSchools>
+                        <MaintenanceAreas v-if="page === 'areas-of-audit'" :results="results"></MaintenanceAreas>
+                        <MaintenanceSchools v-if="page === 'schools'" :results="results"></MaintenanceSchools>
 
                         <MaintenanceStaff v-if="page === 'staff'" :results="results"></MaintenanceStaff>
                         <MaintenanceStaffEdit v-if="page === 'staff-edit'" :results="results"></MaintenanceStaffEdit>

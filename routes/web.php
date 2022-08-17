@@ -47,7 +47,12 @@ Route::middleware(['auth', 'active'])->group(function () {
 
         Route::post('/reports', [App\Http\Controllers\ReportController::class, 'searchReports'])->name('reports-search');
 
-        Route::get('/maintenance', [App\Http\Controllers\MaintenanceController::class, 'goToPage'])->name('maintenance');
+//        Route::get('/maintenance', [App\Http\Controllers\MaintenanceController::class, 'goToPage'])->name('maintenance');
+        Route::get('/maintenance/areas-of-audit', [App\Http\Controllers\MaintenanceController::class, 'areasList'])->name('maintenance.areas-of-audit.list');
+        Route::put('/maintenance/areas-of-audit/{area}', [App\Http\Controllers\MaintenanceController::class, 'areasEdit'])->name('maintenance.areas-of-audit.edit');
+        Route::post('/maintenance/areas-of-audit', [App\Http\Controllers\MaintenanceController::class, 'areasStore'])->name('maintenance.areas-of-audit.store');
+
+        Route::get('/maintenance/schools', [App\Http\Controllers\MaintenanceController::class, 'staffList'])->name('maintenance.schools.list');
         Route::get('/maintenance/staff', [App\Http\Controllers\MaintenanceController::class, 'staffList'])->name('maintenance.staff.list');
         Route::get('/maintenance/staff/{user}', [App\Http\Controllers\MaintenanceController::class, 'staffShow'])->name('maintenance.staff.show');
         Route::post('/maintenance/staff/{user}', [App\Http\Controllers\MaintenanceController::class, 'staffEdit'])->name('maintenance.staff.edit');
