@@ -45,7 +45,7 @@ nav.navbar{
                         </BreezeNavLink>
                     </li>
                     <li class="nav-item">
-                        <BreezeNavLink class="nav-link" :href="route('maintenance.areas-of-audit.list')" :active="route().current('maintenance.*')">
+                        <BreezeNavLink class="nav-link" :href="route('maintenance.area-of-audit.index')" :active="route().current('maintenance.*')">
                             Maintenance
                         </BreezeNavLink>
                     </li>

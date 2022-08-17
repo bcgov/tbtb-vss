@@ -28,7 +28,7 @@ class AreaOfAuditStoreRequest extends FormRequest
             'area_of_audit_code.max' => 'Audit Code field size cannot be more than 3 characters.',
             'area_of_audit_code.unique' => 'Audit Code is already in use.',
 
-            'description.*' => 'Description field is required.'
+            'description.*' => 'Description field is required.',
         ];
     }
 
@@ -52,10 +52,8 @@ class AreaOfAuditStoreRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-
         if (isset($this->area_of_audit_code)) {
             $this->merge(['area_of_audit_code' => mb_strtoupper($this->area_of_audit_code)]);
         }
-
     }
 }

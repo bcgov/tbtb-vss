@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\AreaOfAuditStoreRequest;
-use App\Http\Requests\AreaOfAuditEditRequest;
 use App\Http\Requests\StaffEditRequest;
-use App\Models\AreaOfAudit;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,50 +12,6 @@ use Inertia\Inertia;
 
 class MaintenanceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Inertia\Response::render
-     */
-    public function areasList(Request $request): \Inertia\Response
-    {
-        $areas = AreaOfAudit::orderBy('area_of_audit_code', 'asc')->get();
-
-        return Inertia::render('Maintenance', ['status' => true, 'results' => $areas, 'page' => 'areas-of-audit']);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Requests\AreaOfAuditStoreRequest  $request
-     * @return \Inertia\Response::render
-     */
-    public function areasStore(AreaOfAuditStoreRequest $request): \Inertia\Response
-    {
-        AreaOfAudit::create($request->validated());
-
-        $areas = AreaOfAudit::orderBy('area_of_audit_code', 'asc')->get();
-
-        return Inertia::render('Maintenance', ['status' => true, 'results' => $areas, 'page' => 'areas-of-audit']);
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @param  \App\Http\Requests\AreaOfAuditEditRequest  $request
-     * @param  \App\Models\AreaOfAudit  $area
-     * @return \Inertia\Response::render
-     */
-    public function areasEdit(AreaOfAuditEditRequest $request, AreaOfAudit $area): \Inertia\Response
-    {
-        AreaOfAudit::where('id', $area->id)->update($request->validated());
-
-        $areas = AreaOfAudit::orderBy('area_of_audit_code', 'asc')->get();
-
-        return Inertia::render('Maintenance', ['status' => true, 'results' => $areas, 'page' => 'areas-of-audit']);
-    }
-
     /**
      * Display a listing of the resource.
      *
@@ -127,7 +80,7 @@ class MaintenanceController extends Controller
      *
      * @return \Inertia\Response::render
      */
-    public function goToPage(Request $request, $page = 'areas-of-audit')
+    public function goToPage(Request $request, $page = 'area-of-audit')
     {
         return Inertia::render('Maintenance', ['page' => $page]);
     }

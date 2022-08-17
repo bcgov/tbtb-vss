@@ -1,7 +1,7 @@
 <template>
 
     <div class="list-group">
-        <Link :href="route('maintenance.areas-of-audit.list')" class="list-group-item list-group-item-action" :class="page === 'areas-of-audit' ? 'active' : ''">
+        <Link :href="route('maintenance.area-of-audit.index')" class="list-group-item list-group-item-action" :class="page === 'area-of-audit' ? 'active' : ''">
             Areas of Audit
         </Link>
         <Link :href="route('maintenance.schools.list')" class="list-group-item list-group-item-action" :class="page === 'schools' ? 'active' : ''">Schools</Link>

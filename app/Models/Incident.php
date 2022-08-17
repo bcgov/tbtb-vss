@@ -56,12 +56,12 @@ class Incident extends Model
 
     public function primaryAudit()
     {
-        return $this->hasOne('App\Models\AreaOfAudit', 'area_of_audit_code', 'area_of_audit_code');
+        return $this->belongsTo('App\Models\AreaOfAudit', 'area_of_audit_code', 'area_of_audit_code');
     }
 
     public function referral()
     {
-        return $this->hasOne('App\Models\ReferralSource', 'id', 'referral_source_id');
+        return $this->belongsTo('App\Models\ReferralSource', 'referral_source_id', 'id');
     }
 
     public function getTotalOverAwardAttribute()

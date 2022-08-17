@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class CaseFundingController extends Controller
 {
-
     /**
      * Display the specified resource.
      *
