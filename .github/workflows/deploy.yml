@@ -102,9 +102,6 @@ jobs:
         working-directory: "./openshift"
         run: |
           make oc-deploy-web
-      - name: Change ownership
-        run: |
-          chown -R $(id -u):$(id -g) ./var/www/html
       - name: Finished OC Deploy from yaml
         run: |
           echo "FINISHED OC Deploy WEB"
