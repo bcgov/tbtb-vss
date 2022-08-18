@@ -182,7 +182,7 @@ class IncidentController extends Controller
         }
 
         $case->offences()->delete();
-        foreach ($request->old_offence_codes as $key => $value) {
+        foreach ($request->old_offence_codes as $value) {
             $nature = NatureOffence::where('nature_code', $value)->first();
             CaseNatureOffence::firstOrCreate([
                 'incident_id' => $case->incident_id,
@@ -191,7 +191,7 @@ class IncidentController extends Controller
         }
 
         $case->sanctions->delete();
-        foreach ($request->old_sanction_codes as $key => $value) {
+        foreach ($request->old_sanction_codes as $value) {
             $sanction = SanctionType::where('sanction_code', $value)->first();
             CaseSanctionType::firstOrCreate([
                 'incident_id' => $case->incident_id,
@@ -199,7 +199,7 @@ class IncidentController extends Controller
             ]);
         }
 
-        foreach ($request->new_sanction_codes as $key => $value) {
+        foreach ($request->new_sanction_codes as $value) {
             $sanction = SanctionType::where('sanction_code', $value)->first();
             CaseSanctionType::firstOrCreate([
                 'incident_id' => $case->incident_id,

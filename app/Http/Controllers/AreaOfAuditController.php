@@ -12,7 +12,7 @@ class AreaOfAuditController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
@@ -35,7 +35,7 @@ class AreaOfAuditController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\AreaOfAuditStoreRequest  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(AreaOfAuditStoreRequest $request)
     {
@@ -69,9 +69,9 @@ class AreaOfAuditController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\AreaOfAuditEditRequest  $request  $request
+     * @param  \App\Http\Requests\AreaOfAuditStoreRequest  $request  $request
      * @param  \App\Models\AreaOfAudit  $areaOfAudit
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(AreaOfAuditStoreRequest $request, AreaOfAudit $areaOfAudit)
     {

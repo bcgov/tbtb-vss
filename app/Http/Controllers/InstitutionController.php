@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\InstitutionStoreRequest;
 use App\Models\Institution;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class InstitutionController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        //
+        $schools = Institution::orderBy('institution_code', 'asc')->get();
+
+        return Inertia::render('Maintenance', ['status' => true, 'results' => $schools, 'page' => 'school']);
     }
 
     /**
@@ -30,12 +35,14 @@ class InstitutionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\InstitutionStoreRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(InstitutionStoreRequest $request)
     {
-        //
+        Institution::create($request->validated());
+
+        return Redirect::route('maintenance.school.index');
     }
 
     /**
@@ -63,13 +70,18 @@ class InstitutionController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\InstitutionStoreRequest  $request
      * @param  \App\Models\Institution  $institution
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Institution $institution)
+    public function update(InstitutionStoreRequest $request, Institution $institution)
     {
-        //
+        $new_school = Institution::create($request->validated());
+        $institution->incidents()->update(['institution_code' => $new_school->institution_code]);
+
+        $institution->delete();
+
+        return Redirect::route('maintenance.school.index');
     }
 
     /**
