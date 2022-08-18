@@ -20093,8 +20093,6 @@ __webpack_require__.r(__webpack_exports__);
         institution_type_code: '',
         id: ''
       }),
-      newModal: '',
-      editModal: '',
       filterResults: '',
       filterKey: '',
       filterActive: false
@@ -20130,7 +20128,7 @@ __webpack_require__.r(__webpack_exports__);
       this.editForm.institution_location_code = row.institution_location_code;
       this.editForm.institution_type_code = row.institution_type_code;
       this.editForm.id = row.id;
-      this.editModal.show();
+      $("#editSchoolModal").modal('show');
     },
     editSchool: function editSchool() {
       var _this = this;
@@ -20139,9 +20137,10 @@ __webpack_require__.r(__webpack_exports__);
         onSuccess: function onSuccess() {
           _this.showSuccessAlert();
 
-          _this.editForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code');
+          _this.editForm.reset();
 
-          _this.editModal.hide();
+          $("#editSchoolModal").modal('hide');
+          console.log('finished editing');
         },
         onFailure: function onFailure() {},
         onError: function onError() {
@@ -20157,11 +20156,9 @@ __webpack_require__.r(__webpack_exports__);
         onSuccess: function onSuccess() {
           _this2.showSuccessAlert();
 
-          _this2.newForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code');
+          _this2.newForm.reset();
 
-          var modalToggle = document.getElementById('newSchoolModal');
-          var modal = bootstrap.Modal.getInstance(modalToggle);
-          modal.toggle();
+          $("#newSchoolModal").modal('hide');
         },
         onFailure: function onFailure() {},
         onError: function onError() {
@@ -20188,8 +20185,6 @@ __webpack_require__.r(__webpack_exports__);
   watch: {},
   computed: {},
   mounted: function mounted() {
-    this.newModal = new bootstrap.Modal(document.getElementById('newSchoolModal'));
-    this.editModal = new bootstrap.Modal(document.getElementById('editSchoolModal'));
     this.filterResults = this.results;
   }
 });
