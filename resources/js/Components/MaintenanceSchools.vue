@@ -1,62 +1,273 @@
 <template>
     <div class="card">
-        <div class="card-header">
-            <div>Schools</div>
+        <div class="card-header">School Maintenance
+            <button type="button" class="btn btn-sm btn-success float-end" data-bs-toggle="modal" data-bs-target="#newSchoolModal">New School</button>
         </div>
+
+        <div class="modal modal-lg fade" id="newSchoolModal" tabindex="-1" aria-labelledby="newSchoolModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="newSchoolModalLabel">Add New School</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form @submit.prevent="newSchool">
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <BreezeLabel for="new_school_code" value="School Code" />
+                                        <BreezeInput id="new_school_code" class="form-control" type="text" v-model="newForm.institution_code" :disabled="newForm.processing" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <BreezeLabel for="new_school_name" value="School Name" />
+                                        <BreezeInput id="new_school_name" class="form-control" type="text" v-model="newForm.institution_name" :disabled="newForm.processing" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <BreezeLabel for="new_school_location_code" value="Location Code" />
+                                        <BreezeInput id="new_school_location_code" class="form-control" type="text" v-model="newForm.institution_location_code" :disabled="newForm.processing" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <BreezeLabel for="new_school_type_code" value="Type Code" />
+                                        <BreezeInput id="new_school_type_code" class="form-control" type="text" v-model="newForm.institution_type_code" :disabled="newForm.processing" />
+                                    </div>
+                                </div>
+
+                                <div v-if="newForm.errors != undefined" class="row">
+                                    <div class="col-12">
+                                        <div v-if="newForm.hasErrors == true" class="alert alert-danger mt-3">
+                                            <ul>
+                                                <li v-for="err in newForm.errors"><small>{{ err }}</small></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn mr-2 btn-outline-success" :disabled="newForm.processing">Submit</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal modal-lg fade" id="editSchoolModal" tabindex="-1" aria-labelledby="editSchoolModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSchoolModalLabel">Edit School</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form @submit.prevent="editSchool">
+                        <div class="modal-body">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <BreezeLabel for="edit_school_code" value="School Code" />
+                                        <BreezeInput id="edit_school_code" class="form-control" type="text" v-model="editForm.institution_code" :disabled="editForm.processing" />
+                                    </div>
+                                    <div class="col-lg-6">
+                                        <BreezeLabel for="edit_school_name" value="School Name" />
+                                        <BreezeInput id="edit_school_name" class="form-control" type="text" v-model="editForm.institution_name" :disabled="editForm.processing" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <BreezeLabel for="edit_school_location_code" value="Location Code" />
+                                        <BreezeInput id="edit_school_location_code" class="form-control" type="text" v-model="editForm.institution_location_code" :disabled="editForm.processing" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <BreezeLabel for="edit_school_type_code" value="Type Code" />
+                                        <BreezeInput id="edit_school_type_code" class="form-control" type="text" v-model="editForm.institution_type_code" :disabled="editForm.processing" />
+                                    </div>
+                                </div>
+
+                                <div v-if="editForm.errors != undefined" class="row">
+                                    <div class="col-12">
+                                        <div v-if="editForm.hasErrors == true" class="alert alert-danger mt-3">
+                                            <ul>
+                                                <li v-for="err in editForm.errors"><small>{{ err }}</small></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn mr-2 btn-outline-success" :disabled="editForm.processing">Save Changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class="card-body">
-            <div>Schools</div>
+            <div v-if="filterResults != null" class="table-responsive pb-3">
+                <table aria-label="School Maintenance List" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">School Code</th>
+                        <th scope="col">
+                            <div v-if="filterActive" class="input-group">
+                                <input @keydown="filterList" @keyup.esc="toggleFilter" v-model="filterKey" type="text" class="form-control" id="school_filter" placeholder="type keyword to filter the list" aria-label="Filter schools" aria-describedby="basic-close">
+                                <a @click="toggleFilter" href="#" class="input-group-text" id="basic-close">X</a>
+                            </div>
+                            <a v-else href="#" @click="toggleFilter">School Name</a>
+                        </th>
+                        <th scope="col">Location Code</th>
+                        <th scope="col">Location Type</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(row, i) in filterResults">
+                        <th scope="row">{{ row.institution_code }}</th>
+                        <td>{{ row.institution_name }}</td>
+                        <td>{{ row.institution_location_code }}</td>
+                        <td>{{ row.institution_type_code }}</td>
+                        <td class="text-end" @click="editRow(row,i)"><button type="button" class="btn btn-sm border border-transparent focus:outline-none"><em class="bi bi-pencil"></em></button></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h1 v-else class="lead">No results</h1>
         </div>
+
+        <div v-if="showSuccessMsg" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="updateSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="100">
+                <div class="">
+                    <div class="toast-body">
+                        Form was submitted successfully.
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+        <div v-if="showFailMsg" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+            <div id="updateFailAlert" class="alert alert-danger alert-dismissible fade show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="100">
+                <div class="">
+                    <div class="toast-body">
+                        There was an error submitting this form.
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </template>
 <script>
-import {computed} from "vue";
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
+import {Link, useForm} from '@inertiajs/inertia-vue3';
 import BreezeInput from '@/Components/Input.vue';
-import {Inertia} from "@inertiajs/inertia";
+import BreezeLabel from '@/Components/Label.vue';
 
 export default {
     name: 'MaintenanceSchool',
     components: {
-        BreezeInput
+        BreezeInput, BreezeLabel, Link
     },
     props: {
-        result: Object,
+        results: Object,
     },
     data() {
         return {
-            noChanges: true,
-            searchType: '',
-            searchResults: '',
-            updates: [],
-            newRows: [],
             showSuccessMsg: false,
+            showFailMsg: false,
+
+            newForm: useForm({
+                institution_code: '',
+                institution_name: '',
+                institution_location_code: '',
+                institution_type_code: '',
+            }),
+            editForm: useForm({
+                institution_code: '',
+                institution_name: '',
+                institution_location_code: '',
+                institution_type_code: '',
+                id: '',
+            }),
+            newModal: '',
+            editModal: '',
+
+            filterResults: '',
+            filterKey: '',
+            filterActive: false,
+
         }
     },
     methods: {
-        deleteFund: function (index, row)
-        {
-            if(confirm("Are you sure you want to delete this Case Funding record?")){
-                const form = useForm({});
-                form.delete(route('case-funding.destroy', row.id), {
-                    onSuccess: () => {
-                        this.showSuccessAlert();
-                    }
-                });
+        toggleFilter: function (){
+            this.filterActive = !this.filterActive;
+            if(this.filterActive === false){
+                this.filterResults = this.results;
             }
         },
-        updateAllFunds: function ()
+        filterList: function (){
+            if(this.filterKey == '') {
+                this.filterResults = this.results;
+            }else{
+                let newResults = [];
+                let key = this.filterKey.toUpperCase();
+                for(let i=0; i<this.results.length; i++){
+                    if(this.results[i].institution_name.toUpperCase().indexOf(key) > -1){
+                        newResults.push(this.results[i]);
+                    }
+                }
+
+                this.filterResults = newResults;
+
+            }
+        },
+        editRow: function (row, index){
+            this.editForm.institution_code = row.institution_code;
+            this.editForm.institution_name = row.institution_name;
+            this.editForm.institution_location_code = row.institution_location_code;
+            this.editForm.institution_type_code = row.institution_type_code;
+            this.editForm.id = row.id;
+
+            this.editModal.show();
+
+        },
+        editSchool: function ()
         {
-            const form = useForm({
-                old_rows: this.result.funds,
-                new_rows: this.newRows
-            });
-            form.put(route('case-funding.update', this.result.id), {
+            this.editForm.put(route('maintenance.school.update', [this.editForm.id]), {
                 onSuccess: () => {
                     this.showSuccessAlert();
-                }
+                    this.editForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code');
+
+                    this.editModal.hide();
+
+                },
+                onFailure: () => {
+                },
+                onError: () => {
+                    this.showFailAlert();
+                },
+                preserveState: false
             });
-            // form.wasSuccessful();
+        },
+        newSchool: function ()
+        {
+
+            this.newForm.post(route('maintenance.school.store'), {
+                onSuccess: () => {
+                    this.showSuccessAlert();
+                    this.newForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code');
+
+                    let modalToggle = document.getElementById('newSchoolModal');
+                    let modal = bootstrap.Modal.getInstance(modalToggle)
+                    modal.toggle();
+
+                },
+                onFailure: () => {
+                },
+                onError: () => {
+                    this.showFailAlert();
+                },
+                preserveState: false
+
+            });
         },
         showSuccessAlert: function ()
         {
@@ -64,91 +275,26 @@ export default {
             let vm = this;
             setTimeout(function (){
                 vm.showSuccessMsg = false;
-                vm.noChanges = true;
-                Inertia.get(route('case-funding.show', [vm.result.id]), {preserveState: true});
-
             }, 5000);
         },
-        newFund: function(){
-            this.newRows.push({
-                'application_number': this.result.application_number,
-                'funding_type': '',
-                'fund_entry_date': this.now,
-                'over_award': 0,
-                'prevented_funding': 0
-            });
-            this.noChanges = false;
-        },
-        back: function()
+        showFailAlert: function ()
         {
-            window.history.back();
-        },
-        updateFunds: function (index)
-        {
-            if(this.updates.slice(index).length === 0){
-                this.updates.push(index);
-            }
-            this.noChanges = false;
-        },
-
-        formatMoney: function (value, decimals = 2, separator = ','){
-            // console.log(value);
-            let result = value;
-            if(value != null){
-                result = parseFloat(value);
-                result = result.toFixed(decimals);
-                result = result.toString();
-                if(separator) {
-                    result = result.replace(/\B(?=(\d{3})+(?!\d))/g, separator);
-                }
-            }
-
-            return result;
-        },
-        rowTotal: function (clmnA, clmnB){
-            return parseFloat(clmnA) + parseFloat(clmnB);
+            this.showFailMsg = true;
+            let vm = this;
+            setTimeout(function (){
+                vm.showFailMsg = false;
+            }, 5000);
         },
     },
     watch: {
-        updated: function(newVal, oldVal){
-
-        }
     },
     computed: {
-        totalOverAward: function (){
-            let total = 0;
-            for(let i=0; i<this.result.funds.length; i++){
-                total += parseFloat(this.result.funds[i].over_award);
-            }
-            return total.toLocaleString();
-        },
-        totalPrevented: function (){
-            let total = 0;
-            for(let i=0; i<this.result.funds.length; i++){
-                total += parseFloat(this.result.funds[i].prevented_funding);
-            }
-            return total.toLocaleString();
-        },
-        totals: function (){
-            let total = 0;
-            for(let i=0; i<this.result.funds.length; i++){
-                total += parseFloat(this.result.funds[i].over_award) + parseFloat(this.result.funds[i].prevented_funding);
-            }
-            return total.toLocaleString();
-        },
-
+    },
+    mounted() {
+        this.newModal = new bootstrap.Modal(document.getElementById('newSchoolModal'));
+        this.editModal = new bootstrap.Modal(document.getElementById('editSchoolModal'));
+        this.filterResults = this.results;
     }
 }
-//
-// defineProps({
-//     : Object,
-// });
-// let totalOverAward = computed( () => {
-//     let total = 0;
-//     for(let i=0; i<result.funds.length; i++){
-//         total += result.funds[i].over_award;
-//     }
-//     return total;
-// }
-// );
+
 </script>

@@ -17,11 +17,11 @@
                                 <div class="row">
                                     <div class="col-lg-3">
                                         <BreezeLabel for="new_audit_code" value="Audit Code" />
-                                        <BreezeInput id="new_audit_code" class="form-control" type="text" v-model="newForm.area_of_audit_code" />
+                                        <BreezeInput id="new_audit_code" class="form-control" type="text" v-model="newForm.area_of_audit_code" :disabled="newForm.processing" />
                                     </div>
                                     <div class="col-lg-8">
                                         <BreezeLabel for="new_description" value="Description" />
-                                        <BreezeInput id="new_description" class="form-control" type="text" v-model="newForm.description" />
+                                        <BreezeInput id="new_description" class="form-control" type="text" v-model="newForm.description" :disabled="newForm.processing" />
                                     </div>
                                 </div>
 
@@ -86,7 +86,7 @@
 
         <div class="card-body">
             <div v-if="results != null" class="table-responsive pb-3">
-                <table class="table table-striped">
+                <table aria-label="Area of Audit Maintenance List" class="table table-striped">
                     <thead>
                     <tr>
                         <th scope="col">Audit Code</th>
