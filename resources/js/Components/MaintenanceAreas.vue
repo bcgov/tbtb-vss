@@ -157,8 +157,6 @@ export default {
                 description: '',
                 id: '',
             }),
-            newModal: '',
-            editModal: '',
 
         }
     },
@@ -168,7 +166,7 @@ export default {
             this.editForm.description = row.description;
             this.editForm.id = row.id;
 
-            this.editModal.show();
+            $("#editAreaModal").modal('show');
 
         },
         editArea: function ()
@@ -178,7 +176,7 @@ export default {
                     this.showSuccessAlert();
                     this.editForm.reset('area_of_audit_code', 'description');
 
-                    this.editModal.hide();
+                    $("#editAreaModal").modal('hide');
 
                 },
                 onFailure: () => {
@@ -186,7 +184,7 @@ export default {
                 onError: () => {
                     this.showFailAlert();
                 },
-                preserveState: false
+                preserveState: true
             });
         },
         newArea: function ()
@@ -197,9 +195,7 @@ export default {
                     this.showSuccessAlert();
                     this.newForm.reset('area_of_audit_code', 'description');
 
-                    let modalToggle = document.getElementById('newAreaModal');
-                    let modal = bootstrap.Modal.getInstance(modalToggle)
-                    modal.toggle();
+                    $("#newAreaModal").modal('hide');
 
                 },
                 onFailure: () => {
@@ -207,7 +203,7 @@ export default {
                 onError: () => {
                     this.showFailAlert();
                 },
-                preserveState: false
+                preserveState: true
 
             });
         },
@@ -233,8 +229,6 @@ export default {
     computed: {
     },
     mounted() {
-        this.newModal = new bootstrap.Modal(document.getElementById('newAreaModal'));
-        this.editModal = new bootstrap.Modal(document.getElementById('editAreaModal'));
     }
 }
 

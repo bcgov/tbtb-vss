@@ -232,18 +232,18 @@ export default {
             this.editForm.put(route('maintenance.school.update', [this.editForm.id]), {
                 onSuccess: () => {
                     this.showSuccessAlert();
-                    this.editForm.reset();
+                    this.editForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code', 'id');
 
                     $("#editSchoolModal").modal('hide');
-                    console.log('finished editing');
 
+                    Inertia.reload();
                 },
                 onFailure: () => {
                 },
                 onError: () => {
                     this.showFailAlert();
                 },
-                preserveState: false
+                preserveState: true
             });
         },
         newSchool: function ()
@@ -252,7 +252,7 @@ export default {
             this.newForm.post(route('maintenance.school.store'), {
                 onSuccess: () => {
                     this.showSuccessAlert();
-                    this.newForm.reset();
+                    this.newForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code');
 
                     $("#newSchoolModal").modal('hide');
 
@@ -262,7 +262,7 @@ export default {
                 onError: () => {
                     this.showFailAlert();
                 },
-                preserveState: false
+                preserveState: true
 
             });
         },
@@ -284,6 +284,12 @@ export default {
         },
     },
     watch: {
+        results: {
+            handler(newValue, oldValue) {
+                this.filterResults = newValue;
+            },
+            deep: true
+        }
     },
     computed: {
     },

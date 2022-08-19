@@ -17,7 +17,7 @@ class InstitutionController extends Controller
      */
     public function index()
     {
-        $schools = Institution::orderBy('institution_code', 'asc')->limit(50)->get();
+        $schools = Institution::orderBy('institution_code', 'asc')->get();
 
         return Inertia::render('Maintenance', ['status' => true, 'results' => $schools, 'page' => 'school']);
     }
@@ -36,14 +36,13 @@ class InstitutionController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\InstitutionStoreRequest  $request
-     * @return \Inertia\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(InstitutionStoreRequest $request)
     {
         Institution::create($request->validated());
-        $schools = Institution::orderBy('institution_code', 'asc')->limit(50)->get();
 
-        return Inertia::render('Maintenance', ['status' => true, 'results' => $schools, 'page' => 'school']);
+        return Redirect::route('maintenance.school.index');
     }
 
     /**
@@ -77,22 +76,19 @@ class InstitutionController extends Controller
      */
     public function update(InstitutionStoreRequest $request, Institution $school)
     {
-//        $school = $school;
+        //if the school code updated
         if($request->institution_code !== $school->institution_code){
-            var_dump('create');
-            $school = Institution::create($request->validated());
+            //create new school
+            $new_school = Institution::create($request->validated());
+
+            //re-attach incidents from the old school to the new
+            $school->incidents()->update(['institution_code' => $new_school->institution_code]);
+
+            //delete old school
+            $school->delete();
         }else{
-            var_dump('edit');
             Institution::where('id', $school->id)->update($request->validated());
         }
-        $school->incidents()->update(['institution_code' => $school->institution_code]);
-        var_dump('delete');
-die();
-        $school->delete();
-
-        $schools = Institution::orderBy('institution_code', 'asc')->limit(50)->get();
-
-//        return Inertia::render('Maintenance', ['status' => true, 'results' => $schools, 'page' => 'school']);
 
         return Redirect::route('maintenance.school.index');
     }

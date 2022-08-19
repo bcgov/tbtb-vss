@@ -75,11 +75,20 @@ class AreaOfAuditController extends Controller
      */
     public function update(AreaOfAuditStoreRequest $request, AreaOfAudit $areaOfAudit)
     {
-        $new_area = AreaOfAudit::create($request->validated());
-        $areaOfAudit->incidents()->update(['area_of_audit_code' => $new_area->area_of_audit_code]);
-        $areaOfAudit->caseAuditTypes()->update(['area_of_audit_code' => $new_area->area_of_audit_code]);
+        //if the area code updated
+        if($request->area_of_audit_code !== $areaOfAudit->area_of_audit_code){
+            //create new area
+            $new_area = AreaOfAudit::create($request->validated());
 
-        $areaOfAudit->delete();
+            //re-attach incidents from the old school to the new
+            $areaOfAudit->incidents()->update(['area_of_audit_code' => $new_area->area_of_audit_code]);
+            $areaOfAudit->caseAuditTypes()->update(['area_of_audit_code' => $new_area->area_of_audit_code]);
+
+            //delete old school
+            $areaOfAudit->delete();
+        }else{
+            AreaOfAudit::where('id', $areaOfAudit->id)->update($request->validated());
+        }
 
         return Redirect::route('maintenance.area-of-audit.index');
     }

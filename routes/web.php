@@ -54,8 +54,6 @@ Route::middleware(['auth', 'active'])->group(function () {
 
             Route::prefix('maintenance')->group(function () {
                 Route::resource('area-of-audit', App\Http\Controllers\AreaOfAuditController::class);
-            });
-            Route::prefix('maintenance')->group(function () {
                 Route::resource('school', App\Http\Controllers\InstitutionController::class);
             });
         });
