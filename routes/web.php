@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/logout', [App\Http\Controllers\UserController::class, 'logout'])->name('manual-logout');
+Route::post('/logout', [App\Http\Controllers\UserController::class, 'logout'])->name('logout');
 
 Route::get('/', function () {
     return redirect('/login');
 });
+Route::get('/login', [App\Http\Controllers\UserController::class, 'login'])->name('login');
+Route::get('/app-login', [App\Http\Controllers\UserController::class, 'appLogin'])->name('app-login');
 
 Route::middleware(['auth', 'active'])->group(function () {
     Route::get('/fetch-active-users', [App\Http\Controllers\UserController::class, 'activeUsers'])->name('fetch-active-users');
@@ -62,4 +64,4 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('/archive/cases', [App\Http\Controllers\IncidentController::class, 'archived'])->name('archive.cases.list');
     });
 });
-require __DIR__.'/auth.php';
+//require __DIR__.'/auth.php';
