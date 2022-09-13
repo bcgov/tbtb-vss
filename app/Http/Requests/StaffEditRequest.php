@@ -40,15 +40,9 @@ class StaffEditRequest extends FormRequest
         $user = User::find($this->id);
 
         return [
-            'user_id' => 'required|string|max:4|unique:users,user_id,'.$user->id.',id',
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
             'start_date' => 'required|string|max:255',
-            'access_type' => 'required|string|max:1|in:A,U',
+            'access_type' => 'required|string|max:1|in:A,U,S',
             'disabled' => 'required|boolean',
-            'email' => 'required|string|email|max:255|unique:users,email,'.$user->id.',id',
-            'password' => ['sometimes', 'confirmed'],
-
         ];
     }
 
@@ -73,20 +67,8 @@ class StaffEditRequest extends FormRequest
             }
         }
 
-        if (isset($this->user_id)) {
-            $this->merge(['user_id' => Str::upper($this->user_id)]);
-        }
         if (isset($this->access_type)) {
             $this->merge(['access_type' => Str::upper($this->access_type)]);
-        }
-        if (isset($this->first_name)) {
-            $this->merge(['first_name' => Str::title($this->first_name)]);
-        }
-        if (isset($this->last_name)) {
-            $this->merge(['last_name' => Str::title($this->last_name)]);
-        }
-        if (isset($this->email)) {
-            $this->merge(['email' => Str::lower($this->email)]);
         }
 
         if (isset($this->start_date)) {

@@ -1,11 +1,11 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/images/bc-logo-grey.gif": "/images/bc-logo-grey.gif",
-    "/images/bc_lg_logo.png": "/images/bc_lg_logo.png",
-    "/images/bc_no_bg.png": "/images/bc_no_bg.png",
-    "/images/bc_sq_logo.png": "/images/bc_sq_logo.png",
-    "/images/favicon.ico": "/images/favicon.ico",
-    "/images/gov_bc_logo.svg": "/images/gov_bc_logo.svg",
-    "/images/logo.png": "/images/logo.png"
+    "/js/app.js": "/js/app.js?id=34f079f7cbd2dfe82486923a023e0dd6",
+    "/css/app.css": "/css/app.css?id=64ccc47bf95a21ec7d6f60663a4ea8d6",
+    "/images/bc-logo-grey.gif": "/images/bc-logo-grey.gif?id=b69559004ca28d2fcbcd8374b909483f",
+    "/images/bc_lg_logo.png": "/images/bc_lg_logo.png?id=adf67c1e7c8b8d000645d8188bc45aca",
+    "/images/bc_no_bg.png": "/images/bc_no_bg.png?id=a9c19e97a0925b18b971e620f62de6d3",
+    "/images/bc_sq_logo.png": "/images/bc_sq_logo.png?id=c74bdc1e9922859f9d7bbe3d4a858963",
+    "/images/favicon.ico": "/images/favicon.ico?id=43a128733ec5311870baf48167389f62",
+    "/images/gov_bc_logo.svg": "/images/gov_bc_logo.svg?id=c7d7d5fbcb3b207557455dd09198f755",
+    "/images/logo.png": "/images/logo.png?id=a07b02408a0138bd442273d637c0f590"
 }
