@@ -195,19 +195,19 @@ class UserController extends Controller
             //user_id from MS Access came with only 4 characters
             //we need to use full IDIR ID and GUID
 
-            $incidents = Incident::where('auditor_user_id', $sub_user_id)->get();
+            $incidents = Incident::where('auditor_user_id', $sub_user_id)->withTrahed()->get();
             foreach ($incidents as $incident) {
                 $incident->auditor_user_id = Str::upper($idir_user['idir_username']);
                 $incident->save();
             }
 
-            $incidents = Incident::where('investigator_user_id', $sub_user_id)->get();
+            $incidents = Incident::where('investigator_user_id', $sub_user_id)->withTrahed()->get();
             foreach ($incidents as $incident) {
                 $incident->auditor_user_id = Str::upper($idir_user['idir_username']);
                 $incident->save();
             }
 
-            $comments = CaseComment::where('staff_user_id', $sub_user_id)->get();
+            $comments = CaseComment::where('staff_user_id', $sub_user_id)->withTrahed()->get();
             foreach ($comments as $comment) {
                 $comment->staff_user_id = Str::upper($idir_user['idir_username']);
                 $comment->save();
