@@ -76,7 +76,7 @@ class AreaOfAuditController extends Controller
     public function update(AreaOfAuditStoreRequest $request, AreaOfAudit $areaOfAudit)
     {
         //if the area code updated
-        if($request->area_of_audit_code !== $areaOfAudit->area_of_audit_code){
+        if ($request->area_of_audit_code !== $areaOfAudit->area_of_audit_code) {
             //create new area
             $new_area = AreaOfAudit::create($request->validated());
 
@@ -86,7 +86,7 @@ class AreaOfAuditController extends Controller
 
             //delete old school
             $areaOfAudit->delete();
-        }else{
+        } else {
             AreaOfAudit::where('id', $areaOfAudit->id)->update($request->validated());
         }
 

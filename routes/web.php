@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/logout', [App\Http\Controllers\UserController::class, 'logout'])->name('get-logout');
 Route::post('/logout', [App\Http\Controllers\UserController::class, 'logout'])->name('logout');
 
 Route::get('/', function () {

@@ -48,8 +48,9 @@ class InstitutionStoreRequest extends FormRequest
     {
         $school_code_rule = 'required|size:4|unique:institutions,institution_code';
         if (isset($this->id)) {
-            $school_code_rule = 'required|size:4|unique:institutions,institution_code,' . $this->id . ',id';
+            $school_code_rule = 'required|size:4|unique:institutions,institution_code,'.$this->id.',id';
         }
+
         return [
             'institution_code' => $school_code_rule,
             'institution_name' => 'required',

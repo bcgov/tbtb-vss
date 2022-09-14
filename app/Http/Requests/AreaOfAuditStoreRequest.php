@@ -41,7 +41,7 @@ class AreaOfAuditStoreRequest extends FormRequest
     {
         $audit_code_rule = 'required|max:3|unique:area_of_audits,area_of_audit_code';
         if (isset($this->id)) {
-            $audit_code_rule = 'required|max:3|unique:area_of_audits,area_of_audit_code,' . $this->id . ',id';
+            $audit_code_rule = 'required|max:3|unique:area_of_audits,area_of_audit_code,'.$this->id.',id';
         }
 
         return [

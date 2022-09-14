@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->string('idir_user_guid')->nullable();
 
-                $table->dropUnique('vss_users_email_unique');
+            $table->dropUnique('vss_users_email_unique');
         });
     }
 

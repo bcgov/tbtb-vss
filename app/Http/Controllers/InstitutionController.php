@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\InstitutionStoreRequest;
 use App\Models\Institution;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -77,7 +76,7 @@ class InstitutionController extends Controller
     public function update(InstitutionStoreRequest $request, Institution $school)
     {
         //if the school code updated
-        if($request->institution_code !== $school->institution_code){
+        if ($request->institution_code !== $school->institution_code) {
             //create new school
             $new_school = Institution::create($request->validated());
 
@@ -86,7 +85,7 @@ class InstitutionController extends Controller
 
             //delete old school
             $school->delete();
-        }else{
+        } else {
             Institution::where('id', $school->id)->update($request->validated());
         }
 
