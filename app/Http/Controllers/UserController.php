@@ -216,7 +216,7 @@ class UserController extends Controller
             //disable legacy account
             $legacy_idir->disabled = true;
             $legacy_idir->deleted_at = date('Y-m-d H:i:s', strtotime('now'));
-            $legacy_idir->user_id = $legacy_idir->user_id . '-DELETED';
+            $legacy_idir->user_id = mt_rand() . '-' . $legacy_idir->user_id . '-DELETED';
             $legacy_idir->save();
         }
     }
