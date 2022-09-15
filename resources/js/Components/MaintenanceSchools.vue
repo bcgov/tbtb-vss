@@ -187,8 +187,6 @@ export default {
                 institution_type_code: '',
                 id: '',
             }),
-            newModal: '',
-            editModal: '',
 
             filterResults: '',
             filterKey: '',
@@ -226,7 +224,7 @@ export default {
             this.editForm.institution_type_code = row.institution_type_code;
             this.editForm.id = row.id;
 
-            this.editModal.show();
+            $("#editSchoolModal").modal('show');
 
         },
         editSchool: function ()
@@ -234,17 +232,18 @@ export default {
             this.editForm.put(route('maintenance.school.update', [this.editForm.id]), {
                 onSuccess: () => {
                     this.showSuccessAlert();
-                    this.editForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code');
+                    this.editForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code', 'id');
 
-                    this.editModal.hide();
+                    $("#editSchoolModal").modal('hide');
 
+                    Inertia.reload();
                 },
                 onFailure: () => {
                 },
                 onError: () => {
                     this.showFailAlert();
                 },
-                preserveState: false
+                preserveState: true
             });
         },
         newSchool: function ()
@@ -255,9 +254,7 @@ export default {
                     this.showSuccessAlert();
                     this.newForm.reset('institution_code', 'institution_name', 'institution_location_code', 'institution_type_code');
 
-                    let modalToggle = document.getElementById('newSchoolModal');
-                    let modal = bootstrap.Modal.getInstance(modalToggle)
-                    modal.toggle();
+                    $("#newSchoolModal").modal('hide');
 
                 },
                 onFailure: () => {
@@ -265,7 +262,7 @@ export default {
                 onError: () => {
                     this.showFailAlert();
                 },
-                preserveState: false
+                preserveState: true
 
             });
         },
@@ -287,12 +284,16 @@ export default {
         },
     },
     watch: {
+        results: {
+            handler(newValue, oldValue) {
+                this.filterResults = newValue;
+            },
+            deep: true
+        }
     },
     computed: {
     },
     mounted() {
-        this.newModal = new bootstrap.Modal(document.getElementById('newSchoolModal'));
-        this.editModal = new bootstrap.Modal(document.getElementById('editSchoolModal'));
         this.filterResults = this.results;
     }
 }

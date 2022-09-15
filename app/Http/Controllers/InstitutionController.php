@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\InstitutionStoreRequest;
 use App\Models\Institution;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -71,15 +70,24 @@ class InstitutionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \App\Http\Requests\InstitutionStoreRequest  $request
-     * @param  \App\Models\Institution  $institution
+     * @param  \App\Models\Institution  $school
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(InstitutionStoreRequest $request, Institution $institution)
+    public function update(InstitutionStoreRequest $request, Institution $school)
     {
-        $new_school = Institution::create($request->validated());
-        $institution->incidents()->update(['institution_code' => $new_school->institution_code]);
+        //if the school code updated
+        if ($request->institution_code !== $school->institution_code) {
+            //create new school
+            $new_school = Institution::create($request->validated());
 
-        $institution->delete();
+            //re-attach incidents from the old school to the new
+            $school->incidents()->update(['institution_code' => $new_school->institution_code]);
+
+            //delete old school
+            $school->delete();
+        } else {
+            Institution::where('id', $school->id)->update($request->validated());
+        }
 
         return Redirect::route('maintenance.school.index');
     }

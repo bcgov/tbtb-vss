@@ -72,37 +72,37 @@ objects:
                   valueFrom:
                     secretKeyRef:
                       key: superuser-username
-                      name: ${NAME}-patroni-creds
+                      name: ${NAME}-creds
                 - name: PATRONI_SUPERUSER_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       key: superuser-password
-                      name: ${NAME}-patroni-creds
+                      name: ${NAME}-creds
                 - name: PATRONI_REPLICATION_USERNAME
                   valueFrom:
                     secretKeyRef:
                       key: replication-username
-                      name: ${NAME}-patroni-creds
+                      name: ${NAME}-creds
                 - name: PATRONI_REPLICATION_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       key: replication-password
-                      name: ${NAME}-patroni-creds
+                      name: ${NAME}-creds
                 - name: APP_USER
                   valueFrom:
                     secretKeyRef:
                       key: database-user
-                      name: ${NAME}-patroni-creds
+                      name: ${NAME}-creds
                 - name: APP_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       key: database-password
-                      name: ${NAME}-patroni-creds
+                      name: ${NAME}-creds
                 - name: APP_DATABASE
                   valueFrom:
                     secretKeyRef:
                       key: database-name
-                      name: ${NAME}-patroni-creds
+                      name: ${NAME}-creds
                 - name: PATRONI_SCOPE
                   value: ${NAME}
                 - name: PATRONI_NAME

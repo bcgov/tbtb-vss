@@ -6,7 +6,6 @@ use App\Http\Requests\StaffEditRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -46,19 +45,11 @@ class MaintenanceController extends Controller
      */
     public function staffEdit(StaffEditRequest $request, User $user): \Illuminate\Http\RedirectResponse
     {
-        if (Auth::user()->access_type !== 'U') {
-            $user->user_id = $request->user_id;
-            $user->first_name = $request->first_name;
-            $user->last_name = $request->last_name;
+        if (Auth::user()->access_type === 'A' && Auth::user()->disabled === false) {
             $user->start_date = $request->start_date;
             $user->end_date = $request->end_date;
             $user->access_type = $request->access_type;
             $user->disabled = $request->disabled;
-            $user->email = $request->email;
-
-            if (! is_null($request->password)) {
-                $user->password = Hash::make($request->password);
-            }
             $user->save();
         }
 

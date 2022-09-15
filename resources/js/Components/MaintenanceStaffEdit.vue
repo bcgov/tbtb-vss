@@ -11,22 +11,22 @@
 
                 <div>
                     <BreezeLabel for="user_id" value="User ID" />
-                    <BreezeInput id="user_id" type="text" class="mt-1 block w-full" v-model="form.user_id" required />
+                    <BreezeInput id="user_id" type="text" class="mt-1 block w-full bg-indigo-50" v-model="form.user_id" disabled="disabled" />
                 </div>
 
                 <div class="mt-4">
                     <BreezeLabel for="first_name" value="First Name" />
-                    <BreezeInput id="first_name" type="text" class="mt-1 block w-full" v-model="form.first_name" required autofocus autocomplete="first_name" />
+                    <BreezeInput id="first_name" type="text" class="mt-1 block w-full bg-indigo-50" v-model="form.first_name" disabled="disabled" />
                 </div>
 
                 <div class="mt-4">
                     <BreezeLabel for="last_name" value="Last Name" />
-                    <BreezeInput id="last_name" type="text" class="mt-1 block w-full" v-model="form.last_name" required autocomplete="last_name" />
+                    <BreezeInput id="last_name" type="text" class="mt-1 block w-full bg-indigo-50" v-model="form.last_name" disabled="disabled" />
                 </div>
 
                 <div class="mt-4">
                     <BreezeLabel for="email" value="Email" />
-                    <BreezeInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required />
+                    <BreezeInput id="email" type="email" class="mt-1 block w-full bg-indigo-50" v-model="form.email" disabled="disabled" />
                 </div>
 
                 <div class="mt-4">
@@ -53,16 +53,6 @@
                 <div class="mt-4">
                     <BreezeLabel for="disabled_date" value="Disabled Date" />
                     <BreezeInput id="disabled_date" type="date" class="mt-1 block w-full" placeholder="yyyy-mm-dd" aria-placeholder="yyyy-mm-dd" v-model="form.end_date" />
-                </div>
-
-                <div class="mt-4">
-                    <BreezeLabel for="password" value="Password" />
-                    <BreezeInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" autocomplete="new-password" />
-                </div>
-
-                <div class="mt-4">
-                    <BreezeLabel for="password_confirmation" value="Confirm Password" />
-                    <BreezeInput id="password_confirmation" type="password" class="mt-1 block w-full" v-model="form.password_confirmation" autocomplete="new-password" />
                 </div>
 
             </div>
