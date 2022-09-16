@@ -15,7 +15,31 @@ defineProps({
 
 
 </script>
-
+<style scoped>
+.btn-bc-gov{
+    background-image: none;
+    background-color: #003366;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    max-width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.btn-bc-gov:hover{
+    background: #ededed !important;
+    background-image: none !important;
+    text-decoration: underline !important;
+    opacity: 0.80 !important;
+    color: #036 !important;
+}
+</style>
 <template>
     <BreezeGuestLayout>
         <Head title="Log in" />
@@ -25,12 +49,11 @@ defineProps({
             {{ status }}
         </div>
 
-            <div class="lead text-center">SABC - VSS</div>
 
-            <div class="text-center">
-                <a :href="route('app-login')" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:shadow-outline-gray transition ease-in-out duration-150 ml-4">
-                    Log in
-                </a>
-            </div>
+        <div class="">
+            <p>Authenticate to <strong>VSS</strong> with:</p>
+            <hr/>
+            <a :href="route('app-login')" class="btn btn-bc-gov">IDIR</a>
+        </div>
     </BreezeGuestLayout>
 </template>
