@@ -10,15 +10,23 @@ export BUILD_NAMESPACE := $(or $(BUILD_NAMESPACE), 06cb9b-tools)
 export DOMAIN := $(or $(DOMAIN), apps.silver.devops.gov.bc.ca)
 export HOST_PREFIX := $(or $(HOST_PREFIX), tbtb-vss)
 export SOURCE_REPOSITORY_BRANCH := $(or $(SOURCE_REPOSITORY_BRANCH), dev)
+export BACKUP_POSTGRESQL_APP_NAME := $(or $(BACKUP_POSTGRESQL_APP_NAME), tbtb-vss-patroni-backup)
+export BACKUP_CONFIGMAP_NAME := $(or $(BACKUP_CONFIGMAP_NAME), tbtb-vss-patroni-backup-conf)
 
 #if
 ifeq ($(SOURCE_REPOSITORY_BRANCH),dev)
 define OC_USER_ID
 "1009370000"
 endef
+define PARAM_FILE
+"dev.env"
+endef
 else
 define OC_USER_ID
 "1009380000"
+endef
+define PARAM_FILE
+"prod.env"
 endef
 endif
 
@@ -95,7 +103,7 @@ deploy-web:
 	@echo "+\n++ FINISHED Deploying Web\n+"
 
 build-patroni:
-	@oc -n $(BUILD_NAMESPACE) process -f patroni-build.yaml  -p NAME=tbtb-vss-patroni -p TAG="12-latest" -p BASE_IMAGE_NAME=postgres -p BASE_IMAGE_TAG="12" -p SOURCE_REPOSITORY_URL="https://github.com/BCDevOps/platform-services.git" -p SOURCE_REPOSITORY_REF="master" -p SOURCE_CONTEXT_DIR="apps/pgsql/patroni/docker" | oc -n $(BUILD_NAMESPACE) apply -f -
+	@oc -n $(BUILD_NAMESPACE) process -f patroni-build.yaml -p NAME=tbtb-vss-patroni -p TAG="12-latest" -p BASE_IMAGE_NAME=postgres -p BASE_IMAGE_TAG="12" -p SOURCE_REPOSITORY_URL="https://github.com/BCDevOps/platform-services.git" -p SOURCE_REPOSITORY_REF="master" -p SOURCE_CONTEXT_DIR="apps/pgsql/patroni/docker" | oc -n $(BUILD_NAMESPACE) apply -f -
 	@oc -n $(BUILD_NAMESPACE) start-build bc/tbtb-vss-patroni --wait
 
 deploy-patroni:

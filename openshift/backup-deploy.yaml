@@ -1,24 +1,24 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: ${NAME}-deployment-template
+  name: ${BACKUP_POSTGRESQL_APP_NAME}-deployment-template
 objects:
   - kind: NetworkPolicy
     apiVersion: networking.k8s.io/v1
     metadata:
-      name: ${NAME}
+      name: ${BACKUP_POSTGRESQL_APP_NAME}
       labels:
-        name: ${NAME}
+        name: ${BACKUP_POSTGRESQL_APP_NAME}
         app: ${APP_NAME}
         env: ${TAG_NAME}
     spec:
       description: |
-        Allow the ${NAME} to access databases in this namespace.
+        Allow the ${BACKUP_POSTGRESQL_APP_NAME} to access databases in this namespace.
       ingress:
         - from:
             - podSelector:
                 matchLabels:
-                  name: ${NAME}
+                  name: ${BACKUP_POSTGRESQL_APP_NAME}
                   app: ${APP_NAME}
                   role: ${ROLE}
                   env: ${TAG_NAME}
@@ -35,7 +35,7 @@ objects:
     metadata:
       name: ${BACKUP_VOLUME_NAME}
       labels:
-        name: ${NAME}
+        name: ${BACKUP_POSTGRESQL_APP_NAME}
         app: ${APP_NAME}
         role: ${ROLE}
         env: ${TAG_NAME}
@@ -52,7 +52,7 @@ objects:
     metadata:
       name: ${VERIFICATION_VOLUME_NAME}
       labels:
-        name: ${NAME}
+        name: ${BACKUP_POSTGRESQL_APP_NAME}
         app: ${APP_NAME}
         role: ${ROLE}
         env: ${TAG_NAME}
@@ -67,9 +67,9 @@ objects:
   - kind: Secret
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${BACKUP_POSTGRESQL_APP_NAME}
       labels:
-        name: ${NAME}
+        name: ${BACKUP_POSTGRESQL_APP_NAME}
         app: ${APP_NAME}
         role: ${ROLE}
         env: ${TAG_NAME}
@@ -83,7 +83,7 @@ objects:
     metadata:
       name: ${FTP_SECRET_KEY}
       labels:
-        name: ${NAME}
+        name: ${BACKUP_POSTGRESQL_APP_NAME}
         app: ${APP_NAME}
         role: ${ROLE}
         env: ${TAG_NAME}
@@ -97,9 +97,9 @@ objects:
   - kind: DeploymentConfig
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${BACKUP_POSTGRESQL_APP_NAME}
       labels:
-        name: ${NAME}
+        name: ${BACKUP_POSTGRESQL_APP_NAME}
         app: ${APP_NAME}
         role: ${ROLE}
         env: ${TAG_NAME}
@@ -113,19 +113,19 @@ objects:
           imageChangeParams:
             automatic: true
             containerNames:
-              - ${NAME}
+              - ${BACKUP_POSTGRESQL_APP_NAME}
             from:
               kind: ImageStreamTag
               namespace: ${IMAGE_NAMESPACE}
               name: ${SOURCE_IMAGE_NAME}:${TAG_NAME}
       replicas: 1
       selector:
-        name: ${NAME}
+        name: ${BACKUP_POSTGRESQL_APP_NAME}
       template:
         metadata:
-          name: ${NAME}
+          name: ${BACKUP_POSTGRESQL_APP_NAME}
           labels:
-            name: ${NAME}
+            name: ${BACKUP_POSTGRESQL_APP_NAME}
             app: ${APP_NAME}
             role: ${ROLE}
             env: ${TAG_NAME}
@@ -137,14 +137,14 @@ objects:
             - name: ${VERIFICATION_VOLUME_NAME}
               persistentVolumeClaim:
                 claimName: ${VERIFICATION_VOLUME_NAME}
-            - name: ${NAME}-config-volume
+            - name: ${BACKUP_POSTGRESQL_APP_NAME}-config-volume
               configMap:
                 name: ${CONFIG_MAP_NAME}
                 items:
                   - key: ${CONFIG_FILE_NAME}
                     path: ${CONFIG_FILE_NAME}
           containers:
-            - name: ${NAME}
+            - name: ${BACKUP_POSTGRESQL_APP_NAME}
               image: ""
               ports: []
               env:
@@ -170,12 +170,12 @@ objects:
                   value: ${MONGODB_AUTHENTICATION_DATABASE}
                 - name: TABLE_SCHEMA
                   value: ${TABLE_SCHEMA}
-                - name: ${DATABASE_SERVER_NAME}_USER
+                - name: DATABASE_USER
                   valueFrom:
                     secretKeyRef:
                       name: ${DATABASE_SECRET_NAME}
                       key: ${DATABASE_SECRET_USER_KEY_NAME}
-                - name: ${DATABASE_SERVER_NAME}_PASSWORD
+                - name: DATABASE_PASSWORD
                   valueFrom:
                     secretKeyRef:
                       name: ${DATABASE_SECRET_NAME}
@@ -198,7 +198,7 @@ objects:
                 - name: WEBHOOK_URL
                   valueFrom:
                     secretKeyRef:
-                      name: ${NAME}
+                      name: ${BACKUP_POSTGRESQL_APP_NAME}
                       key: webhook-url
                 - name: ENVIRONMENT_FRIENDLY_NAME
                   value: ${ENVIRONMENT_FRIENDLY_NAME}
@@ -216,7 +216,7 @@ objects:
                   mountPath: ${BACKUP_DIR}
                 - name: ${VERIFICATION_VOLUME_NAME}
                   mountPath: ${VERIFICATION_VOLUME_MOUNT_PATH}
-                - name: ${NAME}-config-volume
+                - name: ${BACKUP_POSTGRESQL_APP_NAME}-config-volume
                   mountPath: ${CONFIG_MOUNT_PATH}${CONFIG_FILE_NAME}
                   subPath: ${CONFIG_FILE_NAME}
       resources:
@@ -227,7 +227,7 @@ objects:
           cpu: '50m'
           memory: '256Mi'
 parameters:
-  - name: NAME
+  - name: BACKUP_POSTGRESQL_APP_NAME
     displayName: Name
     description: The name assigned to all of the resources.  Use 'backup-{database name}' depending on your database provider
     required: true
