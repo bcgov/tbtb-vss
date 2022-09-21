@@ -13,4 +13,8 @@ VSS - Verification Statistics System
 Components used:
 - Openshift hosting
 - Laravel framework
-- Patroni for database
+- Patroni database for app
+- Patroni database for backups
+- SSO (Single Sign-On) App for authentication - only IDIR
+- SonarCloud Scanner 
+- 
