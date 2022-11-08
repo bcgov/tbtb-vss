@@ -31,7 +31,6 @@
                             <div class="card-header">
                                 VSS Active Cases
                                 <Link :href="route('cases.create')" class="btn btn-sm btn-success float-end">New Case</Link>
-                                <!--                                <Link :href="route('archive.cases.list')" class="btn btn-sm btn-dark float-end">Archives</Link>-->
                             </div>
                             <div class="card-body">
                                 <div v-if="results != null && results.data.length > 0" class="table-responsive pb-3">
@@ -41,7 +40,7 @@
                                         </thead>
                                         <tbody>
                                         <tr v-for="(row, i) in results.data">
-                                            <th scope="row"><Link :href="route('case-funding.show', [row.id])">{{ row.sin }}</Link></th>
+                                            <td><Link :href="route('case-funding.show', [row.id])">{{ row.sin }}</Link></td>
                                             <td>{{ row.first_name }} {{ row.last_name}}</td>
                                             <td>{{ row.institution_code }}<br/><small v-if="row.institution != null">{{ row.institution.institution_name }}</small></td>
                                             <td>{{ row.open_date }}</td>

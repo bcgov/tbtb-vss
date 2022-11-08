@@ -31,6 +31,10 @@ class IncidentController extends Controller
                 ->orWhere('investigator_user_id', request()->filter_user);
         }
 
+        if (request()->filter_status !== null) {
+            $cases = $cases->where('incident_status', request()->filter_status);
+        }
+
         if (request()->filter_fname !== null) {
             $cases = $cases->where('first_name', 'ILIKE', request()->filter_fname);
         }

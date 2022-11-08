@@ -21,7 +21,7 @@ nav.navbar{
         <div class="container-fluid">
             <Link class="navbar-brand" :href="route('dashboard')">
                 <BreezeApplicationLogo width="126" height="34" class="d-inline-block align-text-top me-3" />
-                VSS - Verification Statistics System
+                <span class="d-none d-lg-inline">VSS - Verification Statistics System</span>
             </Link>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">

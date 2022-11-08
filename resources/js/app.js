@@ -3,9 +3,8 @@ import './bootstrap';
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/inertia-vue3';
 import { InertiaProgress } from '@inertiajs/progress';
-// import router from './router';
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'VSS';
 
 
 
@@ -17,7 +16,6 @@ createInertiaApp({
 
         return createApp({ render: () => h(app, props) })
             .use(plugin)
-            // .use(router)
             .mixin({ methods: { route } })
             .mount(el);
     },

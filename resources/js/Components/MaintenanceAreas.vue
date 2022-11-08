@@ -91,14 +91,12 @@
                     <tr>
                         <th scope="col">Audit Code</th>
                         <th scope="col">Description</th>
-                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(row, i) in results">
-                        <th scope="row">{{ row.area_of_audit_code }}</th>
+                        <th scope="row"><button type="button" class="btn btn-link" @click="editRow(row,i)">{{ row.area_of_audit_code }}</button></th>
                         <td>{{ row.description }}</td>
-                        <td class="text-end" @click="editRow(row,i)"><button type="button" class="btn btn-sm border border-transparent focus:outline-none"><em class="bi bi-pencil"></em></button></td>
                     </tr>
                     </tbody>
                 </table>

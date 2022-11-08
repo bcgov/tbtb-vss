@@ -115,16 +115,14 @@
                         </th>
                         <th scope="col">Location Code</th>
                         <th scope="col">Location Type</th>
-                        <th scope="col"></th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr v-for="(row, i) in filterResults">
-                        <th scope="row">{{ row.institution_code }}</th>
+                        <th scope="row"><button @click="editRow(row,i)" type="button" class="btn btn-sm btn-link">{{ row.institution_code }}</button></th>
                         <td>{{ row.institution_name }}</td>
                         <td>{{ row.institution_location_code }}</td>
                         <td>{{ row.institution_type_code }}</td>
-                        <td class="text-end" @click="editRow(row,i)"><button type="button" class="btn btn-sm border border-transparent focus:outline-none"><em class="bi bi-pencil"></em></button></td>
                     </tr>
                     </tbody>
                 </table>
