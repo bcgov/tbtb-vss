@@ -2,84 +2,63 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\NatureOffenceStoreRequest;
 use App\Models\NatureOffence;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
 
 class NatureOffenceController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Inertia\Response
      */
     public function index()
     {
-        //
-    }
+        $offences = NatureOffence::orderBy('nature_code', 'asc')->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return Inertia::render('Maintenance', ['status' => true, 'results' => $offences, 'page' => 'nature-offence']);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  NatureOffenceStoreRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(NatureOffenceStoreRequest $request)
     {
-        //
-    }
+        NatureOffence::create($request->validated());
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\NatureOffence  $natureOffence
-     * @return \Illuminate\Http\Response
-     */
-    public function show(NatureOffence $natureOffence)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\NatureOffence  $natureOffence
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(NatureOffence $natureOffence)
-    {
-        //
+        return Redirect::route('maintenance.nature-offence.index');
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  NatureOffenceStoreRequest  $request
      * @param  \App\Models\NatureOffence  $natureOffence
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, NatureOffence $natureOffence)
+    public function update(NatureOffenceStoreRequest $request, NatureOffence $natureOffence)
     {
-        //
+        //if the nature offence code updated
+        if ($request->nature_code !== $natureOffence->nature_code) {
+            //create new area
+            $new_offence = NatureOffence::create($request->validated());
+
+            //re-attach incidents from the old school to the new
+            $natureOffence->offences()->update(['nature_code' => $new_offence->nature_code]);
+
+            //delete old school
+            $natureOffence->delete();
+        } else {
+            NatureOffence::where('id', $natureOffence->id)->update($request->validated());
+        }
+
+        return Redirect::route('maintenance.nature-offence.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\NatureOffence  $natureOffence
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(NatureOffence $natureOffence)
-    {
-        //
-    }
 }
