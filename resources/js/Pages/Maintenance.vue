@@ -27,6 +27,7 @@
                         </div>
                     </div>
                     <div class="col-md-8 mt-3">
+                        <MaintenanceReferralSources v-if="page === 'referral-source'" :results="results"></MaintenanceReferralSources>
                         <MaintenanceAreas v-if="page === 'area-of-audit'" :results="results"></MaintenanceAreas>
                         <MaintenanceNatureOffences v-if="page === 'nature-offence'" :results="results"></MaintenanceNatureOffences>
                         <MaintenanceSchools v-if="page === 'school'" :results="results"></MaintenanceSchools>
@@ -49,10 +50,12 @@ import MaintenanceSchools from "@/Components/MaintenanceSchools";
 import MaintenanceStaff from "@/Components/MaintenanceStaff";
 import MaintenanceStaffEdit from "@/Components/MaintenanceStaffEdit";
 import MaintenanceNatureOffences from "@/Components/MaintenanceNatureOffenses";
+import MaintenanceReferralSources from "@/Components/MaintenanceReferralSources";
 
 export default {
     name: 'Maintenance',
     components: {
+        MaintenanceReferralSources,
         MaintenanceNatureOffences,
         MaintenanceMenu,
         BreezeAuthenticatedLayout, Head, Link, MaintenanceAreas, MaintenanceSchools, MaintenanceStaff, MaintenanceStaffEdit
