@@ -50,7 +50,6 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::post('/reports', [App\Http\Controllers\ReportController::class, 'searchReports'])->name('reports-search');
 
         Route::name('maintenance.')->group(function () {
-//            Route::get('/maintenance/schools', [App\Http\Controllers\MaintenanceController::class, 'staffList'])->name('schools.list');
             Route::get('/maintenance/staff', [App\Http\Controllers\MaintenanceController::class, 'staffList'])->name('staff.list');
             Route::get('/maintenance/staff/{user}', [App\Http\Controllers\MaintenanceController::class, 'staffShow'])->name('staff.show');
             Route::post('/maintenance/staff/{user}', [App\Http\Controllers\MaintenanceController::class, 'staffEdit'])->name('staff.edit');
@@ -68,4 +67,3 @@ Route::middleware(['auth', 'active'])->group(function () {
         Route::get('/archive/cases', [App\Http\Controllers\IncidentController::class, 'archived'])->name('archive.cases.list');
     });
 });
-//require __DIR__.'/auth.php';

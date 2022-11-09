@@ -20,5 +20,4 @@ class SanctionType extends Model
     {
         return $this->hasMany('App\Models\CaseSanctionType', 'incident_id', 'incident_id');
     }
-
 }

@@ -56,6 +56,5 @@ class ReferralSourceStoreRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-
     }
 }

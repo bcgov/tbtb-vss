@@ -63,10 +63,9 @@ class SanctionTypeStoreRequest extends FormRequest
     protected function prepareForValidation()
     {
         //if we are creating new record
-        if (!isset($this->id)) {
+        if (! isset($this->id)) {
             $last = SanctionType::select('sanction_code')->orderBy('sanction_code', 'desc')->first();
             $this->merge(['sanction_code' => $last->sanction_code + 1]);
         }
-
     }
 }

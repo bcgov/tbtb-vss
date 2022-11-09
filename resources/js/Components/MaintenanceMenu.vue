@@ -6,7 +6,7 @@
         <Link :href="route('maintenance.nature-offence.index')" class="list-group-item list-group-item-action" :class="page === 'nature-offence' ? 'active' : ''">Nature of Offence</Link>
         <Link :href="route('maintenance.referral-source.index')" class="list-group-item list-group-item-action" :class="page === 'referral-source' ? 'active' : ''">Referral Sources</Link>
         <Link :href="route('maintenance.sanction-type.index')" class="list-group-item list-group-item-action" :class="page === 'sanction-type' ? 'active' : ''">Sanction Types</Link>
-        <a href="/maintenance/staff" class="list-group-item list-group-item-action" :class="(page === 'staff' || page === 'staff-edit') ? 'active' : ''">Staff</a>
+        <Link :href="route('maintenance.staff.list')" class="list-group-item list-group-item-action" :class="page === 'staff' ? 'active' : ''">Staff</Link>
     </div>
 </template>
 <script setup>

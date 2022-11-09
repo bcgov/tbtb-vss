@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\NatureOffenceStoreRequest;
 use App\Models\NatureOffence;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -60,5 +59,4 @@ class NatureOffenceController extends Controller
 
         return Redirect::route('maintenance.nature-offence.index');
     }
-
 }

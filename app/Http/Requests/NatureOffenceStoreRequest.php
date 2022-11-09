@@ -56,6 +56,5 @@ class NatureOffenceStoreRequest extends FormRequest
      */
     protected function prepareForValidation()
     {
-
     }
 }

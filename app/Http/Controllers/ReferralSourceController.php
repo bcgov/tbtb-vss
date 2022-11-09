@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ReferralSourceStoreRequest;
 use App\Models\ReferralSource;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -48,5 +47,4 @@ class ReferralSourceController extends Controller
 
         return Redirect::route('maintenance.referral-source.index');
     }
-
 }
