@@ -57,6 +57,7 @@ Route::middleware(['auth', 'active'])->group(function () {
 
             Route::prefix('maintenance')->group(function () {
                 Route::resource('area-of-audit', App\Http\Controllers\AreaOfAuditController::class);
+                Route::resource('sanction-type', App\Http\Controllers\SanctionTypeController::class);
                 Route::resource('nature-offence', App\Http\Controllers\NatureOffenceController::class);
                 Route::resource('referral-source', App\Http\Controllers\ReferralSourceController::class);
                 Route::resource('school', App\Http\Controllers\InstitutionController::class);

@@ -29,6 +29,7 @@
                     <div class="col-md-8 mt-3">
                         <MaintenanceReferralSources v-if="page === 'referral-source'" :results="results"></MaintenanceReferralSources>
                         <MaintenanceAreas v-if="page === 'area-of-audit'" :results="results"></MaintenanceAreas>
+                        <MaintenanceSanctionTypes v-if="page === 'sanction-type'" :results="results"></MaintenanceSanctionTypes>
                         <MaintenanceNatureOffences v-if="page === 'nature-offence'" :results="results"></MaintenanceNatureOffences>
                         <MaintenanceSchools v-if="page === 'school'" :results="results"></MaintenanceSchools>
 
@@ -51,10 +52,12 @@ import MaintenanceStaff from "@/Components/MaintenanceStaff";
 import MaintenanceStaffEdit from "@/Components/MaintenanceStaffEdit";
 import MaintenanceNatureOffences from "@/Components/MaintenanceNatureOffenses";
 import MaintenanceReferralSources from "@/Components/MaintenanceReferralSources";
+import MaintenanceSanctionTypes from "@/Components/MaintenanceSanctionTypes";
 
 export default {
     name: 'Maintenance',
     components: {
+        MaintenanceSanctionTypes,
         MaintenanceReferralSources,
         MaintenanceNatureOffences,
         MaintenanceMenu,
