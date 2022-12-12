@@ -1,3 +1,3 @@
 <template>
-    <img src="/images/bc_sq_logo.png">
+    <img src="/images/2022/BC_PSEFS_H_CMYK_pos.png">
 </template>
