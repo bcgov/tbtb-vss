@@ -370,17 +370,17 @@ parameters:
     displayName: Number of Daily Backups to Retain
     description: The number of daily backup files to be retained.  Used for the `rolling` backup strategy.
     required: false
-    value: ""
+    value: "31"
   - name: WEEKLY_BACKUPS
     displayName: Number of Weekly Backups to Retain
     description: The number of weekly backup files to be retained.  Used for the `rolling` backup strategy.
     required: false
-    value: ""
+    value: "4"
   - name: MONTHLY_BACKUPS
     displayName: Number of Monthly Backups to Retain
     description: The number of monthly backup files to be retained.  Used for the `rolling` backup strategy.
     required: false
-    value: ""
+    value: "14"
   - name: BACKUP_PERIOD
     displayName: Period (d,m,s) between backups in a format used by the sleep command
     description: Used for backward compatibility only.  Ignored when using the recommended `backup.conf` and cron backup strategy.  Period (d,m,s) between backups in a format used by the sleep command
