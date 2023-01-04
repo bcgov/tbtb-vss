@@ -4,7 +4,7 @@ on:
   schedule:
     # Run every day at 12:45 PM
     - cron: "55 13 * * *"
-    branches:
+    - branches:
       - dev
 
 jobs:
