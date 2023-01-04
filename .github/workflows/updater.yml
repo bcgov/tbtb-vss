@@ -3,11 +3,7 @@ name: Update Laravel and Vue
 on:
   schedule:
     # Run every day at 12:45 PM
-    - cron: "45 12 * * *"
-  branches:
-    # Only run on the "dev" and "master" branches
-    - dev
-    - master
+    - cron: "30 13 * * *"
 
 jobs:
   # Print variables for logging and debugging purposes
