@@ -1,4 +1,4 @@
-name: Update Laravel + Vue.js App
+name: Update Laravel and Vue
 
 on:
   schedule:
