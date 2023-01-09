@@ -2,10 +2,8 @@ name: Update Laravel and Vue on DEV env
 
 on:
   schedule:
-    # Run every day at 2:5 PM
-    #- cron: "05 14 * * *"
-    # at every 30 min
-    - cron: "*/30 * * * *"
+    # Run Sunday at midnight
+    - cron: "59 23 * * SUN"
 
 jobs:
   # Print variables for logging and debugging purposes
