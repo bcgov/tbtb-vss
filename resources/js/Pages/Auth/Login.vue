@@ -51,7 +51,7 @@ defineProps({
 
 
         <div class="">
-            <p>Authenticate to <strong>VSS</strong> with:</p>
+            <p>Authenticate with:</p>
             <hr/>
             <a :href="route('app-login')" class="btn btn-bc-gov">IDIR</a>
         </div>

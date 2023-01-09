@@ -22,16 +22,6 @@ class AreaOfAuditController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\AreaOfAuditStoreRequest  $request
@@ -42,28 +32,6 @@ class AreaOfAuditController extends Controller
         AreaOfAudit::create($request->validated());
 
         return Redirect::route('maintenance.area-of-audit.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\NatureOffence  $natureOffence
-     * @return \Illuminate\Http\Response
-     */
-    public function show(AreaOfAudit $areaOfAudit)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\AreaOfAudit  $areaOfAudit
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(AreaOfAudit $areaOfAudit)
-    {
-        //
     }
 
     /**

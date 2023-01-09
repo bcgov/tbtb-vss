@@ -16,7 +16,7 @@
                     </thead>
                     <tbody>
                     <tr v-for="(row, i) in Object.entries(results)">
-                        <th scope="row">{{row[0]}}</th>
+                        <td>{{row[0]}}</td>
                         <template v-for="k in Object.keys(results['Age and Eligibility'])">
                             <td v-if="k !== 'TOTAL'">{{ row[1][k] }}</td>
                         </template>
@@ -30,21 +30,11 @@
     </div>
 </template>
 <script>
-import {computed} from "vue";
 
-import BreezeAuthenticatedLayout from '@/Layouts/Authenticated.vue';
-import { Head, Link, useForm } from '@inertiajs/inertia-vue3';
-import CaseSearchBox from '@/Components/CaseSearch.vue';
-import BreezeLabel from '@/Components/Label.vue';
-import BreezeInput from '@/Components/Input.vue';
-import BreezeSelect from '@/Components/Select.vue';
-import NavLink from "@/Components/NavLink";
 
 export default {
     name: 'ReportGrid',
     components: {
-        NavLink,
-        BreezeAuthenticatedLayout, CaseSearchBox, Head, Link, BreezeInput, BreezeSelect, BreezeLabel
     },
     props: {
         results: Object,

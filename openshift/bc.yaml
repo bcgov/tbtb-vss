@@ -120,3 +120,23 @@ parameters:
   - name: OC_USER_ID
     required: true
     description: openshift env default user_id
+
+  - name: LABEL_NAME
+    required: false
+  - name: IMAGE_TAG
+    required: false
+  - name: NAMESPACE
+    required: false
+
+  - name: CPU_REQUESTS
+    required: true
+  - name: CPU_LIMITS
+    required: true
+  - name: MEM_REQUESTS
+    required: true
+  - name: MEM_LIMITS
+    required: true
+  - name: MIN_REPLICAS
+    required: true
+  - name: MAX_REPLICAS
+    required: true

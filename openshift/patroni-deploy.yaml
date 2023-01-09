@@ -9,6 +9,42 @@ labels:
   project: ${PROJECT}
   service: ${NAME}
 objects:
+#porter for EDW
+  - apiVersion: porter.devops.gov.bc.ca/v1alpha1
+    kind: TransportServerClaim
+    metadata:
+      name: ${NAME}-porter
+      finalizers:
+        - porter.devops.gov.bc.ca/finalizer
+      labels:
+        app: ${NAME}-porter
+    spec:
+      monitor:
+        interval: 10
+        timeout: 10
+        type: tcp
+      service: ${NAME}-master
+      servicePort: 5432
+
+  - apiVersion: networking.k8s.io/v1
+    kind: NetworkPolicy
+    metadata:
+      name: ${NAME}-porter-network-policy
+        labels:
+          app: ${NAME}-porter-network-policy
+    spec:
+      podSelector:
+        matchLabels:
+          statefulset.kubernetes.io/pod-name: ${NAME}-0
+      ingress:
+        - from:
+            - namespaceSelector:
+                matchLabels:
+                  network.openshift.io/policy-group: ingress
+      policyTypes:
+        - Ingress
+# End of porter setup
+
   - apiVersion: v1
     kind: Service
     metadata:

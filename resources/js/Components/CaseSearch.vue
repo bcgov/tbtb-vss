@@ -11,6 +11,9 @@
             <button @click="switchSearchTerm('byName')" class="nav-link" id="name-tab" data-bs-toggle="tab" data-bs-target="#name-tab-pane" type="button" role="tab" aria-controls="name-tab-pane" aria-selected="false">Name</button>
         </li>
         <li class="nav-item" role="presentation">
+            <button @click="switchSearchTerm('byStatus')" class="nav-link" id="status-tab" data-bs-toggle="tab" data-bs-target="#status-tab-pane" type="button" role="tab" aria-controls="status-tab-pane" aria-selected="false">Status</button>
+        </li>
+        <li class="nav-item" role="presentation">
             <button @click="switchSearchTerm('byActiveUser')" class="nav-link" id="active-user-tab" data-bs-toggle="tab" data-bs-target="#active-user-tab-pane" type="button" role="tab" aria-controls="active-user-tab-pane" aria-selected="false">Active User</button>
         </li>
         <li class="nav-item" role="presentation">
@@ -35,6 +38,7 @@
                 </div>
             </form>
         </div>
+
         <div class="tab-pane fade" id="name-tab-pane" role="tabpanel" aria-labelledby="name-tab" tabindex="1">
             <form @submit.prevent="nameFormSubmit" class="m-3">
                 <div class="row mb-3">
@@ -58,7 +62,30 @@
                 </div>
             </form>
         </div>
-        <div class="tab-pane fade" id="active-user-tab-pane" role="tabpanel" aria-labelledby="active-user-tab" tabindex="2">
+
+        <div class="tab-pane fade" id="status-tab-pane" role="tabpanel" aria-labelledby="name-tab" tabindex="2">
+            <form @submit.prevent="statusFormSubmit" class="m-3">
+                <div class="row mb-3">
+                    <div class="col-auto">
+                        <BreezeLabel class="col-auto col-form-label" for="selectCaseStatus" value="Case Status" />
+                    </div>
+                    <div class="col-auto">
+                        <BreezeSelect id="selectCaseStatus" class="form-control" v-model="statusForm.filter_status">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="Re-activated">Re-activated</option>
+                        </BreezeSelect>
+                    </div>
+                    <div class="col-auto">
+                        <BreezeButton class="btn btn-primary" :class="{ 'opacity-25': statusForm.processing }" :disabled="statusForm.processing">
+                            Search
+                        </BreezeButton>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="tab-pane fade" id="active-user-tab-pane" role="tabpanel" aria-labelledby="active-user-tab" tabindex="3">
             <form @submit.prevent="activeUsersFormSubmit" class="m-3">
                 <div class="row mb-3">
                     <BreezeLabel class="col-auto col-form-label" for="selectActiveUser" value="User" />
@@ -79,7 +106,8 @@
                 </div>
             </form>
         </div>
-        <div class="tab-pane fade" id="cancelled-user-tab-pane" role="tabpanel" aria-labelledby="cancelled-user-tab" tabindex="3">
+
+        <div class="tab-pane fade" id="cancelled-user-tab-pane" role="tabpanel" aria-labelledby="cancelled-user-tab" tabindex="4">
             <form @submit.prevent="cancelledUsersFormSubmit" class="m-3">
                 <div class="row mb-3">
                     <BreezeLabel class="col-auto col-form-label" for="selectCancelledUser" value="User" />
@@ -100,6 +128,7 @@
                 </div>
             </form>
         </div>
+
     </div>
 </template>
 <script setup>
@@ -153,6 +182,15 @@ const nameForm = useForm(nameFormTemplate);
 const nameFormSubmit = () => {
     nameForm.get(route('cases.index'), {
         onFinish: () => nameForm.reset('inputLastName', 'inputFirstName'),
+    });
+};
+const statusFormTemplate = {
+    filter_status: 'Active',
+};
+const statusForm = useForm(statusFormTemplate);
+const statusFormSubmit = () => {
+    statusForm.get(route('cases.index'), {
+        onFinish: () => statusForm.reset('filter_status'),
     });
 };
 

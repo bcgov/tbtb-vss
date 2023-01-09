@@ -16,9 +16,10 @@ composer install && composer dump-auto
 echo "Update artisan"
 php artisan key:generate
 
-
 chmod 766 /var/www/html/probe-check.sh
 
+echo "Run NPM:"
+npm run --prefix /var/www/html/ dev
 
 echo "Starting apache:"
 /usr/sbin/apache2ctl start

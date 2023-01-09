@@ -10,15 +10,23 @@ export BUILD_NAMESPACE := $(or $(BUILD_NAMESPACE), 06cb9b-tools)
 export DOMAIN := $(or $(DOMAIN), apps.silver.devops.gov.bc.ca)
 export HOST_PREFIX := $(or $(HOST_PREFIX), tbtb-vss)
 export SOURCE_REPOSITORY_BRANCH := $(or $(SOURCE_REPOSITORY_BRANCH), dev)
+export BACKUP_POSTGRESQL_APP_NAME := $(or $(BACKUP_POSTGRESQL_APP_NAME), tbtb-vss-patroni-backup)
+export BACKUP_CONFIGMAP_NAME := $(or $(BACKUP_CONFIGMAP_NAME), tbtb-vss-patroni-backup-conf)
 
 #if
 ifeq ($(SOURCE_REPOSITORY_BRANCH),dev)
 define OC_USER_ID
 "1009370000"
 endef
+define PARAM_FILE
+"dev.env"
+endef
 else
 define OC_USER_ID
 "1009380000"
+endef
+define PARAM_FILE
+"prod.env"
 endef
 endif
 
@@ -67,6 +75,7 @@ print-status:
 	@echo " | REPO_NAME: 		$(SOURCE_REPOSITORY_REF) |"
 	@echo " | REPO_BRANCH:						$(SOURCE_REPOSITORY_BRANCH) |"
 	@echo " | OC_USER_ID: 					$(OC_USER_ID) |"
+	@echo " | PARAM_FILE: 					$(PARAM_FILE) |"
 
 #	"$(HOST_PREFIX)-$(BUILD_NAMESPACE).apps.silver.devops.gov.bc.ca.$(DOMAIN)"
 	@echo " +---------------------------------------------------------+ "
@@ -74,13 +83,8 @@ print-status:
 build-web:
 	test -n "$(BUILD_REF)"
 	test -n "$(BUILD_NAMESPACE)"
-# 	@echo "+\n++ SET secret Web\n+"
-# 	@oc -n $(BUILD_NAMESPACE) process -f $(BUILD_TEMPLATE_PATH) -p TAG=$(BUILD_TAG) -p SOURCE_REPOSITORY_REF=$(BUILD_REF) -p NAME=$(Web) | oc -n $(BUILD_NAMESPACE) apply -f -
-# 	@oc -n $(BUILD_NAMESPACE) start-build bc/$(Web) --wait
-# 	@oc apply -f bc.yaml
-# 	@oc -n $(BUILD_NAMESPACE) set build-secret --pull bc/$(Web) $(GIT_SECRET_KEY)
 	@echo "+\n++ PROCESSING Web\n+"
-	@oc -n $(BUILD_NAMESPACE) process -f bc.yaml -p OC_USER_ID=$(OC_USER_ID) -p NAME=$(HOST_PREFIX) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p IMAGE_TAG=$(BUILD_TAG) -p REPO_NAME=$(SOURCE_REPOSITORY_REF) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(BUILD_NAMESPACE) apply -f -
+	@oc -n $(BUILD_NAMESPACE) process -f bc.yaml --param-file=$(PARAM_FILE) | oc -n $(BUILD_NAMESPACE) apply -f -
 	@echo "+\n++ BUILDING Web\n+"
 	@oc -n $(BUILD_NAMESPACE) start-build bc/$(HOST_PREFIX) --wait
 	@echo "+\n++ FINISHED BUILDING Web\n+"
@@ -90,12 +94,12 @@ deploy-web:
 	test -n "$(NAMESPACE)"
 	test -n "$(BUILD_NAMESPACE)"
 	@echo "+\n++ Deploying Web into $(NAMESPACE)\n+"
-	@oc -n $(NAMESPACE) process -f dc_latest.yaml -p LABEL_NAME=$(LABEL_NAME) -p NAME=$(HOST_PREFIX) -p IMAGE_TAG=$(BUILD_TAG) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p NAMESPACE=$(NAMESPACE) -p REPO_BRANCH=$(SOURCE_REPOSITORY_BRANCH) | oc -n $(NAMESPACE) apply -f -
+	@oc -n $(NAMESPACE) process -f dc_latest.yaml --param-file=$(PARAM_FILE) | oc -n $(NAMESPACE) apply -f -
 	$(call rollout_and_wait,dc/$(HOST_PREFIX))
 	@echo "+\n++ FINISHED Deploying Web\n+"
 
 build-patroni:
-	@oc -n $(BUILD_NAMESPACE) process -f patroni-build.yaml  -p NAME=tbtb-vss-patroni -p TAG="12-latest" -p BASE_IMAGE_NAME=postgres -p BASE_IMAGE_TAG="12" -p SOURCE_REPOSITORY_URL="https://github.com/BCDevOps/platform-services.git" -p SOURCE_REPOSITORY_REF="master" -p SOURCE_CONTEXT_DIR="apps/pgsql/patroni/docker" | oc -n $(BUILD_NAMESPACE) apply -f -
+	@oc -n $(BUILD_NAMESPACE) process -f patroni-build.yaml -p NAME=tbtb-vss-patroni -p TAG="12-latest" -p BASE_IMAGE_NAME=postgres -p BASE_IMAGE_TAG="12" -p SOURCE_REPOSITORY_URL="https://github.com/BCDevOps/platform-services.git" -p SOURCE_REPOSITORY_REF="master" -p SOURCE_CONTEXT_DIR="apps/pgsql/patroni/docker" | oc -n $(BUILD_NAMESPACE) apply -f -
 	@oc -n $(BUILD_NAMESPACE) start-build bc/tbtb-vss-patroni --wait
 
 deploy-patroni:

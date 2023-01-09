@@ -41,7 +41,7 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="(row, i) in results.data">
-                                                <th scope="row"><Link :href="route('case-funding.show', [row.id])" v-html="row.sin" /></th>
+                                                <td><Link :href="route('case-funding.show', [row.id])" v-html="row.sin" /></td>
                                                 <td>{{ row.first_name }} {{ row.last_name}}</td>
                                                 <td>{{ row.institution_code }}<br/><small v-if="row.institution != null">{{ row.institution.institution_name }}</small></td>
                                                 <td>{{ row.open_date }}</td>

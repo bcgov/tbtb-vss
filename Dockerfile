@@ -195,6 +195,7 @@ RUN cd /var/www/html && npm install && chmod -R a+w node_modules
 #Error: EACCES: permission denied, open '/var/www/html/public/mix-manifest.json'
 RUN cd /var/www/html/public && chmod 766 mix-manifest.json
 #RUN cd /var/www/html && npm run dev
+RUN mkdir /.npm && chown -R ${USER_ID}:0 "/.npm"
 
 #Writing to directory /.config/psysh is not allowed.
 RUN mkdir -p /.config/psysh && chown -R ${USER_ID}:root /.config && chmod -R 755 /.config

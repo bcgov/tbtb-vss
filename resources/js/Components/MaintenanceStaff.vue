@@ -21,9 +21,9 @@
                     </thead>
                     <tbody>
                         <tr v-for="(row, i) in results">
-                            <th scope="row">
+                            <td>
                                 <Link :href="route('maintenance.staff.show', [row.id])">{{ row.user_id }}</Link>
-                            </th>
+                            </td>
                             <td>{{ row.first_name }}</td>
                             <td>{{ row.last_name}}</td>
                             <td>{{ row.email }}</td>

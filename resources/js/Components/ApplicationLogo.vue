@@ -1,3 +1,3 @@
 <template>
-    <img src="/images/bc_sq_logo.png">
+    <img src="/images/gov_bc_logo.svg">
 </template>
