@@ -40,44 +40,44 @@ objects:
             - name: ENV_ARG
               valueFrom:
                 secretKeyRef:
-                  name: ${NAME}
+                  name: ${NAME}-${REPO_BRANCH}
                   key: ".env"
             - name: ENV_DB_CONNECTION
               valueFrom:
                 secretKeyRef:
-                  name: ${NAME}
+                  name: ${NAME}-${REPO_BRANCH}
                   key: "database-connection"
             - name: ENV_DB_HOST
               value: ${NAME}-patroni-master
             - name: ENV_DB_PORT
               valueFrom:
                 secretKeyRef:
-                  name: ${NAME}
+                  name: ${NAME}-${REPO_BRANCH}
                   key: "database-port"
             - name: ENV_DB_DATABASE
               valueFrom:
                 secretKeyRef:
-                  name: ${NAME}
+                  name: ${NAME}-${REPO_BRANCH}
                   key: "database-name"
             - name: ENV_DB_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: ${NAME}
+                  name: ${NAME}-${REPO_BRANCH}
                   key: "database-username"
             - name: ENV_DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: ${NAME}
+                  name: ${NAME}-${REPO_BRANCH}
                   key: "database-password"
             - name: ENV_DB_PREFIX
               valueFrom:
                 secretKeyRef:
-                  name: ${NAME}
+                  name: ${NAME}-${REPO_BRANCH}
                   key: "database-prefix"
             - name: ENV_DEFAULT_CONF
               valueFrom:
                 secretKeyRef:
-                  name: ${NAME}
+                  name: ${NAME}-${REPO_BRANCH}
                   key: "000-default-conf"
         type: Docker
       successfulBuildsHistoryLimit: 5
@@ -100,6 +100,8 @@ objects:
         build: ${NAME}
         buildconfig: ${NAME}
         build-branch: ${REPO_BRANCH}
+        image-stream: ${NAME}
+        image-stream-tag: ${IMAGE_TAG}
       name: ${NAME}
 parameters:
   - name: NAME
@@ -123,8 +125,8 @@ parameters:
 
   - name: LABEL_NAME
     required: false
-  - name: IMAGE_TAG
-    required: false
+#  - name: IMAGE_TAG
+#    required: false
   - name: NAMESPACE
     required: false
 

@@ -1,10 +1,12 @@
-name: Update Laravel and Vue on DEV env
+name: Build and Deploy VSS in PROD
 
 on:
-  schedule:
-    # Run Sunday at midnight
-    - cron: "59 23 * * SUN"
+  pull_request:
+    branches: [ master ]
+    types: [ closed ]
 
+env:
+  BRANCH_NAME: "master"
 jobs:
   # Print variables for logging and debugging purposes
   checkEnv:
@@ -13,12 +15,19 @@ jobs:
     steps:
       - name: Print Env Vars
         run: |
+          echo Git Trigger Ref: ${{ github.ref }}
           echo Git Base Ref: ${{ github.base_ref }}
           echo Git Build ID: ${{ github.event.number }}
           echo Git Pull Request Ref: ${{ github.event.pull_request.head.sha }}
           echo OC CLI Version: $(oc version)
+          echo Running on branch: ${{ env.BRANCH_NAME }}
+      - name: Check PR state
+        run: |
+          echo "PR state: ${{ github.event.pull_request.state }}"
+          echo "PR merged: ${{ github.event.pull_request.merged }}"
+          echo "PR merged: ${{ github.event.pull_request.merged }}"
 
-  # Build the project
+  # Build the API
   build:
     name: Build project
     runs-on: ubuntu-latest
@@ -27,13 +36,12 @@ jobs:
       cancel-in-progress: true
     env:
       BUILD_ID: ${{ github.event.number }}
-      NAMESPACE: 06cb9b-dev
+      NAMESPACE: 06cb9b-prod
       BUILD_NAMESPACE: 06cb9b-tools
       BUILD_REF: ${{ github.base_ref }}
       HOST_PREFIX: tbtb-vss
-      SOURCE_REPOSITORY_BRANCH: dev
     steps:
-      # Checkout the branch
+      # Checkout the PR branch
       - name: Print env
         run: |
           echo BUILD ID: $BUILD_ID
@@ -41,11 +49,12 @@ jobs:
           echo BRANCH: $BUILD_REF
       - name: Checkout Target Branch
         uses: actions/checkout@v3
-        with:
-          ref: dev
 
       # Log in to OpenShift.
+      # Note: The secrets needed to log in are NOT available if the PR comes from a FORK.
+      # PR's must originate from a branch off the original repo or else all openshift `oc` commands will fail.
       - name: Log in to OpenShift
+#        working-directory: "/var/www/html"
         run: |
           oc login --token=${{ secrets.SA_TOKEN }} --server=https://api.silver.devops.gov.bc.ca:6443
       - name: OC Build from yaml
@@ -57,26 +66,19 @@ jobs:
           echo "FINISHED OC BUILD WEB"
           echo ++++++++++
 
-
   # Deploy project
-  deployDev:
-    name: Deploy Dev Project
+  deployProd:
+    name: Deploy Project to PROD
     runs-on: ubuntu-latest
-#    if: github.ref_name == 'dev'
-    if: ${{ github.ref == 'refs/heads/dev' }}
-
-    concurrency:
-      group: ${{ github.ref }}
-      cancel-in-progress: true
+    needs:
+      - build
     env:
       BUILD_ID: ${{ github.event.number }}
-      NAMESPACE: 06cb9b-dev
+      NAMESPACE: 06cb9b-prod
       BUILD_NAMESPACE: 06cb9b-tools
       BUILD_REF: ${{ github.base_ref }}
       HOST_PREFIX: tbtb-vss
-      SOURCE_REPOSITORY_BRANCH: dev
-    needs:
-      - build
+      SOURCE_REPOSITORY_BRANCH: master
     steps:
       - name: Print env
         run: |
@@ -89,18 +91,18 @@ jobs:
       # Checkout the PR branch
       - name: Checkout Target Branch
         uses: actions/checkout@v3
-        with:
-          ref: dev
       # Log in to OpenShift.
+      # Note: The secrets needed to log in are NOT available if the PR comes from a FORK.
+      # PR's must originate from a branch off the original repo or else all openshift `oc` commands will fail.
       - name: Log in to OpenShift
         run: |
           oc login --token=${{ secrets.SA_TOKEN }} --server=https://api.silver.devops.gov.bc.ca:6443
       # Deploy the VSS.
-      - name: Deploy VSS dev
+      - name: Deploy VSS Prod
         working-directory: "./openshift"
         run: |
           make oc-deploy-web
       - name: Finished OC Deploy from yaml
         run: |
-          echo "FINISHED OC Deploy WEB"
+          echo "FINISHED OC Deploy WEB PROD"
           echo ++++++++++
