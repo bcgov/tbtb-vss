@@ -14,12 +14,15 @@ export BACKUP_POSTGRESQL_APP_NAME := $(or $(BACKUP_POSTGRESQL_APP_NAME), tbtb-vs
 export BACKUP_CONFIGMAP_NAME := $(or $(BACKUP_CONFIGMAP_NAME), tbtb-vss-patroni-backup-conf)
 
 #if
-ifeq ($(SOURCE_REPOSITORY_BRANCH),dev)
+ifeq ($(GIT_LOCAL_BRANCH),dev)
 define OC_USER_ID
 "1009370000"
 endef
 define PARAM_FILE
 "dev.env"
+endef
+define BUILD_TAG
+"latest-dev"
 endef
 else
 define OC_USER_ID
@@ -27,6 +30,9 @@ define OC_USER_ID
 endef
 define PARAM_FILE
 "prod.env"
+endef
+define BUILD_TAG
+"latest-prod"
 endef
 endif
 
@@ -36,9 +42,6 @@ define LABEL_NAME
 "TBTB-VSS"
 endef
 
-define BUILD_TAG
-"latest"
-endef
 
 define HOST
 "$(HOST_PREFIX)-$(BUILD_NAMESPACE).apps.silver.devops.gov.bc.ca.$(DOMAIN)"
@@ -104,3 +107,38 @@ build-patroni:
 
 deploy-patroni:
 	@oc -n $(NAMESPACE) process -f patroni-deploy.yaml -p LABEL_NAME=$(LABEL_NAME) -p BUILD_NAMESPACE=$(BUILD_NAMESPACE) -p IMAGE_STREAM_TAG=patroni:12-latest | oc -n $(NAMESPACE) apply -f -
+
+# Create the POSTGRES structure
+db-backup-build-postgresql:
+	test -n "$(BUILD_NAMESPACE)"
+	test -n "$(BACKUP_POSTGRESQL_APP_NAME)"
+	@echo "+\n++ Creating build resources for database backups on $(BUILD_NAMESPACE)\n+"
+	oc -n $(BUILD_NAMESPACE) process -f backup-build.yaml \
+		-p NAME=$(BACKUP_POSTGRESQL_APP_NAME) OUTPUT_IMAGE_TAG=v1 \
+		-p BASE_IMAGE_FOR_BUILD=artifacts.developer.gov.bc.ca/docker-remote/centos/postgresql-12-centos7:20200917-804ef01 \
+		| oc -n $(BUILD_NAMESPACE) apply -f -
+	@oc -n $(BUILD_NAMESPACE) start-build bc/vss-patroni-backup --wait
+
+db-backup-deploy-postgresql:
+	test -n "$(NAMESPACE)"
+	test -n "$(BUILD_NAMESPACE)"
+	test -n "$(BACKUP_POSTGRESQL_APP_NAME)"
+	@echo "+\n++ Creating deploy config resoures for database backups on $(NAMESPACE)\n+"
+	oc -n $(NAMESPACE) process -f backup-deploy.yaml \
+  	-p NAME=$(BACKUP_POSTGRESQL_APP_NAME) \
+  	-p IMAGE_NAMESPACE=$(BUILD_NAMESPACE) \
+  	-p SOURCE_IMAGE_NAME=$(BACKUP_POSTGRESQL_APP_NAME) \
+  	-p TAG_NAME=v1 \
+		-p FTP_SECRET_KEY=$(BACKUP_POSTGRESQL_APP_NAME)-ftp-secret \
+  	-p BACKUP_VOLUME_NAME=$(BACKUP_POSTGRESQL_APP_NAME)-pvc \
+		-p BACKUP_VOLUME_SIZE=20Gi \
+  	-p VERIFICATION_VOLUME_SIZE=5Gi \
+  	-p ENVIRONMENT_NAME=$(NAMESPACE) \
+		-p CONFIG_MAP_NAME=$(BACKUP_CONFIGMAP_NAME) \
+		-p VERIFICATION_VOLUME_NAME=$(BACKUP_POSTGRESQL_APP_NAME)-verification-pvc \
+		-p DATABASE_SERVER_NAME=PATRONI_MASTER \
+		-p DATABASE_SECRET_NAME=patroni-creds \
+		-p DATABASE_SECRET_USER_KEY_NAME=superuser-username \
+		-p DATABASE_SECRET_PASSWORD_KEY_NAME=superuser-password \
+  	-p ENVIRONMENT_FRIENDLY_NAME='$(NAMESPACE) POSTGRESQL DB Backups' \
+		| oc -n $(NAMESPACE) apply -f -
