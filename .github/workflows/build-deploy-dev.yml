@@ -1,12 +1,12 @@
-name: Build and Deploy in OpenShift
+name: Build and Deploy VSS in DEV
 
 on:
   push:
     branches:
       - dev
-      - master
-  pull_request:
-    branches: [ master ]
+
+env:
+  BRANCH_NAME: "dev"
 jobs:
   # Print variables for logging and debugging purposes
   checkEnv:
@@ -15,10 +15,12 @@ jobs:
     steps:
     - name: Print Env Vars
       run: |
+        echo Git Trigger Ref: ${{ github.ref }}
         echo Git Base Ref: ${{ github.base_ref }}
         echo Git Build ID: ${{ github.event.number }}
         echo Git Pull Request Ref: ${{ github.event.pull_request.head.sha }}
         echo OC CLI Version: $(oc version)
+        echo Running on branch: ${{ env.BRANCH_NAME }}
 
   # Build the API
   build:
@@ -42,7 +44,7 @@ jobs:
           echo BUILD NAMESPACE: $BUILD_NAMESPACE
           echo BRANCH: $BUILD_REF
       - name: Checkout Target Branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Log in to OpenShift.
       # Note: The secrets needed to log in are NOT available if the PR comes from a FORK.
@@ -65,7 +67,6 @@ jobs:
   deployDev:
     name: Deploy Dev Project
     runs-on: ubuntu-latest
-    if: github.ref_name == 'dev'
     concurrency:
       group: ${{ github.ref }}
       cancel-in-progress: true
@@ -90,7 +91,7 @@ jobs:
           echo SOURCE_REPOSITORY_BRANCH: $SOURCE_REPOSITORY_BRANCH
       # Checkout the PR branch
       - name: Checkout Target Branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       # Log in to OpenShift.
       # Note: The secrets needed to log in are NOT available if the PR comes from a FORK.
       # PR's must originate from a branch off the original repo or else all openshift `oc` commands will fail.
@@ -105,46 +106,4 @@ jobs:
       - name: Finished OC Deploy from yaml
         run: |
           echo "FINISHED OC Deploy WEB"
-          echo ++++++++++
-
-  # Deploy project
-  deployProd:
-    name: Deploy Project to PROD
-    runs-on: ubuntu-latest
-    if: github.ref_name == 'master'
-    needs:
-      - build
-    env:
-      BUILD_ID: ${{ github.event.number }}
-      NAMESPACE: 06cb9b-prod
-      BUILD_NAMESPACE: 06cb9b-tools
-      BUILD_REF: ${{ github.base_ref }}
-      HOST_PREFIX: tbtb-vss
-      SOURCE_REPOSITORY_BRANCH: master
-    steps:
-      - name: Print env
-        run: |
-          echo BUILD ID: $BUILD_ID
-          echo BUILD NAMESPACE: $BUILD_NAMESPACE
-          echo NAMESPACE: $NAMESPACE
-          echo BRANCH: $BUILD_REF
-          echo HOST_PREFIX: $HOST_PREFIX
-          echo SOURCE_REPOSITORY_BRANCH: $SOURCE_REPOSITORY_BRANCH
-      # Checkout the PR branch
-      - name: Checkout Target Branch
-        uses: actions/checkout@v2
-      # Log in to OpenShift.
-      # Note: The secrets needed to log in are NOT available if the PR comes from a FORK.
-      # PR's must originate from a branch off the original repo or else all openshift `oc` commands will fail.
-      - name: Log in to OpenShift
-        run: |
-          oc login --token=${{ secrets.SA_TOKEN }} --server=https://api.silver.devops.gov.bc.ca:6443
-      # Deploy the VSS.
-      - name: Deploy VSS Prod
-        working-directory: "./openshift"
-        run: |
-          make oc-deploy-web
-      - name: Finished OC Deploy from yaml
-        run: |
-          echo "FINISHED OC Deploy WEB PROD"
           echo ++++++++++
