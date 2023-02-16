@@ -1,19 +1,19 @@
 kind: Template
 apiVersion: template.openshift.io/v1
 metadata:
-  name: ${NAME}-build-template
+  name: ${BACKUP_POSTGRESQL_APP_NAME}-build-template
   creationTimestamp: null
 objects:
   - kind: ImageStream
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${BACKUP_POSTGRESQL_APP_NAME}
   - kind: BuildConfig
     apiVersion: v1
     metadata:
-      name: ${NAME}
+      name: ${BACKUP_POSTGRESQL_APP_NAME}
       labels:
-        app: ${NAME}
+        app: ${BACKUP_POSTGRESQL_APP_NAME}
     spec:
       triggers:
         - type: ImageChange
@@ -37,7 +37,7 @@ objects:
       output:
         to:
           kind: ImageStreamTag
-          name: ${NAME}:${OUTPUT_IMAGE_TAG}
+          name: ${BACKUP_POSTGRESQL_APP_NAME}:${OUTPUT_IMAGE_TAG}
       resources:
         limits:
           cpu: '250m'
@@ -46,11 +46,11 @@ objects:
           cpu: '50m'
           memory: '256Mi'
 parameters:
-  - name: NAME
-    displayName: Name
+  - name: BACKUP_POSTGRESQL_APP_NAME
+    displayName: BACKUP POSTGRESQL APP NAME
     description: The name assigned to all of the resources.  Use 'backup-{database name}' depending on your database provider
     required: true
-    value: backup-postgres
+    value: backup-postgres-app-name
   - name: GIT_REPO_URL
     displayName: Git Repo URL
     description: The URL to your GIT repo.
