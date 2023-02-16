@@ -97,6 +97,9 @@ objects:
         name: ${NAME}
         weight: 100
       wildcardPolicy: None
+      tls:
+        termination: edge
+        insecureEdgeTerminationPolicy: Redirect
     metadata:
       name: ${NAME}
       labels:

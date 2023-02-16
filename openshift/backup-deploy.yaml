@@ -226,7 +226,24 @@ objects:
         requests:
           cpu: '50m'
           memory: '256Mi'
+  - kind: ConfigMap
+    apiVersion: v1
+    metadata:
+      name: ${CONFIG_MAP_NAME}
+      namespace: ${ENVIRONMENT_NAME}
+    data:
+      backup.conf: |
+        postgres=${DATABASE_SERVER_NAME}:5432/${DB_NAME}
+
+        # Run a backup at 1am Pacific every day.
+        0 1 * * * default ./backup.sh -s
+        # Verify the most recent backups at 4am Pacific every day.
+        0 4 * * * default ./backup.sh -s -v all
+
 parameters:
+  - name: DB_NAME
+    description: The DB name to backup from
+    value: ""
   - name: BACKUP_POSTGRESQL_APP_NAME
     displayName: Name
     description: The name assigned to all of the resources.  Use 'backup-{database name}' depending on your database provider

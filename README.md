@@ -12,7 +12,7 @@ VSS - Verification Statistics System
 
 | Lead Developer  | Security Officer | Business Admin |
 | ------------- | ------------- | ------------- |
-| Kal Marsh  | David Malcolm  | Joshua Lakusta  |
+| Kal Marsh  | David Malcolm  | Carla Freeburn  |
 
 <br/>
 
