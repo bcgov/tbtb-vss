@@ -1365,6 +1365,10 @@ nav ul.navbar-nav a:hover{
     box-shadow: none !important;
 }
 
+.navbar-collapse {
+    visibility: visible !important;
+}
+
 .hover\:border-gray-300:hover {
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
@@ -1566,5 +1570,4 @@ nav ul.navbar-nav a:hover{
     padding-right: 2rem;
   }
 }
-
 
