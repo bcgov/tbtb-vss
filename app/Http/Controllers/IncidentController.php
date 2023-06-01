@@ -142,7 +142,7 @@ class IncidentController extends Controller
         $referrals = ReferralSource::get();
         $sanctions = SanctionType::get();
         $staff = User::get();
-        $schools = Institution::get();
+        $schools = Institution::orderBy('institution_code')->get();
 
         return inertia('CaseEdit', ['status' => true, 'result' => $case,
             'areaOfAudits' => $areaOfAudits,

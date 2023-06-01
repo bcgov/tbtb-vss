@@ -21796,10 +21796,41 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       newAreaOfAuditRows: [],
       newOffenceRows: [],
       newSanctionRows: [],
-      editForm: null
+      editForm: null,
+      schoolsList: []
     };
   },
   methods: {
+    resetSchoolFilter: function resetSchoolFilter() {
+      //if schoolsListHidden is true then the schools list is still shown
+      //and the input field lost focus because the user clicked something
+      //other than the list ot assignSchool
+      var vm = this;
+      setTimeout(function () {
+        if (vm.editForm.schoolsListHidden === false) {
+          vm.editForm.institution = JSON.parse(JSON.stringify(vm.result.institution));
+          vm.editForm.schoolsListHidden = true;
+          vm.schoolsList = vm.schools;
+        }
+      }, 300);
+    },
+    assignSchool: function assignSchool(school, j) {
+      this.editForm.institution_code = school.institution_code;
+      this.editForm.institution = school;
+      this.editForm.schoolsListHidden = true;
+      this.schoolsList = this.schools;
+    },
+    filterActiveSchools: function filterActiveSchools(e) {
+      this.editForm.schoolsListHidden = false;
+      var search = e.target.value.toLowerCase();
+
+      if (search.length > 2) {
+        this.schoolsList = this.schools.filter(function (obj) {
+          if (obj.institution_name == null) return false;
+          return obj.institution_name.toLowerCase().indexOf(search) >= 0;
+        });
+      }
+    },
     removeAreaOfAuditRow: function removeAreaOfAuditRow(code, type) {
       var _this = this;
 
@@ -28058,7 +28089,7 @@ var _hoisted_36 = /*#__PURE__*/_withScopeId(function () {
 var _hoisted_37 = {
   "class": "ps-1"
 };
-var _hoisted_38 = ["value"];
+var _hoisted_38 = ["onClick", "value"];
 
 var _hoisted_39 = /*#__PURE__*/_withScopeId(function () {
   return /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", {
@@ -28887,7 +28918,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       /* PROPS */
       , _hoisted_14)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.editForm != null ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("form", {
         key: 1,
-        onSubmit: _cache[33] || (_cache[33] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
+        onSubmit: _cache[35] || (_cache[35] = (0,vue__WEBPACK_IMPORTED_MODULE_0__.withModifiers)(function () {
           return $options.updateCase && $options.updateCase.apply($options, arguments);
         }, ["prevent"]))
       }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($data.editForm.sin), 1
@@ -28951,33 +28982,54 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         })
       }, null, 8
       /* PROPS */
-      , ["modelValue"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
-        "class": "form-select",
-        modelValue: $data.editForm.institution_code,
-        "onUpdate:modelValue": _cache[6] || (_cache[6] = function ($event) {
+      , ["modelValue"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_36, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_37, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                                                                <BreezeSelect class=\"form-select\" v-model=\"editForm.institution_code\">"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                                                                    <option v-for=\"(school,j) in schools\" :value=\"school.institution_code\">{{ school.institution_name }} | {{ school.institution_code }}</option>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("                                                                </BreezeSelect>"), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeInput, {
+        onFocusout: $options.resetSchoolFilter,
+        onKeyup: _cache[6] || (_cache[6] = function ($event) {
+          return $options.filterActiveSchools($event);
+        }),
+        type: "text",
+        "class": "form-control",
+        id: "inputInstitution",
+        modelValue: $data.editForm.institution.institution_name,
+        "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+          return $data.editForm.institution.institution_name = $event;
+        })
+      }, null, 8
+      /* PROPS */
+      , ["onFocusout", "modelValue"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("input", {
+        type: "hidden",
+        "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
           return $data.editForm.institution_code = $event;
         })
-      }, {
-        "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-          return [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($props.schools, function (school, j) {
-            return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("option", {
-              value: school.institution_code
-            }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(school.institution_name) + " | " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(school.institution_code), 9
-            /* TEXT, PROPS */
-            , _hoisted_38);
-          }), 256
-          /* UNKEYED_FRAGMENT */
-          ))];
-        }),
-        _: 1
-        /* STABLE */
-
-      }, 8
-      /* PROPS */
-      , ["modelValue"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
+      }, null, 512
+      /* NEED_PATCH */
+      ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelText, $data.editForm.institution_code]]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("ul", {
+        "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["dropdown-menu", $data.editForm.schoolsListHidden === false ? 'show' : 'hidden']),
+        "data-popper-placement": "top-start",
+        style: {
+          "position": "absolute",
+          "right": "0",
+          "overflow-y": "scroll",
+          "height": "400px"
+        }
+      }, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($data.schoolsList, function (school, j) {
+        return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("li", {
+          onClick: function onClick($event) {
+            return $options.assignSchool(school, j);
+          },
+          value: school.institution_code,
+          "class": "dropdown-item"
+        }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(school.institution_code) + " | " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(school.institution_name), 9
+        /* TEXT, PROPS */
+        , _hoisted_38);
+      }), 256
+      /* UNKEYED_FRAGMENT */
+      ))], 2
+      /* CLASS */
+      )])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_39, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_40, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
         "class": "form-select",
         modelValue: $data.editForm.incident_status,
-        "onUpdate:modelValue": _cache[7] || (_cache[7] = function ($event) {
+        "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
           return $data.editForm.incident_status = $event;
         })
       }, {
@@ -28992,7 +29044,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" break "), _hoisted_44, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" break "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_45, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_46, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_47, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_48, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
         "class": "form-select",
         modelValue: $data.editForm.referral_source_id,
-        "onUpdate:modelValue": _cache[8] || (_cache[8] = function ($event) {
+        "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
           return $data.editForm.referral_source_id = $event;
         })
       }, {
@@ -29015,7 +29067,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_50, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_51, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
         "class": "form-select",
         modelValue: $data.editForm.severity,
-        "onUpdate:modelValue": _cache[9] || (_cache[9] = function ($event) {
+        "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
           return $data.editForm.severity = $event;
         })
       }, {
@@ -29030,7 +29082,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_54, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_55, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_56, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
         "class": "form-select",
         modelValue: $data.editForm.auditor_user_id,
-        "onUpdate:modelValue": _cache[10] || (_cache[10] = function ($event) {
+        "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
           return $data.editForm.auditor_user_id = $event;
         })
       }, {
@@ -29055,7 +29107,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         placeholder: "YYYY-MM-DD",
         modelValue: $data.editForm.audit_date,
-        "onUpdate:modelValue": _cache[11] || (_cache[11] = function ($event) {
+        "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
           return $data.editForm.audit_date = $event;
         })
       }, null, 8
@@ -29063,7 +29115,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_61, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_62, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_63, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
         "class": "form-select",
         modelValue: $data.editForm.investigator_user_id,
-        "onUpdate:modelValue": _cache[12] || (_cache[12] = function ($event) {
+        "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
           return $data.editForm.investigator_user_id = $event;
         })
       }, {
@@ -29088,7 +29140,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         placeholder: "YYYY-MM-DD",
         modelValue: $data.editForm.investigation_date,
-        "onUpdate:modelValue": _cache[13] || (_cache[13] = function ($event) {
+        "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
           return $data.editForm.investigation_date = $event;
         })
       }, null, 8
@@ -29096,7 +29148,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" break "), _hoisted_68, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" break "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_69, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_70, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_71, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_72, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
         "class": "form-select",
         modelValue: $data.editForm.area_of_audit_code,
-        "onUpdate:modelValue": _cache[14] || (_cache[14] = function ($event) {
+        "onUpdate:modelValue": _cache[16] || (_cache[16] = function ($event) {
           return $data.editForm.area_of_audit_code = $event;
         })
       }, {
@@ -29119,7 +29171,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       , ["modelValue"])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_74, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [_hoisted_75, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_76, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_BreezeSelect, {
         "class": "form-select",
         modelValue: $data.editForm.audit_type,
-        "onUpdate:modelValue": _cache[15] || (_cache[15] = function ($event) {
+        "onUpdate:modelValue": _cache[17] || (_cache[17] = function ($event) {
           return $data.editForm.audit_type = $event;
         })
       }, {
@@ -29234,7 +29286,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), 256
       /* UNKEYED_FRAGMENT */
       )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end of additional new row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-        onClick: _cache[16] || (_cache[16] = function () {
+        onClick: _cache[18] || (_cache[18] = function () {
           return $options.addNewAreaOfAuditRow && $options.addNewAreaOfAuditRow.apply($options, arguments);
         }),
         type: "button",
@@ -29312,7 +29364,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), 256
       /* UNKEYED_FRAGMENT */
       )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end of additional new row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-        onClick: _cache[17] || (_cache[17] = function () {
+        onClick: _cache[19] || (_cache[19] = function () {
           return $options.addNewOffenceRow && $options.addNewOffenceRow.apply($options, arguments);
         }),
         type: "button",
@@ -29390,7 +29442,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       }), 256
       /* UNKEYED_FRAGMENT */
       )), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end of additional new row "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("button", {
-        onClick: _cache[18] || (_cache[18] = function () {
+        onClick: _cache[20] || (_cache[20] = function () {
           return $options.addNewSanctionRow && $options.addNewSanctionRow.apply($options, arguments);
         }),
         type: "button",
@@ -29400,7 +29452,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "checkbox",
         role: "switch",
         id: "bringForwardSwitch",
-        "onUpdate:modelValue": _cache[19] || (_cache[19] = function ($event) {
+        "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
           return $data.editForm.bring_forward = $event;
         })
       }, null, 512
@@ -29420,7 +29472,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         placeholder: "YYYY-MM-DD",
         modelValue: $data.editForm.bring_forward_date,
-        "onUpdate:modelValue": _cache[20] || (_cache[20] = function ($event) {
+        "onUpdate:modelValue": _cache[22] || (_cache[22] = function ($event) {
           return $data.editForm.bring_forward_date = $event;
         }),
         disabled: !$data.editForm.bring_forward
@@ -29431,7 +29483,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "checkbox",
         role: "switch",
         id: "appealedSwitch",
-        "onUpdate:modelValue": _cache[21] || (_cache[21] = function ($event) {
+        "onUpdate:modelValue": _cache[23] || (_cache[23] = function ($event) {
           return $data.editForm.appeal_flag = $event;
         })
       }, null, 512
@@ -29449,7 +29501,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "appeal_outcome",
         "class": "form-select",
         modelValue: $data.editForm.appeal_outcome,
-        "onUpdate:modelValue": _cache[22] || (_cache[22] = function ($event) {
+        "onUpdate:modelValue": _cache[24] || (_cache[24] = function ($event) {
           return $data.editForm.appeal_outcome = $event;
         }),
         disabled: !$data.editForm.appeal_flag
@@ -29467,7 +29519,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "checkbox",
         role: "switch",
         id: "caseClosedSwitch",
-        "onUpdate:modelValue": _cache[23] || (_cache[23] = function ($event) {
+        "onUpdate:modelValue": _cache[25] || (_cache[25] = function ($event) {
           return $data.editForm.case_close = $event;
         })
       }, null, 512
@@ -29487,7 +29539,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         placeholder: "YYYY-MM-DD",
         modelValue: $data.editForm.close_date,
-        "onUpdate:modelValue": _cache[24] || (_cache[24] = function ($event) {
+        "onUpdate:modelValue": _cache[26] || (_cache[26] = function ($event) {
           return $data.editForm.close_date = $event;
         }),
         disabled: !$data.editForm.case_close
@@ -29506,7 +29558,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "case_reason",
         "class": "form-select",
         modelValue: $data.editForm.reason_for_closing,
-        "onUpdate:modelValue": _cache[25] || (_cache[25] = function ($event) {
+        "onUpdate:modelValue": _cache[27] || (_cache[27] = function ($event) {
           return $data.editForm.reason_for_closing = $event;
         }),
         disabled: !$data.editForm.case_close
@@ -29532,7 +29584,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         id: "case_outcome",
         "class": "form-select",
         modelValue: $data.editForm.case_outcome,
-        "onUpdate:modelValue": _cache[26] || (_cache[26] = function ($event) {
+        "onUpdate:modelValue": _cache[28] || (_cache[28] = function ($event) {
           return $data.editForm.case_outcome = $event;
         }),
         disabled: !$data.editForm.case_close
@@ -29550,7 +29602,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "checkbox",
         role: "switch",
         id: "referredToRcmpSwitch",
-        "onUpdate:modelValue": _cache[27] || (_cache[27] = function ($event) {
+        "onUpdate:modelValue": _cache[29] || (_cache[29] = function ($event) {
           return $data.editForm.rcmp_referral_flag = $event;
         })
       }, null, 512
@@ -29570,7 +29622,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         placeholder: "YYYY-MM-DD",
         modelValue: $data.editForm.rcmp_referral_date,
-        "onUpdate:modelValue": _cache[28] || (_cache[28] = function ($event) {
+        "onUpdate:modelValue": _cache[30] || (_cache[30] = function ($event) {
           return $data.editForm.rcmp_referral_date = $event;
         }),
         disabled: !$data.editForm.rcmp_referral_flag
@@ -29591,7 +29643,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "date",
         placeholder: "YYYY-MM-DD",
         modelValue: $data.editForm.rcmp_closure_date,
-        "onUpdate:modelValue": _cache[29] || (_cache[29] = function ($event) {
+        "onUpdate:modelValue": _cache[31] || (_cache[31] = function ($event) {
           return $data.editForm.rcmp_closure_date = $event;
         }),
         disabled: !$data.editForm.rcmp_referral_flag
@@ -29602,7 +29654,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "checkbox",
         role: "switch",
         id: "chargesLaidSwitch",
-        "onUpdate:modelValue": _cache[30] || (_cache[30] = function ($event) {
+        "onUpdate:modelValue": _cache[32] || (_cache[32] = function ($event) {
           return $data.editForm.charges_laid_flag = $event;
         })
       }, null, 512
@@ -29612,14 +29664,14 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
         type: "checkbox",
         role: "switch",
         id: "convictedSwitch",
-        "onUpdate:modelValue": _cache[31] || (_cache[31] = function ($event) {
+        "onUpdate:modelValue": _cache[33] || (_cache[33] = function ($event) {
           return $data.editForm.conviction_flag = $event;
         })
       }, null, 512
       /* NEED_PATCH */
       ), [[vue__WEBPACK_IMPORTED_MODULE_0__.vModelCheckbox, $data.editForm.conviction_flag]])])])])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" end of col-lg-3 ")]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" break "), _hoisted_188, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" break "), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_189, [_hoisted_190, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_191, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.withDirectives)((0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("textarea", {
         "class": "form-control",
-        "onUpdate:modelValue": _cache[32] || (_cache[32] = function ($event) {
+        "onUpdate:modelValue": _cache[34] || (_cache[34] = function ($event) {
           return $data.editForm.sentence_comment = $event;
         }),
         rows: "3"
@@ -46698,7 +46750,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\ntr[data-v-0d87cf03] {\r\n    padding-bottom: 7px;\r\n    display: block;\n}\n[type='checkbox'][data-v-0d87cf03]:checked, [type='radio'][data-v-0d87cf03]:checked {\r\n    background-size: initial;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\ntr[data-v-0d87cf03] {\n    padding-bottom: 7px;\n    display: block;\n}\n[type='checkbox'][data-v-0d87cf03]:checked, [type='radio'][data-v-0d87cf03]:checked {\n    background-size: initial;\n}\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
