@@ -21,3 +21,6 @@ nav ul.navbar-nav a:hover{
     box-shadow: none !important;
 }
 
+.navbar-collapse {
+    visibility: visible !important;
+}

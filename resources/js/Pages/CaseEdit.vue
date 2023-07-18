@@ -105,9 +105,21 @@ tr {
                                                         <tr>
                                                             <th scope="row">School:</th>
                                                             <td class="ps-1">
-                                                                <BreezeSelect class="form-select" v-model="editForm.institution_code">
-                                                                    <option v-for="(school,j) in schools" :value="school.institution_code">{{ school.institution_name }} | {{ school.institution_code }}</option>
-                                                                </BreezeSelect>
+<!--                                                                <BreezeSelect class="form-select" v-model="editForm.institution_code">-->
+<!--                                                                    <option v-for="(school,j) in schools" :value="school.institution_code">{{ school.institution_name }} | {{ school.institution_code }}</option>-->
+<!--                                                                </BreezeSelect>-->
+                                                                <BreezeInput @focusout="resetSchoolFilter" @keyup="filterActiveSchools($event)" type="text" class="form-control" id="inputInstitution" v-model="editForm.institution.institution_name" />
+                                                                <input type="hidden" v-model="editForm.institution_code" />
+                                                                <ul class="dropdown-menu" :class="editForm.schoolsListHidden === false ? 'show' : 'hidden'" data-popper-placement="top-start" style="
+    position: absolute;
+    right: 0;
+    overflow-y: scroll;
+    height: 400px;
+">
+                                                                    <template v-for="(school,j) in schoolsList">
+                                                                        <li @click="assignSchool(school, j)" :value="school.institution_code" class="dropdown-item">{{ school.institution_code }} | {{ school.institution_name }}</li>
+                                                                    </template>
+                                                                </ul>
                                                             </td>
                                                         </tr>
                                                         <tr>
@@ -635,11 +647,42 @@ export default {
             newSanctionRows: [],
 
             editForm: null,
+            schoolsList: [],
 
 
         }
     },
     methods: {
+        resetSchoolFilter: function (){
+            //if schoolsListHidden is true then the schools list is still shown
+            //and the input field lost focus because the user clicked something
+            //other than the list ot assignSchool
+            let vm = this;
+            setTimeout(function (){
+                if(vm.editForm.schoolsListHidden === false){
+                    vm.editForm.institution = JSON.parse(JSON.stringify(vm.result.institution));
+                    vm.editForm.schoolsListHidden = true;
+                    vm.schoolsList = vm.schools;
+                }
+            }, 300);
+        },
+        assignSchool: function (school, j) {
+            this.editForm.institution_code = school.institution_code;
+            this.editForm.institution = school;
+            this.editForm.schoolsListHidden = true;
+            this.schoolsList = this.schools;
+        },
+        filterActiveSchools: function (e) {
+            this.editForm.schoolsListHidden = false;
+            let search = e.target.value.toLowerCase();
+            if(search.length > 2){
+                this.schoolsList = this.schools.filter(obj => {
+                    if(obj.institution_name == null)
+                        return false;
+                    return obj.institution_name.toLowerCase().indexOf(search) >= 0;
+                } );
+            }
+        },
         removeAreaOfAuditRow: function (code, type)
         {
             if(confirm('Are you sure you want to remove this Area of Audit?')){

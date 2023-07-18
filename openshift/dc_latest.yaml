@@ -124,6 +124,19 @@ objects:
             target:
               type: Utilization
               averageUtilization: 80
+  - apiVersion: autoscaling.k8s.io/v1
+    kind: VerticalPodAutoscaler
+    metadata:
+      name: ${NAME}
+      labels:
+        deploymentconfig: ${NAME}
+    spec:
+      targetRef:
+        kind: DeploymentConfig
+        name: ${NAME}
+        apiVersion: apps.openshift.io/v1
+      updatePolicy:
+        updateMode: "Off"
 
   - apiVersion: networking.k8s.io/v1
     kind: NetworkPolicy

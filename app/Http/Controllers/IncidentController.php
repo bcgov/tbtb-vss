@@ -121,9 +121,6 @@ class IncidentController extends Controller
      */
     public function store(CaseStoreRequest $request)
     {
-        $last_incident = Incident::select('incident_id')->orderBy('incident_id', 'desc')->withTrashed()->first();
-        $request->merge(['incident_id' => intval($last_incident->incident_id) + 1]);
-
         $case = Incident::create($request->validated());
 
         $this->addAttachedRecords($request, $case);
@@ -145,7 +142,7 @@ class IncidentController extends Controller
         $referrals = ReferralSource::get();
         $sanctions = SanctionType::get();
         $staff = User::get();
-        $schools = Institution::get();
+        $schools = Institution::orderBy('institution_code')->get();
 
         return inertia('CaseEdit', ['status' => true, 'result' => $case,
             'areaOfAudits' => $areaOfAudits,
@@ -194,7 +191,7 @@ class IncidentController extends Controller
             ]);
         }
 
-        $case->sanctions->delete();
+        $case->sanctions()->delete();
         foreach ($request->old_sanction_codes as $value) {
             $sanction = SanctionType::where('sanction_code', $value)->first();
             CaseSanctionType::firstOrCreate([

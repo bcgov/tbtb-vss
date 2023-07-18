@@ -647,6 +647,10 @@ export default {
                 new_offence_codes: '',
                 new_sanction_codes: '',
 
+                old_audit_codes: [],
+                old_offence_codes: [],
+                old_sanction_codes: [],
+
                 bring_forward: false,
                 rcmp_referral_flag: false,
                 conviction_flag: false,
