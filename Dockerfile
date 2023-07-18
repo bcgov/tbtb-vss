@@ -42,7 +42,7 @@ RUN sed -ri -e 's!expose_php = On!expose_php = Off!g' $PHP_INI_DIR/php.ini-produ
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 RUN apt-get update -qq \
-    && apt-get install -yq apt-utils zlib1g-dev g++ libicu-dev unzip libzip-dev zip libpq-dev git nano netcat curl apache2 dialog locate libcurl4 libcurl3-dev psmisc \
+    && apt-get install -yq apt-utils zlib1g-dev g++ libicu-dev unzip libzip-dev zip libpq-dev git nano netcat-traditional curl apache2 dialog locate libcurl4 libcurl3-dev psmisc \
 	libfreetype6-dev \
     libjpeg62-turbo-dev \
         libmcrypt-dev \

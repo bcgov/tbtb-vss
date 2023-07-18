@@ -97,7 +97,7 @@ class CaseStoreRequest extends FormRequest
     protected function prepareForValidation()
     {
         //Store won't have it, only Update
-        if (!isset($this->incident_id)) {
+        if (! isset($this->incident_id)) {
             $last_incident = Incident::select('incident_id')->orderBy('incident_id', 'desc')->withTrashed()->first();
             $this->merge(['incident_id' => intval($last_incident->incident_id) + 1]);
         }
