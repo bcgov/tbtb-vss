@@ -137,9 +137,14 @@ import BreezeSelect from '@/Components/Select.vue';
 import BreezeLabel from '@/Components/Label.vue';
 import BreezeButton from '@/Components/Button.vue';
 
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, defineProps } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import axios from "axios";
+
+const props = defineProps({
+    ftype: [String, null],
+});
+
 
 let searchType = ref('bySin');
 
@@ -166,6 +171,7 @@ const switchSearchTerm = function (type){
 
 const sinFormTemplate = {
     filter_sin: '',
+    filter_type: props.ftype ?? 'active',
 };
 const sinForm = useForm(sinFormTemplate);
 const sinFormSubmit = () => {
@@ -177,6 +183,7 @@ const sinFormSubmit = () => {
 const nameFormTemplate = {
     filter_fname: '',
     filter_lname: '',
+    filter_type: props.ftype ?? 'active',
 };
 const nameForm = useForm(nameFormTemplate);
 const nameFormSubmit = () => {
@@ -186,6 +193,7 @@ const nameFormSubmit = () => {
 };
 const statusFormTemplate = {
     filter_status: 'Active',
+    filter_type: props.ftype ?? 'active',
 };
 const statusForm = useForm(statusFormTemplate);
 const statusFormSubmit = () => {
@@ -196,6 +204,7 @@ const statusFormSubmit = () => {
 
 const activeUsersFormTemplate = {
     filter_user: activeUsers.value,
+    filter_type: props.ftype ?? 'active',
 };
 const activeUsersForm = useForm(activeUsersFormTemplate);
 const activeUsersFormSubmit = () => {
@@ -206,6 +215,7 @@ const activeUsersFormSubmit = () => {
 
 const cancelledUsersFormTemplate = {
     filter_user: activeUsers.value,
+    filter_type: props.ftype ?? 'active',
 };
 const cancelledUsersForm = useForm(cancelledUsersFormTemplate);
 const cancelledUsersFormSubmit = () => {

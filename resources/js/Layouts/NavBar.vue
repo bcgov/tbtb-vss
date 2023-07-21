@@ -50,7 +50,7 @@ nav.navbar{
                         </BreezeNavLink>
                     </li>
                     <li class="nav-item">
-                        <BreezeNavLink class="nav-link" :href="route('archive')" :active="route().current('archive')">
+                        <BreezeNavLink class="nav-link" :href="route('archive.cases.list')" :active="route().current('archive.*')">
                             Archive
                         </BreezeNavLink>
                     </li>
