@@ -36,11 +36,21 @@ class IncidentController extends Controller
         }
 
         if (request()->filter_fname !== null) {
-            $cases = $cases->where('first_name', 'ILIKE', request()->filter_fname);
+            $cases = $cases->where('first_name', 'ILIKE', '%' . request()->filter_fname . '%');
         }
         if (request()->filter_lname !== null) {
-            $cases = $cases->where('last_name', 'ILIKE', request()->filter_lname);
+            $cases = $cases->where('last_name', 'ILIKE', '%' . request()->filter_lname . '%');
         }
+        if (request()->filter_type !== null) {
+            if (request()->filter_type === 'archive'){
+                $cases = $cases->archived();
+            }else{
+                $cases = $cases->isActive();
+            }
+        }else{
+            $cases = $cases->isActive();
+        }
+
 
         if (request()->sort !== null) {
             $cases = $cases->orderBy(request()->sort, request()->direction);
@@ -48,7 +58,7 @@ class IncidentController extends Controller
             $cases = $cases->orderBy('created_at', 'desc');
         }
 
-        return $cases->isActive()->with('institution')->paginate(25)->onEachSide(1)->appends(request()->query());
+        return $cases->with('institution')->paginate(25)->onEachSide(1)->appends(request()->query());
     }
 
     /**
@@ -74,6 +84,9 @@ class IncidentController extends Controller
         $cases = new Incident();
         $cases = $this->paginateCases($cases);
 
+        if(request()->filter_type !== null && request()->filter_type === 'archive'){
+            return inertia('ArchiveCases', ['status' => true, 'results' => $cases]);
+        }
         return Inertia::render('Cases', ['status' => true, 'results' => $cases]);
     }
 
@@ -86,7 +99,7 @@ class IncidentController extends Controller
     {
         $cases = Incident::archived()->with('institution')->orderBy('created_at', 'desc')->paginate(25);
 
-        return inertia('Cases', ['status' => true, 'results' => $cases]);
+        return inertia('ArchiveCases', ['status' => true, 'results' => $cases]);
     }
 
     /**
