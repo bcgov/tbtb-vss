@@ -137,7 +137,7 @@ import BreezeSelect from '@/Components/Select.vue';
 import BreezeLabel from '@/Components/Label.vue';
 import BreezeButton from '@/Components/Button.vue';
 
-import { ref, onMounted, defineProps } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useForm } from '@inertiajs/inertia-vue3'
 import axios from "axios";
 

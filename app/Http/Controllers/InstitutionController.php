@@ -22,16 +22,6 @@ class InstitutionController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \App\Http\Requests\InstitutionStoreRequest  $request
@@ -44,27 +34,6 @@ class InstitutionController extends Controller
         return Redirect::route('maintenance.school.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Institution  $institution
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Institution $institution)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Institution  $institution
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Institution $institution)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
@@ -90,16 +59,5 @@ class InstitutionController extends Controller
         }
 
         return Redirect::route('maintenance.school.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Institution  $institution
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Institution $institution)
-    {
-        //
     }
 }
