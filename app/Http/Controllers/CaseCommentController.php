@@ -11,36 +11,6 @@ use Illuminate\Support\Facades\Redirect;
 
 class CaseCommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -54,17 +24,6 @@ class CaseCommentController extends Controller
         $staff = User::where('disabled', false)->where('end_date', null)->get();
 
         return inertia('CaseComment', ['status' => true, 'result' => $case, 'staff' => $staff, 'now' => date('Y-m-d')]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\CaseComment  $caseComment
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(CaseComment $caseComment)
-    {
-        //
     }
 
     /**
