@@ -24,7 +24,6 @@ class InstitutionController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\InstitutionStoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(InstitutionStoreRequest $request)
@@ -34,12 +33,9 @@ class InstitutionController extends Controller
         return Redirect::route('maintenance.school.index');
     }
 
-
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\InstitutionStoreRequest  $request
-     * @param  \App\Models\Institution  $school
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(InstitutionStoreRequest $request, Institution $school)

@@ -24,7 +24,6 @@ class ReferralSourceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  ReferralSourceStoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(ReferralSourceStoreRequest $request)
@@ -37,8 +36,6 @@ class ReferralSourceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  ReferralSourceStoreRequest  $request
-     * @param  \App\Models\ReferralSource  $referralSource
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ReferralSourceStoreRequest $request, ReferralSource $referralSource)

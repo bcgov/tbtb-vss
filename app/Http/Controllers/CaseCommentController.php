@@ -11,11 +11,9 @@ use Illuminate\Support\Facades\Redirect;
 
 class CaseCommentController extends Controller
 {
-
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Incident  $caseComment
      * @return \Inertia\ResponseFactory|\Inertia\Response
      */
     public function show(Incident $caseComment)
@@ -29,8 +27,6 @@ class CaseCommentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Incident  $caseComment
      * @return \Inertia\ResponseFactory|\Inertia\Response
      */
     public function update(Request $request, Incident $caseComment)
@@ -61,7 +57,6 @@ class CaseCommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CaseComment  $caseComment
      * @return \Illuminate\Http\Response
      */
     public function destroy(CaseComment $caseComment)
