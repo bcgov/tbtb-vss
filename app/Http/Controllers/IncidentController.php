@@ -36,21 +36,20 @@ class IncidentController extends Controller
         }
 
         if (request()->filter_fname !== null) {
-            $cases = $cases->where('first_name', 'ILIKE', '%' . request()->filter_fname . '%');
+            $cases = $cases->where('first_name', 'ILIKE', '%'.request()->filter_fname.'%');
         }
         if (request()->filter_lname !== null) {
-            $cases = $cases->where('last_name', 'ILIKE', '%' . request()->filter_lname . '%');
+            $cases = $cases->where('last_name', 'ILIKE', '%'.request()->filter_lname.'%');
         }
         if (request()->filter_type !== null) {
-            if (request()->filter_type === 'archive'){
+            if (request()->filter_type === 'archive') {
                 $cases = $cases->archived();
-            }else{
+            } else {
                 $cases = $cases->isActive();
             }
-        }else{
+        } else {
             $cases = $cases->isActive();
         }
-
 
         if (request()->sort !== null) {
             $cases = $cases->orderBy(request()->sort, request()->direction);
@@ -84,9 +83,10 @@ class IncidentController extends Controller
         $cases = new Incident();
         $cases = $this->paginateCases($cases);
 
-        if(request()->filter_type !== null && request()->filter_type === 'archive'){
+        if (request()->filter_type !== null && request()->filter_type === 'archive') {
             return inertia('ArchiveCases', ['status' => true, 'results' => $cases]);
         }
+
         return Inertia::render('Cases', ['status' => true, 'results' => $cases]);
     }
 
@@ -129,7 +129,6 @@ class IncidentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\CaseStoreRequest  $request
      * @return \Illuminate\Http\Response
      */
     public function store(CaseStoreRequest $request)
@@ -144,7 +143,6 @@ class IncidentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Incident  $case
      * @return \Inertia\ResponseFactory|\Inertia\Response
      */
     public function edit(Incident $case)
@@ -170,7 +168,6 @@ class IncidentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\CaseStoreRequest  $request
      * @param  \App\Models\Incident  $incident
      * @return \Illuminate\Http\Response
      */

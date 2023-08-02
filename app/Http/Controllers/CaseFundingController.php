@@ -15,7 +15,6 @@ class CaseFundingController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Incident  $caseFunding
      * @return \Illuminate\Http\Response
      */
     public function show(Incident $caseFunding)
@@ -30,8 +29,6 @@ class CaseFundingController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Incident  $caseFunding
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Incident $caseFunding)
@@ -68,7 +65,6 @@ class CaseFundingController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\CaseFunding  $caseFunding
      * @return \Illuminate\Http\Response
      */
     public function destroy(CaseFunding $caseFunding)

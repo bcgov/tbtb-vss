@@ -24,7 +24,6 @@ class SanctionTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  SanctionTypeStoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(SanctionTypeStoreRequest $request)
@@ -37,8 +36,6 @@ class SanctionTypeController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  SanctionTypeStoreRequest  $request
-     * @param  \App\Models\SanctionType  $sanctionType
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(SanctionTypeStoreRequest $request, SanctionType $sanctionType)

@@ -24,7 +24,6 @@ class NatureOffenceController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  NatureOffenceStoreRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(NatureOffenceStoreRequest $request)
@@ -37,8 +36,6 @@ class NatureOffenceController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  NatureOffenceStoreRequest  $request
-     * @param  \App\Models\NatureOffence  $natureOffence
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(NatureOffenceStoreRequest $request, NatureOffence $natureOffence)

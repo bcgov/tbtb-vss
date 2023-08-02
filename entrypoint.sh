@@ -11,10 +11,10 @@ php -r "date_default_timezone_set('${TZ}');"
 php -r "echo date_default_timezone_get();"
 
 echo "Install composer"
-composer install && composer dump-auto
+composer install
 
 echo "Update artisan"
-php artisan key:generate
+php artisan key:generate --force
 
 chmod 766 /var/www/html/probe-check.sh
 
