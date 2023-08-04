@@ -24,7 +24,7 @@ jobs:
 
   # Build the API
   build:
-    name: Build project
+    name: Build VSS DEV Project
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.ref }}
@@ -50,7 +50,6 @@ jobs:
       # Note: The secrets needed to log in are NOT available if the PR comes from a FORK.
       # PR's must originate from a branch off the original repo or else all openshift `oc` commands will fail.
       - name: Log in to OpenShift
-#        working-directory: "/var/www/html"
         run: |
           oc login --token=${{ secrets.SA_TOKEN }} --server=https://api.silver.devops.gov.bc.ca:6443
       - name: OC Build from yaml
@@ -61,7 +60,6 @@ jobs:
         run: |
           echo "FINISHED OC BUILD WEB"
           echo ++++++++++
-
 
   # Deploy project
   deployDev:
