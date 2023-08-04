@@ -27,9 +27,10 @@ jobs:
           echo "PR merged: ${{ github.event.pull_request.merged }}"
           echo "PR merged: ${{ github.event.pull_request.merged }}"
 
-  # Build the API
+
+  # Build the VSS
   build:
-    name: Build project
+    name: Build VSS PROD Project
     runs-on: ubuntu-latest
     concurrency:
       group: ${{ github.ref }}
@@ -40,6 +41,7 @@ jobs:
       BUILD_NAMESPACE: 06cb9b-tools
       BUILD_REF: ${{ github.base_ref }}
       HOST_PREFIX: tbtb-vss
+      SOURCE_REPOSITORY_BRANCH: master
     steps:
       # Checkout the PR branch
       - name: Print env
@@ -54,7 +56,6 @@ jobs:
       # Note: The secrets needed to log in are NOT available if the PR comes from a FORK.
       # PR's must originate from a branch off the original repo or else all openshift `oc` commands will fail.
       - name: Log in to OpenShift
-#        working-directory: "/var/www/html"
         run: |
           oc login --token=${{ secrets.SA_TOKEN }} --server=https://api.silver.devops.gov.bc.ca:6443
       - name: OC Build from yaml
