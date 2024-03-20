@@ -190,12 +190,16 @@ RUN cd /var/www && chown -R ${USER_ID}:root html && chmod -R ug+rw html
 RUN chmod 764 /var/www/html/artisan
 
 #now install npm
-RUN cd /var/www/html && npm install && chmod -R a+w node_modules
+#RUN cd /var/www/html && npm install && chmod -R a+w node_modules
 
 #Error: EACCES: permission denied, open '/var/www/html/public/mix-manifest.json'
 RUN cd /var/www/html/public
 #RUN cd /var/www/html && npm run dev
 RUN mkdir /.npm && chown -R ${USER_ID}:0 "/.npm"
+
+RUN mkdir -p storage && mkdir -p bootstrap/cache && chmod -R ug+rwx storage bootstrap/cache \
+    && cd /var/www && chown -R ${USER_ID}:root html && chmod -R ug+rw html \
+    && chmod 764 /var/www/html/artisan \
 
 #Writing to directory /.config/psysh is not allowed.
 RUN mkdir -p /.config/psysh && chown -R ${USER_ID}:root /.config && chmod -R 755 /.config
