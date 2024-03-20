@@ -199,7 +199,7 @@ RUN mkdir /.npm && chown -R ${USER_ID}:0 "/.npm"
 
 RUN chmod -R ug+rwx storage bootstrap/cache \
     && cd /var/www && chown -R ${USER_ID}:root html && chmod -R ug+rw html \
-    && chmod 764 /var/www/html/artisan \
+    && chmod 764 /var/www/html/artisan
 
 #Writing to directory /.config/psysh is not allowed.
 RUN mkdir -p /.config/psysh && chown -R ${USER_ID}:root /.config && chmod -R 755 /.config
