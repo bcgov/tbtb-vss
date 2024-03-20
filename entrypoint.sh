@@ -11,15 +11,12 @@ php -r "date_default_timezone_set('${TZ}');"
 php -r "echo date_default_timezone_get();"
 
 echo "Install composer"
-composer install
-
-echo "Update artisan"
-php artisan key:generate --force
+composer dump-auto
 
 chmod 766 /var/www/html/probe-check.sh
 
-echo "Run NPM:"
-npm run --prefix /var/www/html/ dev
+echo "Permissions setup for NPM:"
+chmod -R a+w node_modules
 
 echo "Starting apache:"
 /usr/sbin/apache2ctl start

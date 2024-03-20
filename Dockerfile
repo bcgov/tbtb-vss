@@ -208,6 +208,8 @@ RUN echo "<?php return ['runtimeDir' => '/tmp'];" >> /.config/psysh/config.php
 RUN chmod +x /sbin/entrypoint.sh
 USER ${USER_ID}
 
+RUN composer install && npm install --prefix /var/www/html/ && npm run --prefix /var/www/html/ prod
+
 ENTRYPOINT ["/sbin/entrypoint.sh"]
 #CMD /usr/sbin/apache2ctl start && /usr/sbin/apache2ctl restart
 # Start!
