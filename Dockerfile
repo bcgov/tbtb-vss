@@ -193,7 +193,7 @@ RUN chmod 764 /var/www/html/artisan
 RUN cd /var/www/html && npm install && chmod -R a+w node_modules
 
 #Error: EACCES: permission denied, open '/var/www/html/public/mix-manifest.json'
-RUN cd /var/www/html/public && chmod 766 mix-manifest.json
+RUN cd /var/www/html/public
 #RUN cd /var/www/html && npm run dev
 RUN mkdir /.npm && chown -R ${USER_ID}:0 "/.npm"
 

@@ -72,9 +72,9 @@ return [
             'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
             'charset' => 'utf8',
-            'prefix' => env('DB_PREFIX', ''),
+            'prefix' => '',
             'prefix_indexes' => true,
-            'schema' => 'public',
+            'search_path' => 'public',
             'sslmode' => 'prefer',
         ],
 
@@ -89,6 +89,21 @@ return [
             'charset' => 'utf8',
             'prefix' => '',
             'prefix_indexes' => true,
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
+        'oracle' => [
+            'driver' => 'oracle',
+            'host' => env('DB_OCI_HOST', 'localhost'),
+            'port' => env('DB_OCI_PORT', '1521'),
+            'database' => env('DB_OCI_DATABASE', 'xe'),
+            'username' => env('DB_OCI_USERNAME', 'system'),
+            'password' => env('DB_OCI_PASSWORD', 'oracle'),
+            'oracleClientVersion' => env('DB_OCI_VERSION'),
+            'connectString' => env('DB_OCI_DESCRIPTION'),
+            'edition' => 'ora$base',
+            'service_name' => env('DB_OCI_SERVICE_NAME', ''),
+
         ],
 
     ],
@@ -129,7 +144,8 @@ return [
         'default' => [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
         ],
@@ -137,7 +153,8 @@ return [
         'cache' => [
             'url' => env('REDIS_URL'),
             'host' => env('REDIS_HOST', '127.0.0.1'),
-            'password' => env('REDIS_PASSWORD', null),
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
         ],

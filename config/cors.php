@@ -19,7 +19,7 @@ return [
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*.apps.silver.devops.gov.bc.ca', 'http://10.0.0.51'],
+    'allowed_origins' => ['*'],
 
     'allowed_origins_patterns' => [],
 
